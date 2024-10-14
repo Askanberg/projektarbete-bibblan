@@ -1,9 +1,9 @@
 package org.bibblan.usermanagement;
 
+import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("User Management Test")
 public class UserTest {
@@ -41,6 +41,7 @@ public class UserTest {
 
     @Test
     public void userIdGeneratesUniqueIdCorrectly(){
+
         Assertions.assertEquals(1, user.getID(),
                 "Fel: Testet förväntade sig att ID skulle vara \"1\"");
     }
