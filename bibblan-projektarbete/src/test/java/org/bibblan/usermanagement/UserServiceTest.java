@@ -57,4 +57,5 @@ public class UserServiceTest {
                 "Fel: Förväntade sig att ett IllegalArgumentException kastades med meddelandet \"Invalid username.\"");
         
     }
+
 }

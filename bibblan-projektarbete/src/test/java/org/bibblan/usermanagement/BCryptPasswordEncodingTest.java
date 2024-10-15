@@ -15,9 +15,9 @@ public class BCryptPasswordEncodingTest {
         final User user = User.builder()
                 .userName("Test")
                 .name("Test")
-                .ID(101)
                 .email("something@domain.com")
                 .password("myRawPassword")
+                .ID(101)
                 .build();
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
