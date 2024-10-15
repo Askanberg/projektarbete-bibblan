@@ -10,7 +10,8 @@ public class BookTest {
 
     @Test
     void TestThatGetArticleTypeReturnsCorrectArticle() {
-        Article book = new Book("Title", "Publisher", "2024-10-5", new ArrayList<Author>(), "000-00-00-0-000", CoverType.HARDCOVER);
+        Author author = new Author();
+        Article book = new Book("Title", author, "Genre", "000-00-00-0-000", "Publisher", CoverType.HARDCOVER);
 
         String articleType = book.getArticleType();
 

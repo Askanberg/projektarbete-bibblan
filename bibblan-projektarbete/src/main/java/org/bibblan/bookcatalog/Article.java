@@ -13,11 +13,11 @@ public abstract class Article {
 
     private String title;
 
-    private String publishedDate;
+    private String genre;
 
     private String Publisher;
 
-    private ArrayList<Author> authors = new ArrayList<Author>();
+
 
     //private ArrayList<Review> reviews = new ArrayList<Review>();
 

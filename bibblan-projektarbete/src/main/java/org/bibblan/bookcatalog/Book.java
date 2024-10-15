@@ -13,11 +13,13 @@ import java.util.ArrayList;
 public class Book extends Article{
 
     private String isbn;
+    private Author author;
 
     private CoverType coverType;
 
-    public Book(String title, String publisher, String publishedYear, ArrayList<Author> authors, String isbn, CoverType cover) {
-        super(title, publisher, publishedYear, authors);
+    public Book(String title, Author author, String genre, String isbn, String publisher, CoverType cover) {
+        super(title, genre, publisher);
+        this.author = author;
         this.isbn = isbn;
         this.coverType = cover;
     }
