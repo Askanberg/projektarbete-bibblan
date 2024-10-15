@@ -2,7 +2,6 @@ package org.bibblan.usermanagement.user;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
 
 import java.util.Objects;
 
@@ -19,7 +18,7 @@ public class User {
     private String password;
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private final Integer ID;
+    private Integer ID;
 
     @Override
     public String toString() {
