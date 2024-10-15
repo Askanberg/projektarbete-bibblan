@@ -1,8 +1,6 @@
 package org.bibblan;
 
-import org.bibblan.bookcatalog.Author;
-import org.bibblan.bookcatalog.Book;
-import org.bibblan.bookcatalog.CoverType;
+import org.bibblan.bookcatalog.domain.Author;
 
 public class Main {
     public static void main(String[] args) {

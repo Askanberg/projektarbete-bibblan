@@ -1,6 +1,5 @@
-package org.bibblan.bookcatalog;
+package org.bibblan.bookcatalog.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

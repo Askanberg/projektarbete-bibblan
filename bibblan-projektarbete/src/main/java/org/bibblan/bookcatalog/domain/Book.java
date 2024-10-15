@@ -1,18 +1,13 @@
-package org.bibblan.bookcatalog;
+package org.bibblan.bookcatalog.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class Book extends Item{
-
-    private long count = 1;
 
     private String isbn;
     private Author author;
@@ -26,7 +21,6 @@ public class Book extends Item{
         this.author = author;
         this.isbn = isbn;
         this.coverType = cover;
-
     }
 
     @Override

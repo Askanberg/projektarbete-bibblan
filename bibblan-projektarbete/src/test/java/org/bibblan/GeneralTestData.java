@@ -1,9 +1,8 @@
 package org.bibblan;
 
-import org.bibblan.bookcatalog.Author;
-import org.bibblan.bookcatalog.Book;
-import org.bibblan.bookcatalog.CoverType;
-import org.bibblan.bookcatalog.Item;
+import org.bibblan.bookcatalog.domain.Author;
+import org.bibblan.bookcatalog.domain.Book;
+import org.bibblan.bookcatalog.domain.CoverType;
 
 public class GeneralTestData {
     //Books and domain classes
