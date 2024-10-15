@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Article {
+public abstract class Item {
 
     private String title;
 

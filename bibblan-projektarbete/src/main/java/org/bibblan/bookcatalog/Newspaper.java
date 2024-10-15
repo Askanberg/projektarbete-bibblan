@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class Newspaper extends Article{
+public class Newspaper extends Item{
 
     private int issue;
 

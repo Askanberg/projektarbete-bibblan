@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class EBook extends Article{
+public class EBook extends Item{
 
     private String fileFormat;
 
