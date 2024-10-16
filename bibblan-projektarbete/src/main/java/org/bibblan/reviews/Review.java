@@ -12,6 +12,10 @@ public class Review {
     String comment;
     User user;
 
+    public Review(Book book, int rating, User user) {
+        this(book, rating, user, "");
+    }
+
     public Review(Book book, int rating, User user, String comment) {
         this.book = book;
         this.rating = rating;
