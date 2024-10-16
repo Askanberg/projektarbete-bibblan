@@ -12,7 +12,8 @@ import java.util.Objects;
 @NoArgsConstructor(force = true)
 public class User {
     private String email;
-    @Id
+
+    @Column(unique = true)
     private String userName;
     private String name;
     private String password;
