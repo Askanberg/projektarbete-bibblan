@@ -1,46 +1,53 @@
 package org.bibblan.bookcatalog;
 
-import org.bibblan.GeneralTestData;
-import org.bibblan.bookcatalog.domain.Book;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
-import java.nio.file.NoSuchFileException;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BookCollectionTests {
 
     @Test
-    void testReadBooksFromCsv() throws FileNotFoundException {
+    void testThatReadItemsFromCsvCanReadBookCsv() throws FileNotFoundException {
         BookCollection tempCollection = new BookCollection();
-        Map<String, Book> books = tempCollection.readBooksFromCsv("src/test/resources/testBooks.csv");
-        assertTrue(books.containsKey("9781400052172"));
+        tempCollection.readItemsFromCsv("src/test/resources/testBooks.csv");
+        assertTrue(tempCollection.getBookMap().containsKey("9781400052172"));
     }
 
     @Test
-    void testThatReadBooksFromCsvThrowsExceptionIfNoSuchFile() {
+    void testThatReadItemsFromCsvThrowsExceptionIfNoSuchFile() {
         BookCollection tempCollection = new BookCollection();
         assertThrows(FileNotFoundException.class, () -> {
-            tempCollection.readBooksFromCsv("src/test/resources/NoSuchFile.csv");
+            tempCollection.readItemsFromCsv("src/test/resources/NoSuchFile.csv");
         });
     }
 
     @Test
-    void testThatReadBooksFromCsvThrowsExceptionIfFileIsEmpty() {
+    void testThatReadItemsFromCsvThrowsExceptionIfFileIsEmpty() {
         BookCollection tempCollection = new BookCollection();
         assertThrows(IllegalArgumentException.class, () -> {
-            Map<String, Book> books = tempCollection.readBooksFromCsv("src/test/resources/emptyBookFile.csv");
+            tempCollection.readItemsFromCsv("src/test/resources/emptyBookFile.csv");
         });
     }
 
     @Test
-    void testThatMakeBookThrowsExceptionIfNumberOfColumnsIsInvalid() {
+    void testThatMakeItemThrowsExceptionIfNumberOfColumnsIsInvalid() {
         BookCollection tempCollection = new BookCollection();
         assertThrows(IllegalArgumentException.class, () -> {
-            Map<String, Book> books = tempCollection.readBooksFromCsv("src/test/resources/invalidColumnsBooks.csv");
+            tempCollection.readItemsFromCsv("src/test/resources/testEBooks.csv");
         });
     }
+
+
+    @Test
+    void testThatReadItemsFromCsvCanReadDigitalBookCsv() throws FileNotFoundException {
+        BookCollection tempCollection = new BookCollection();
+        tempCollection.readItemsFromCsv("src/test/resources/testEBooks.csv");
+        assertTrue(tempCollection.getEBookMap().containsKey("9781400052172"));
+
+    }
+
+
+
 }

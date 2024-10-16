@@ -1,4 +1,6 @@
-Title,Author,Genre,ISBN,Publisher
-Educated,Tara Westover,Biography,9780399590504,Random House
-The Immortal Life of Henrietta Lacks,Rebecca Skloot,Biography,9781400052172,Crown
-Becoming,Michelle Obama,Biography,9781524763138,Crown
+Ebooks
+Title,Author,Genre,Publisher,URL,FileFormat
+"Effective Java", "Joshua Bloch", "Programming", "Addison-Wesley", "http://example.com/effective_java", "EPUB"
+"Design Patterns: Elements of Reusable Object-Oriented Software", "Erich Gamma", "Computer Science", "Addison-Wesley", "http://example.com/design_patterns", "PDF"
+"The Pragmatic Programmer", "Andrew Hunt", "Programming", "Addison-Wesley", "http://example.com/pragmatic_programmer", "MOBI"
+"Introduction to Algorithms", "Thomas H. Cormen", "Computer Science", "MIT Press", "http://example.com/algorithms", "PDF"

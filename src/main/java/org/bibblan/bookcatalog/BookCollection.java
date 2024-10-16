@@ -1,5 +1,6 @@
 package org.bibblan.bookcatalog;
 
+import lombok.Data;
 import org.bibblan.bookcatalog.domain.*;
 
 import java.io.BufferedReader;
@@ -11,35 +12,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@Data
 public class BookCollection {
     Map<String, Book> bookMap = new HashMap<>();
-    Map<String, EBook> digitalBookMap = new HashMap<>();
+    Map<String, EBook> eBookMap = new HashMap<>();
     Map<String, Reference> referenceMap = new HashMap<>();
 
 
-    public Map<String, Book> readBooksFromCsv(String filePath) throws FileNotFoundException {
+    public void readItemsFromCsv(String filePath) throws FileNotFoundException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String itemType = br.readLine();
             String line = br.readLine();
             if (line == null) {
                 throw new IllegalArgumentException("Empty file");
             }
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
-                Book book = makeBook(values);
-                bookMap.put(book.getIsbn(), book);
+                Item item = makeItems(values, itemType);
+                if (item instanceof Book) {
+                    Book book = (Book) item;
+                    bookMap.put(book.getIsbn(), book);
+                }
             }
         } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return bookMap;
-
     }
 
-    private Book makeBook(String[] values) {
-        switch (values.length) {
-            case 6:
+    private Item makeItems(String[] values, String itemType) {
+        switch (itemType) {
+            case "Books":
                 String title = values[0].trim();
                 Author author = new Author(values[1].trim(), new ArrayList<>());
                 String genre = values[2].trim();
