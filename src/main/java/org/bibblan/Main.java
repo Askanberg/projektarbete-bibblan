@@ -1,8 +1,5 @@
 package org.bibblan;
 
-import org.bibblan.bookcatalog.Author;
-import org.bibblan.bookcatalog.Book;
-import org.bibblan.bookcatalog.CoverType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
