@@ -20,14 +20,10 @@ public class BookCollectionTests {
     }
 
     @Test
-    void testThatMakeBookThrowsExceptionIfListLengthIsZero() {
+    void testThatMakeBookThrowsExceptionIfNumberOfColumnsIsInvalid() {
         BookCollection tempCollection = new BookCollection();
         assertThrows(IllegalArgumentException.class, () -> {
             Map<String, Book> books = tempCollection.readBooksFromCsv("src/test/resources/emptyBookFile.csv");
         });
-
-
-
-
     }
 }

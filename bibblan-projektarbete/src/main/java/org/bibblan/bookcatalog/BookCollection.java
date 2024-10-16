@@ -34,13 +34,18 @@ public class BookCollection {
     }
 
     private Book makeBook(String[] values) {
-        String title = values[0].trim();
-        Author author = new Author(values[1].trim(), new ArrayList<>());
-        String genre = values[2].trim();
-        String isbn = values[3].trim();
-        String publisher = values[4].trim();
-        String coverType = values[5].trim();
 
-        return new Book(title, author, genre, isbn, publisher, CoverType.valueOf(coverType.toUpperCase()));
+        switch (values.length) {
+            case 6:
+                String title = values[0].trim();
+                Author author = new Author(values[1].trim(), new ArrayList<>());
+                String genre = values[2].trim();
+                String isbn = values[3].trim();
+                String publisher = values[4].trim();
+                String coverType = values[5].trim();
+                return new Book(title, author, genre, isbn, publisher, CoverType.valueOf(coverType.toUpperCase()));
+            default:
+                throw new IllegalArgumentException("Invalid number of columns");
+        }
     }
 }
