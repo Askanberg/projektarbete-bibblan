@@ -23,7 +23,11 @@ public class Review {
         } else {
             this.rating = rating;
         }
-        this.comment = comment;
+        if(comment.length() > 500){
+            throw new IllegalArgumentException("Comment must be between 1 and 500 characters!");
+        } else {
+            this.comment = comment;
+        }
         this.user = user;
     }
 }
