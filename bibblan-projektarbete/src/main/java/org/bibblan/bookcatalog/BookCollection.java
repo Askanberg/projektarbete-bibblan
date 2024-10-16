@@ -14,18 +14,18 @@ import java.util.Map;
 public class BookCollection {
     Map<String, Book> bookMap = new HashMap<>();
 
-    public Map<String, Book> readBooksFromCsv(String filePath) {
+    public Map<String, Book> readBooksFromCsv(String filePath){
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
+            String line = br.readLine();
+            if (line == null) {
+                throw new IllegalArgumentException("Empty file");
+            }
 
-            br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 Book book = makeBook(values);
                 bookMap.put(book.getIsbn(), book);
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,3 +49,4 @@ public class BookCollection {
         }
     }
 }
+

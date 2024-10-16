@@ -15,15 +15,22 @@ public class BookCollectionTests {
     void testReadBooksFromCsv() {
         BookCollection tempCollection = new BookCollection();
         Map<String, Book> books = tempCollection.readBooksFromCsv("src/test/resources/testBooks.csv");
-
         assertTrue(books.containsKey("9781400052172"));
+    }
+
+    @Test
+    void testThatReadBooksFromCsvThrowsExceptionIfFileIsEmpty() {
+        BookCollection tempCollection = new BookCollection();
+        assertThrows(IllegalArgumentException.class, () -> {
+            Map<String, Book> books = tempCollection.readBooksFromCsv("src/test/resources/emptyBookFile.csv");
+        });
     }
 
     @Test
     void testThatMakeBookThrowsExceptionIfNumberOfColumnsIsInvalid() {
         BookCollection tempCollection = new BookCollection();
         assertThrows(IllegalArgumentException.class, () -> {
-            Map<String, Book> books = tempCollection.readBooksFromCsv("src/test/resources/emptyBookFile.csv");
+            Map<String, Book> books = tempCollection.readBooksFromCsv("src/test/resources/invalidColumnsBooks.csv");
         });
     }
 }
