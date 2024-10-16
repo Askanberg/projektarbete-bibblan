@@ -1,13 +1,12 @@
 package org.bibblan;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.bibblan.bookcatalog.Author;
+import org.bibblan.bookcatalog.Book;
+import org.bibblan.bookcatalog.CoverType;
 
-@EnableJpaRepositories
-@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        System.out.println("Hello world!");
+        Author author = new Author();
     }
 }
