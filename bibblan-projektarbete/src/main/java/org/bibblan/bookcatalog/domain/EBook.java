@@ -10,8 +10,13 @@ import lombok.NoArgsConstructor;
 public class EBook extends Item{
 
     private String fileFormat;
-
     private String url;
+
+    public EBook(String title, Author author, String genre, String publisher, String url, String fileFormat) {
+        super(title, genre, author, publisher);
+        this.url = url;
+        this.fileFormat = fileFormat;
+    }
 
     @Override
     public String getArticleType() {

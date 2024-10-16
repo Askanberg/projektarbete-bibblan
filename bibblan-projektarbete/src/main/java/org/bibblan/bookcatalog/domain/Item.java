@@ -15,6 +15,8 @@ public abstract class Item {
 
     private String genre;
 
+    private Author author;
+
     private String Publisher;
 
 

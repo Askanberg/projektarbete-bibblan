@@ -1,8 +1,6 @@
 package org.bibblan.bookcatalog;
 
-import org.bibblan.bookcatalog.domain.Author;
-import org.bibblan.bookcatalog.domain.Book;
-import org.bibblan.bookcatalog.domain.CoverType;
+import org.bibblan.bookcatalog.domain.*;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -15,6 +13,9 @@ import java.util.Map;
 
 public class BookCollection {
     Map<String, Book> bookMap = new HashMap<>();
+    Map<String, EBook> digitalBookMap = new HashMap<>();
+    Map<String, Reference> referenceMap = new HashMap<>();
+
 
     public Map<String, Book> readBooksFromCsv(String filePath) throws FileNotFoundException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -37,7 +38,6 @@ public class BookCollection {
     }
 
     private Book makeBook(String[] values) {
-
         switch (values.length) {
             case 6:
                 String title = values[0].trim();

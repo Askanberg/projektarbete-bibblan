@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 public class Book extends Item{
 
     private String isbn;
-    private Author author;
-
     private CoverType coverType;
 
     private boolean isAvailable = true;
 
     public Book(String title, Author author, String genre, String isbn, String publisher, CoverType cover) {
-        super(title, genre, publisher);
-        this.author = author;
+        super(title, genre, author, publisher);
         this.isbn = isbn;
         this.coverType = cover;
     }

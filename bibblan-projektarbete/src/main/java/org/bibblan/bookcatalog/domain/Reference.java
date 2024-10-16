@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 public class Reference extends Item{
 
     private String isbn;
-    private Author author;
-
     private final CoverType coverType = CoverType.HARDCOVER;
 
     private final boolean isAvailable = false;
 
     public Reference(String title, Author author, String genre, String isbn, String publisher) {
-        super(title, genre, publisher);
-        this.author = author;
+        super(title, genre, author, publisher);
         this.isbn = isbn;
     }
 
