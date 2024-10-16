@@ -5,8 +5,10 @@ import org.bibblan.bookcatalog.domain.Book;
 import org.bibblan.bookcatalog.domain.CoverType;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,18 +16,19 @@ import java.util.Map;
 public class BookCollection {
     Map<String, Book> bookMap = new HashMap<>();
 
-    public Map<String, Book> readBooksFromCsv(String filePath){
+    public Map<String, Book> readBooksFromCsv(String filePath) throws FileNotFoundException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line = br.readLine();
             if (line == null) {
                 throw new IllegalArgumentException("Empty file");
             }
-
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 Book book = makeBook(values);
                 bookMap.put(book.getIsbn(), book);
             }
+        } catch (FileNotFoundException e) {
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
         }
