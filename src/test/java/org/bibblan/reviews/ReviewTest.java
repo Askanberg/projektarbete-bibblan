@@ -66,4 +66,22 @@ public class ReviewTest {
 
         assertEquals("Comment must be between 1 and 500 characters!", thrown.getMessage());
     }
+
+    @Test
+    void testReviewCreationWithNullBook() { //TF6
+        book = null;
+        rating = 3;
+
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
+        assertEquals("Book cannot be null!", thrown.getMessage());
+    }
+
+    @Test
+    void testReviewCreationWithNullUser() { //TF7
+        user = null;
+        rating = 3;
+
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
+        assertEquals("User cannot be null!", thrown.getMessage());
+    }
 }
