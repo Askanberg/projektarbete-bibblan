@@ -1,8 +1,9 @@
 package org.bibblan;
 
-import org.bibblan.bookcatalog.domain.Author;
-import org.bibblan.bookcatalog.domain.Book;
-import org.bibblan.bookcatalog.domain.CoverType;
+import org.bibblan.bookcatalog.Author;
+import org.bibblan.bookcatalog.Book;
+import org.bibblan.bookcatalog.CoverType;
+import org.bibblan.usermanagement.user.User;
 
 public class GeneralTestData {
     //Books and domain classes
@@ -19,8 +20,12 @@ public class GeneralTestData {
         return new Book("TitleC", author, "Genre", "300-00-00-0-000", "Publisher", CoverType.HARDCOVER);
     }
     //Users
-
-
-
-
+    public User createLocalTestUserA(){
+        return User.builder() // Dummy-objekt utan ID eftersom det inte initialiseras utanför databas-integrationen.
+                .email("anna@gmail.com")
+                .username("Anna_Book")
+                .name("Anna Book")
+                .password("SzrqTlst_#")
+                .build();
+    }
 }
