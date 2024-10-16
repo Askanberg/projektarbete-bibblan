@@ -42,10 +42,46 @@ public class ReviewTest {
     }
 
     @Test
-    void testReviewCreationWithTooHighRating() {
+    void testReviewCreationWithTooHighRating() { //TF3
         rating = 6;
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
 
-        assertEquals("Rating must be between 0 and 5!", thrown.getMessage());
+        assertEquals("Rating must be between 1 and 5!", thrown.getMessage());
+    }
+
+    @Test
+    void testReviewCreationWithTooLowRating() { //TF4
+        rating = 0;
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
+
+        assertEquals("Rating must be between 1" +
+                " and 5!", thrown.getMessage());
+    }
+
+    @Test
+    void testReviewCreationWithTooLongComment() { //TF5
+        comment = "x".repeat(501);
+        rating = 1;
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
+
+        assertEquals("Comment must be between 1 and 500 characters!", thrown.getMessage());
+    }
+
+    @Test
+    void testReviewCreationWithNullBook() { //TF6
+        book = null;
+        rating = 3;
+
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
+        assertEquals("Book cannot be null!", thrown.getMessage());
+    }
+
+    @Test
+    void testReviewCreationWithNullUser() { //TF7
+        user = null;
+        rating = 3;
+
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
+        assertEquals("User cannot be null!", thrown.getMessage());
     }
 }
