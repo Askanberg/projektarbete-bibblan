@@ -1,0 +1,12 @@
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/Main.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/BookCollection.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/domain/Author.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/domain/Book.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/domain/CoverType.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/domain/EBook.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/domain/Item.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/domain/Reference.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/feemanagement/Fee.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/loanmanagement/Loan.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/reviews/Review.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/main/java/org/bibblan/usermanagement/User.java

@@ -1,0 +1,9 @@
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/GeneralTestData.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/bookcatalog/BookCollectionTests.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/bookcatalog/DigitalBookCollectionTests.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/bookcatalog/ReferenceCollectionTests.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/bookcatalog/domain/BookTests.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/feemanagement/FeeTest.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/loanmanagement/LoanTest.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/reviews/ReviewTest.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/bibblan-projektarbete/src/test/java/org/bibblan/usermanagement/UserTest.java

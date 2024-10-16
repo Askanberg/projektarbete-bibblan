@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fd124bbf-7054-49a5-98c0-e5c3df2749fb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/bookcatalog/BookCollection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/bookcatalog/domain/Author.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/bookcatalog/domain/Book.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/bookcatalog/domain/CoverType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/bookcatalog/domain/EBook.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/bookcatalog/domain/Item.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/bookcatalog/domain/Reference.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/feemanagement/Fee.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/loanmanagement/Loan.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/reviews/Review.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bibblan/usermanagement/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/books.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ebooks.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/references.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/GeneralTestData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/bookcatalog/BookCollectionTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/bookcatalog/DigitalBookCollectionTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/bookcatalog/ReferenceCollectionTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/bookcatalog/domain/BookTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/feemanagement/FeeTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/loanmanagement/LoanTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/reviews/ReviewTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/bibblan/usermanagement/UserTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/emptyBookFile.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/invalidColumnsBooks.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/testBooks.csv" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2nEtJGFsxQzYOO2X3czxjdaATza" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.BookCollectionTests.executor": "Run",
+    "JUnit.BookCollectionTests.testReadBooksFromCsv.executor": "Run",
+    "JUnit.BookCollectionTests.testThatMakeBookThrowsExceptionIfListLengthIsZero.executor": "Run",
+    "JUnit.BookCollectionTests.testThatMakeBookThrowsExceptionIfNumberOfColumnsIsInvalid.executor": "Run",
+    "JUnit.BookCollectionTests.testThatReadBooksFromCsvThrowsExceptionIfFileIsEmpty.executor": "Run",
+    "JUnit.BookCollectionTests.testThatReadBooksFromCsvThrowsExceptionIfNoSuchFile.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "askanberg-branch",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/src/test/java/org/bibblan" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.bibblan.bookcatalog.domain" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.BookCollectionTests">
+    <configuration name="BookCollectionTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bibblan-projektarbete" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bibblan.bookcatalog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bibblan.bookcatalog" />
+      <option name="MAIN_CLASS_NAME" value="org.bibblan.bookcatalog.BookCollectionTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookCollectionTests.testReadBooksFromCsv" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bibblan-projektarbete" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bibblan.bookcatalog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bibblan.bookcatalog" />
+      <option name="MAIN_CLASS_NAME" value="org.bibblan.bookcatalog.BookCollectionTests" />
+      <option name="METHOD_NAME" value="testReadBooksFromCsv" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookCollectionTests.testThatMakeBookThrowsExceptionIfNumberOfColumnsIsInvalid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bibblan-projektarbete" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bibblan.bookcatalog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bibblan.bookcatalog" />
+      <option name="MAIN_CLASS_NAME" value="org.bibblan.bookcatalog.BookCollectionTests" />
+      <option name="METHOD_NAME" value="testThatMakeBookThrowsExceptionIfNumberOfColumnsIsInvalid" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookCollectionTests.testThatReadBooksFromCsvThrowsExceptionIfFileIsEmpty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bibblan-projektarbete" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bibblan.bookcatalog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bibblan.bookcatalog" />
+      <option name="MAIN_CLASS_NAME" value="org.bibblan.bookcatalog.BookCollectionTests" />
+      <option name="METHOD_NAME" value="testThatReadBooksFromCsvThrowsExceptionIfFileIsEmpty" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookCollectionTests.testThatReadBooksFromCsvThrowsExceptionIfNoSuchFile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bibblan-projektarbete" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bibblan.bookcatalog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bibblan.bookcatalog" />
+      <option name="MAIN_CLASS_NAME" value="org.bibblan.bookcatalog.BookCollectionTests" />
+      <option name="METHOD_NAME" value="testThatReadBooksFromCsvThrowsExceptionIfNoSuchFile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.BookCollectionTests" />
+        <item itemvalue="JUnit.BookCollectionTests.testThatReadBooksFromCsvThrowsExceptionIfNoSuchFile" />
+        <item itemvalue="JUnit.BookCollectionTests.testReadBooksFromCsv" />
+        <item itemvalue="JUnit.BookCollectionTests.testThatReadBooksFromCsvThrowsExceptionIfFileIsEmpty" />
+        <item itemvalue="JUnit.BookCollectionTests.testThatMakeBookThrowsExceptionIfNumberOfColumnsIsInvalid" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fd124bbf-7054-49a5-98c0-e5c3df2749fb" name="Changes" comment="" />
+      <created>1728549989943</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1728549989943</updated>
+      <workItem from="1728549990981" duration="45000" />
+      <workItem from="1728550080517" duration="289000" />
+      <workItem from="1728550400126" duration="16000" />
+      <workItem from="1728550431166" duration="10000" />
+      <workItem from="1728550459808" duration="796000" />
+      <workItem from="1728551610206" duration="291000" />
+      <workItem from="1728552917840" duration="423000" />
+      <workItem from="1728899803429" duration="7000" />
+      <workItem from="1728926952813" duration="190000" />
+      <workItem from="1729065380496" duration="13009000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
