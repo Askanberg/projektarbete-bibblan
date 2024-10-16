@@ -136,6 +136,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Main" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="bibblan-projektarbete" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.bibblan.Main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.ReviewTest.testReviewCreationWithTooHighRating" />
