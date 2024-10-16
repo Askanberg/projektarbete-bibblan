@@ -42,7 +42,7 @@ public class ReviewTest {
     }
 
     @Test
-    void testReviewCreationWithTooHighRating() {
+    void testReviewCreationWithTooHighRating() { //TF3
         rating = 6;
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
 
@@ -50,7 +50,7 @@ public class ReviewTest {
     }
 
     @Test
-    void testReviewCreationWithTooLowRating() {
+    void testReviewCreationWithTooLowRating() { //TF4
         rating = 0;
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
 
