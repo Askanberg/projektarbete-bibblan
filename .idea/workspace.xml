@@ -4,36 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49aab6fa-9620-4361-af90-3e33713abf31" name="Changes" comment="Removes excess root-directory that was accidentally added.">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/Author.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/Book.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/BookCollection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/CoverType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/EBook.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/Item.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/Newspaper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/books.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/feemanagement/Fee.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/loanmanagement/Loan.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/reviews/Review.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/usermanagement/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/GeneralTestData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/bookcatalog/BookTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/feemanagement/FeeTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/loanmanagement/LoanTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/reviews/ReviewTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/usermanagement/UserTest.java" beforeDir="false" />
-    </list>
+    <list default="true" id="49aab6fa-9620-4361-af90-3e33713abf31" name="Changes" comment="Removes excess root-directory that was accidentally added." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,27 +37,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.ReviewTest.testReviewCreationWithTooHighRating.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ReviewTest.testReviewCreationWithValidData.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ReviewTest.testReviewCreationWithoutComment.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;SSparrenholt&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.ReviewTest.testReviewCreationWithTooHighRating.executor": "Run",
+    "JUnit.ReviewTest.testReviewCreationWithValidData.executor": "Run",
+    "JUnit.ReviewTest.testReviewCreationWithoutComment.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="JUnit.ReviewTest.testReviewCreationWithTooHighRating">
     <configuration name="ReviewTest.testReviewCreationWithTooHighRating" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bibblan-projektarbete" />
@@ -170,6 +141,7 @@
       <workItem from="1729067413981" duration="9040000" />
       <workItem from="1729077440463" duration="823000" />
       <workItem from="1729078319261" duration="590000" />
+      <workItem from="1729080847195" duration="361000" />
     </task>
     <task id="LOCAL−00001" summary="Adds unit test for creating a review with a mocked user and book">
       <option name="closed" value="true" />
