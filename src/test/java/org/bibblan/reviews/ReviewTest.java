@@ -1,6 +1,6 @@
 package org.bibblan.reviews;
 
-import org.bibblan.bookcatalog.Book;
+import org.bibblan.bookcatalog.domain.Book;
 import org.bibblan.usermanagement.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

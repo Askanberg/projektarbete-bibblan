@@ -1,4 +1,4 @@
-package org.bibblan.bookcatalog;
+package org.bibblan.bookcatalog.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +14,8 @@ public abstract class Item {
     private String title;
 
     private String genre;
+
+    private Author author;
 
     private String Publisher;
 

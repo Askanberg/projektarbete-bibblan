@@ -1,0 +1,17 @@
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/Main.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/bookcatalog/BookCollection.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/bookcatalog/domain/Author.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/bookcatalog/domain/Book.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/bookcatalog/domain/CoverType.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/bookcatalog/domain/EBook.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/bookcatalog/domain/Item.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/bookcatalog/domain/Reference.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/feemanagement/Fee.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/loanmanagement/Loan.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/reviews/Review.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/usermanagement/User.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/usermanagement/controller/UserController.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/usermanagement/security/SecurityConfig.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/usermanagement/service/UserService.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/usermanagement/user/User.java
+/home/master/Desktop/projektarbete-INTE/projektarbete-bibblan/src/main/java/org/bibblan/usermanagement/userrepository/UserRepository.java
