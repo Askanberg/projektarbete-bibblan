@@ -48,5 +48,4 @@ public class ReviewTest {
 
         assertEquals("Rating must be between 0 and 5!", thrown.getMessage());
     }
-
 }

@@ -5,7 +5,6 @@ import org.bibblan.bookcatalog.Book;
 import org.bibblan.bookcatalog.CoverType;
 import org.bibblan.usermanagement.user.User;
 
-
 public class GeneralTestData {
     //Books and domain classes
     public Book createTestBookA() {
@@ -29,5 +28,4 @@ public class GeneralTestData {
                 .password("SzrqTlst_#")
                 .build();
     }
-
 }

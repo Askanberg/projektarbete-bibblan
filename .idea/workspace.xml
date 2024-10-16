@@ -4,36 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49aab6fa-9620-4361-af90-3e33713abf31" name="Changes" comment="Removes excess root-directory that was accidentally added.">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/Author.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/Book.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/BookCollection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/CoverType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/EBook.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/Item.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/Newspaper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/bookcatalog/books.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/feemanagement/Fee.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/loanmanagement/Loan.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/reviews/Review.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/main/java/org/bibblan/usermanagement/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/GeneralTestData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/bookcatalog/BookTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/feemanagement/FeeTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/loanmanagement/LoanTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/reviews/ReviewTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibblan-projektarbete/src/test/java/org/bibblan/usermanagement/UserTest.java" beforeDir="false" />
-    </list>
+    <list default="true" id="4f6df1d7-aee9-4216-8cf9-3ae2e325955b" name="Changes" comment="" />
+
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
