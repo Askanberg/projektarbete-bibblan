@@ -43,5 +43,4 @@ public class UserTest {
                 "Fel: Testet förväntade sig att lösenordet skulle vara \"SzrqTlst_#\"");
     }
 
-
 }
