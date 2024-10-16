@@ -17,17 +17,25 @@ public class Review {
     }
 
     public Review(Book book, int rating, User user, String comment) {
-        this.book = book;
-        if(rating > 5  || rating < 1){
+        if (book == null) {
+            throw new IllegalArgumentException("Book cannot be null!");
+        } else {
+            this.book = book;
+        }
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null!");
+        } else {
+            this.user = user;
+        }
+        if (rating > 5 || rating < 1) {
             throw new IllegalArgumentException("Rating must be between 1 and 5!");
         } else {
             this.rating = rating;
         }
-        if(comment.length() > 500){
+        if (comment.length() > 500) {
             throw new IllegalArgumentException("Comment must be between 1 and 500 characters!");
         } else {
             this.comment = comment;
         }
-        this.user = user;
     }
 }
