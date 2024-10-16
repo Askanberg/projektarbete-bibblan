@@ -41,4 +41,12 @@ public class ReviewTest {
         assertEquals("", review.getComment(), "Comment is not empty");
     }
 
+    @Test
+    void testReviewCreationWithTooHighRating() {
+        rating = 6;
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
+
+        assertEquals("Rating must be between 0 and 5!", thrown.getMessage());
+    }
+
 }
