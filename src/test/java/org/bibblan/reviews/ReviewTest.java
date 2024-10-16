@@ -57,4 +57,13 @@ public class ReviewTest {
         assertEquals("Rating must be between 1" +
                 " and 5!", thrown.getMessage());
     }
+
+    @Test
+    void testReviewCreationWithTooLongComment() { //TF5
+        comment = "x".repeat(501);
+        rating = 1;
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
+
+        assertEquals("Comment must be between 1 and 500 characters!", thrown.getMessage());
+    }
 }
