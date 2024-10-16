@@ -15,18 +15,30 @@ public class ReviewTest {
     private User user;
     @Mock
     private Book book;
+    private String comment;
+    private int rating;
 
 
     @Test
-    void testReviewCreationWithValidData() {
-
-        Review review = new Review(book, 5, "Good book!", user);
+    void testReviewCreationWithValidData() { //TF1
+        comment = "Good book!";
+        rating = 5;
+        Review review = new Review(book, rating, user, comment);
 
         assertNotNull(review, "Review is null");
         assertEquals(5, review.getRating(), "Rating does not match input");
         assertEquals(book, review.getBook(), "Book does not match input");
         assertEquals(user, review.getUser(), "User does not match input");
         assertEquals("Good book!", review.getComment(), "Comment does not match input");
+    }
+
+    @Test
+    void testReviewCreationWithoutComment() { //TF2
+
+        Review review = new Review(book, 1, user);
+
+        assertNotNull(review, "Review is null");
+        assertEquals("", review.getComment(), "Comment is not empty");
     }
 
 }

@@ -12,7 +12,7 @@ public class Review {
     String comment;
     User user;
 
-    public Review(Book book, int rating, String comment, User user) {
+    public Review(Book book, int rating, User user, String comment) {
         this.book = book;
         this.rating = rating;
         this.comment = comment;
