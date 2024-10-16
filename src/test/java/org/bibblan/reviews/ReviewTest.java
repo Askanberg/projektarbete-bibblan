@@ -46,7 +46,6 @@ public class ReviewTest {
         rating = 6;
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(book, rating, user, comment));
 
-        assertEquals("Rating must be between 0 and 5!", thrown.getMessage());
+        assertEquals("Rating must be between 1 and 5!", thrown.getMessage());
     }
-
 }

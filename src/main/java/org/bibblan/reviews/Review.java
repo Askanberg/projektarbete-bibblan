@@ -18,7 +18,11 @@ public class Review {
 
     public Review(Book book, int rating, User user, String comment) {
         this.book = book;
-        this.rating = rating;
+        if(rating > 5){
+            throw new IllegalArgumentException("Rating must be between 1 and 5!");
+        } else {
+            this.rating = rating;
+        }
         this.comment = comment;
         this.user = user;
     }
