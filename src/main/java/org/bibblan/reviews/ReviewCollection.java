@@ -26,4 +26,8 @@ public class ReviewCollection {
     public Set<Review> getReviewsByUser(User user){
         return reviewsByUser.get(user);
     }
+
+    public Set<Review> getReviewsByBook(Book book){
+        return reviewsByBook.get(book);
+    }
 }
