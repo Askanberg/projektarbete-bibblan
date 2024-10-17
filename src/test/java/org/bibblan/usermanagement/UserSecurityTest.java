@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class UserSecurityTest {
 
     @Test
-    @DisplayName("Kryptering av lösenord fungerar.")
-    public void testPasswordEncoder(){
+    @DisplayName("Funktionen för kryptering av lösenord.")
+    public void passwordEncoderWithLocalUser(){
         final User user = User.builder()
                 .username("Test")
                 .name("Test")
@@ -26,6 +26,6 @@ public class UserSecurityTest {
 
         assertTrue(passwordEncoder.matches(user.getPassword(), encodedPassword),
                 "Fel: Testet förväntade sig att det avkrypterade lösenordet skulle stämma överens.");
-
     }
+
 }

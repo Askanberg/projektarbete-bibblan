@@ -1,7 +1,10 @@
 package org.bibblan.usermanagement.controller;
 
+import jakarta.persistence.GeneratedValue;
 import jakarta.validation.Valid;
 import lombok.Data;
+import org.apache.coyote.Response;
+import org.bibblan.usermanagement.exception.UserNotFoundException;
 import org.bibblan.usermanagement.service.UserService;
 import org.bibblan.usermanagement.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +30,21 @@ public class UserController {
     }
 
     @PostMapping(path="/register")
-    public @ResponseBody String registerUser(@RequestParam String name, @RequestParam String username, @RequestParam String password, @RequestParam String email){
+    public @ResponseBody ResponseEntity<String> registerUser(@RequestParam String name, @RequestParam String username, @RequestParam String password, @RequestParam String email){
         userService.registerNewUser(name, username, password, email);
-        return "User successfully registered.";
+        return ResponseEntity.ok("User successfully registered.");
     }
 
     @GetMapping("/userDemo/getUser/{username}")
-    public @ResponseBody ResponseEntity<User> getUser(@PathVariable @Valid String username){
+    public @ResponseBody ResponseEntity<User> getUserByUsername(@PathVariable @Valid String username){
         Optional<User> u = userService.getUserByUsername(username);
-        return u.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return u.map(ResponseEntity::ok).orElseThrow(()-> new UserNotFoundException("That ID does not match any user."));
     }
+
+    @GetMapping(path = "/userDemo/getUser/{id}")
+    public @ResponseBody ResponseEntity<User> getUserById(@PathVariable @Valid Integer id){
+        Optional<User> u = userService.getUserById(id);
+        return u.map(ResponseEntity::ok).orElseThrow(()-> new UserNotFoundException("The username does not match any user."));
+    }
+
 }
