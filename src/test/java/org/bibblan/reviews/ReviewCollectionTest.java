@@ -48,11 +48,12 @@ public class ReviewCollectionTest {
         assertTrue(reviewCollection.containsReview(review1), "Review was not added to collection");
     }
 
-    /*@Test
+    @Test
     void testAddDuplicateReviewToCollection() { //TF2
         reviewCollection.addReview(review1);
-        assertTrue(reviewCollection.getAllReviews.size(3));
-    }*/
+
+        assertEquals(1, reviewCollection.getReviewsByItem(item1).size(), "Duplicate review should not be added");
+    }
 
     @Test
     void testGetReviewsByUser() { //TF3
