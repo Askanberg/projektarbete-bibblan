@@ -1,6 +1,6 @@
 package org.bibblan.reviews;
 
-import org.bibblan.bookcatalog.domain.Book;
+import org.bibblan.bookcatalog.domain.Item;
 import org.bibblan.usermanagement.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,9 +20,9 @@ public class ReviewCollectionTest {
     @Mock
     private User user2;
     @Mock
-    private Book book1;
+    private Item item1;
     @Mock
-    private Book book2;
+    private Item item2;
     private String comment;
     private int rating;
     private Review review1;
@@ -35,21 +35,27 @@ public class ReviewCollectionTest {
     @BeforeEach
     void setUp() {
         reviewCollection = new ReviewCollection();
-        review1 = new Review(book1, 5, user1);
-        review2 = new Review(book2, 4, user1);
-        review3 = new Review(book2, 1, user2);
+        review1 = new Review(item1, 5, user1);
+        review2 = new Review(item2, 4, user1);
+        review3 = new Review(item2, 1, user2);
         reviewCollection.addReview(review1);
         reviewCollection.addReview(review2);
         reviewCollection.addReview(review3);
     }
 
     @Test
-    void testAddReviewToCollection() {
+    void testAddReviewToCollection() { //TF1
         assertTrue(reviewCollection.containsReview(review1), "Review was not added to collection");
     }
 
+    /*@Test
+    void testAddDuplicateReviewToCollection() { //TF2
+        reviewCollection.addReview(review1);
+        assertTrue(reviewCollection.getAllReviews.size(3));
+    }*/
+
     @Test
-    void testGetReviewsByUser() {
+    void testGetReviewsByUser() { //TF3
 
         HashSet<Review> userReviews = new HashSet<>(reviewCollection.getReviewsByUser(user1));
 
@@ -60,13 +66,13 @@ public class ReviewCollectionTest {
     }
 
     @Test
-    void testGetReviewsByBook() {
+    void testGetReviewsByItem() { //TF5
 
-        HashSet<Review> bookReviews = new HashSet<>(reviewCollection.getReviewsByBook(book1));
+        HashSet<Review> itemReviews = new HashSet<>(reviewCollection.getReviewsByItem(item1));
 
-        assertTrue(bookReviews.contains(review1), "Book1's reviews should include review1");
-        assertFalse(bookReviews.contains(review2), "Book1's reviews should not include review2");
-        assertFalse(bookReviews.contains(review3), "Book1's reviews should not include review3");
+        assertTrue(itemReviews.contains(review1), "item1's reviews should include review1");
+        assertFalse(itemReviews.contains(review2), "item1's reviews should not include review2");
+        assertFalse(itemReviews.contains(review3), "item1's reviews should not include review3");
 
     }
 
