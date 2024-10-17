@@ -36,12 +36,9 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<User> registerNewUser(String name, String username, String password, String email) {
-        if(getUserByUsername(username).isPresent()){
-            return ResponseEntity.internalServerError().body(new User());
-        }
+    public User registerNewUser(String name, String username, String password, String email) {
         User u = User.builder().name(name).username(username).password(passwordEncoder.encode(password)).email(email).build();
-        return ResponseEntity.ok(userRepository.save(u));
+        return userRepository.save(u);
     }
 
 

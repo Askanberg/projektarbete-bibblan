@@ -1,19 +1,27 @@
 package org.bibblan.usermanagement;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
 import org.bibblan.usermanagement.service.UserService;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.userrepository.UserRepository;
+import org.h2.jdbc.JdbcSQLSyntaxErrorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.util.UrlPathHelper;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -43,11 +51,11 @@ public class UserServiceTest {
     @Test
     @DisplayName("Registrerar användare lokalt med valid data.")
     public void registerNewLocalUserWithValidData() {
-        ResponseEntity<User> u = userService.registerNewUser("Beorn", "Bunke_1337", "myRawPassword", "beorn@somedomain.com");
+        User u = userService.registerNewUser("Beorn", "Bunke_1337", "myRawPassword", "beorn@somedomain.com");
 
-        assertNotNull(u.getBody());
+        assertNotNull(u);
 
-        assertTrue(() -> Stream.of("Beorn", "Bunke_1337", "myRawPassword", "beorn@somedomain.com").anyMatch(s -> s.equals(u.getBody().getName()) || s.equals(u.getBody().getUsername()) || s.equals(u.getBody().getPassword()) || s.equals(u.getBody().getEmail())),
+        assertTrue(() -> Stream.of("Beorn", "Bunke_1337", "myRawPassword", "beorn@somedomain.com").anyMatch(s -> s.equals(u.getName()) || s.equals(u.getUsername()) || s.equals(u.getPassword()) || s.equals(u.getEmail())),
                 "Fel: Testet förväntade sig att alla privata fält skulle stämma.");
     }
 
@@ -55,21 +63,18 @@ public class UserServiceTest {
     @DisplayName("Registrerar användare i databasen med valid data.")
     public void registerNewUserInDatabase() {
         when(userRepository.save(any(User.class))).thenReturn(new User());
-        ResponseEntity<User> u = userService.registerNewUser("Bunke", "BunkeLunke", "someRawPassword321", "inte@su.se");
-        if(u.getBody() != null){
-            assertNotNull(userService.getUserByUsername(u.getBody().getUsername()), "Fel: Testet förväntade sig att användaren fanns i databasen.");
-        }
-        else throw new NullPointerException("Användaren var null i databasen.");
+        User u = userService.registerNewUser("Bunke", "BunkeLunke", "someRawPassword321", "inte@su.se");
+        assertNotNull(userService.getUserByUsername("BunkeLunke"), "Fel: Testet förväntade sig att användaren fanns i databasen.");
     }
 
     @Test
     @DisplayName("Lösenord i databasen är krypterade.")
     public void passwordInDatabaseIsEncrypted(){
         when(userRepository.save(any(User.class))).thenReturn(new User());
-        ResponseEntity<User> u = userService.registerNewUser("Johan", "Rohan", "someRawPassword123", "rohan@gmail.com");
+        User u = userService.registerNewUser("Johan", "Rohan", "someRawPassword123", "rohan@gmail.com");
 
-        assertNotNull(u.getBody(), "Fel: Testet förväntade sig att användaren fanns i databasen.");
-        assertNotEquals("someRawPassword123", u.getBody().getPassword(),
+        assertNotNull(u, "Fel: Testet förväntade sig att användaren fanns i databasen.");
+        assertNotEquals("someRawPassword123", u.getPassword(),
                 "Fel: Testet förväntade sig att användarens lösenord var krypterat.");
     }
     @Test
@@ -117,7 +122,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getUserWithUsernameFromDatabase() {
+    public void getUserWithUserNameReturnsUser() {
 
         userService.registerNewUser("Dachshund", "Tax", "stalaktitEremit", "tax@hundregister.se");
         Optional<User> u = userService.getUserByUsername("Tax");
@@ -134,7 +139,7 @@ public class UserServiceTest {
     @Test
     public void registerAlreadyExistingUser(){
         when(userRepository.save(any(User.class))).thenReturn(new User());
-        User u = userService.registerNewUser("Arpe", "Hund_97", "somePassword_123", "hund_97@hotmail.com").getBody();
+        User u = userService.registerNewUser("Arpe", "Hund_97", "somePassword_123", "hund_97@hotmail.com");
 
         assertThrows(UserAlreadyExistsException.class, ()-> userService.registerNewUser("Arpe", "Hund_97", "somePassword_123", "hund_97@hotmail.com"),
                 "Fel: Testet förväntade sig att ett exception kastades.");

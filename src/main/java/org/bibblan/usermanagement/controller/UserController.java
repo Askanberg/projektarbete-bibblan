@@ -7,6 +7,7 @@ import org.apache.coyote.Response;
 import org.bibblan.usermanagement.exception.UserNotFoundException;
 import org.bibblan.usermanagement.service.UserService;
 import org.bibblan.usermanagement.user.User;
+import org.bibblan.usermanagement.userrepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(path="/allUsers")
     public @ResponseBody Iterable<User> getUsers(){
@@ -31,6 +32,10 @@ public class UserController {
 
     @PostMapping(path="/register")
     public @ResponseBody ResponseEntity<String> registerUser(@RequestParam String name, @RequestParam String username, @RequestParam String password, @RequestParam String email){
+        Optional<User> u = userRepository.findByUsername(username);
+        if(u.isPresent()){
+            return ResponseEntity.badRequest().build();
+        }
         userService.registerNewUser(name, username, password, email);
         return ResponseEntity.ok("User successfully registered.");
     }
