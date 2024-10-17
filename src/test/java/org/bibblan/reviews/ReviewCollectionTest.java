@@ -20,9 +20,13 @@ public class ReviewCollectionTest {
     @Mock
     private User user2;
     @Mock
+    private User user3;
+    @Mock
     private Item item1;
     @Mock
     private Item item2;
+    @Mock
+    private Item item3;
     private String comment;
     private int rating;
     private Review review1;
@@ -67,6 +71,14 @@ public class ReviewCollectionTest {
     }
 
     @Test
+    void testGetReviewsByUserWithNoReviews() {
+
+        HashSet<Review> userReviews = new HashSet<>(reviewCollection.getReviewsByUser(user3));
+
+        assertTrue(userReviews.isEmpty(), "User3's reviews should be empty");
+    }
+
+    @Test
     void testGetReviewsByItem() { //TF5
 
         HashSet<Review> itemReviews = new HashSet<>(reviewCollection.getReviewsByItem(item1));
@@ -75,6 +87,14 @@ public class ReviewCollectionTest {
         assertFalse(itemReviews.contains(review2), "item1's reviews should not include review2");
         assertFalse(itemReviews.contains(review3), "item1's reviews should not include review3");
 
+    }
+
+    @Test
+    void testGetReviewsByItemWithNoReviews() {
+
+        HashSet<Review> itemReviews = new HashSet<>(reviewCollection.getReviewsByItem(item3));
+
+        assertTrue(itemReviews.isEmpty(), "User3's reviews should be empty");
     }
 
 }

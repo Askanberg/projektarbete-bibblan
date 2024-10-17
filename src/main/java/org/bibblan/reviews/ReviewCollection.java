@@ -10,7 +10,7 @@ public class ReviewCollection {
     private final Map<Item, Set<Review>> reviewsByItem = new HashMap<>();
     private final Map<User, Set<Review>> reviewsByUser = new HashMap<>();
 
-    public void addReview(Review review){
+    public void addReview(Review review) {
         // Adds to map of Item
         reviewsByItem.putIfAbsent(review.getItem(), new HashSet<>());
         reviewsByItem.get(review.getItem()).add(review);
@@ -19,15 +19,15 @@ public class ReviewCollection {
         reviewsByUser.get(review.getUser()).add(review);
     }
 
-    public boolean containsReview(Review review){
+    public boolean containsReview(Review review) {
         return reviewsByItem.get(review.getItem()).contains(review);
     }
 
-    public Set<Review> getReviewsByUser(User user){
-        return reviewsByUser.get(user);
+    public Set<Review> getReviewsByUser(User user) {
+        return reviewsByUser.getOrDefault(user, new HashSet<>());
     }
 
-    public Set<Review> getReviewsByItem(Item Item){
-        return reviewsByItem.get(Item);
+    public Set<Review> getReviewsByItem(Item item) {
+        return reviewsByItem.getOrDefault(item, new HashSet<>());
     }
 }
