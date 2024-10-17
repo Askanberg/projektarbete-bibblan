@@ -1,0 +1,6 @@
+Timed-Magazines
+Title,Author,Genre,Publisher,URL,FileFormat
+"Effective Java", "Joshua Bloch", "Programming", "Addison-Wesley", "http://example.com/effective_java", "EPUB"
+"Design Patterns: Elements of Reusable Object-Oriented Software", "Erich Gamma", "Computer Science", "Addison-Wesley", "asd", "PDF"
+"The Pragmatic Programmer", "Andrew Hunt", "Programming", "Addison-Wesley", "http://example.com/pragmatic_programmer", "MOBI"
+"Introduction to Algorithms", "Thomas H. Cormen", "Computer Science", "MIT Press", "http://example.com/algorithms", "PDF"
