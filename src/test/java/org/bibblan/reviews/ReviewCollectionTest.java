@@ -51,7 +51,7 @@ public class ReviewCollectionTest {
         reviewCollection.addReview(review2);
         reviewCollection.addReview(review3);
 
-        HashSet<Review> userReviews = new HashSet<>(getReviewsByUser(user1));
+        HashSet<Review> userReviews = new HashSet<>(reviewCollection.getReviewsByUser(user1));
 
         assertTrue(userReviews.contains(review1), "User1's reviews should include review1");
         assertTrue(userReviews.contains(review2), "User1's reviews should include review2");
