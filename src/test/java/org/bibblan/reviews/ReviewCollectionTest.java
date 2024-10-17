@@ -25,31 +25,31 @@ public class ReviewCollectionTest {
     private Book book2;
     private String comment;
     private int rating;
+    private Review review1;
+    private Review review2;
+    private Review review3;
+
 
     private ReviewCollection reviewCollection;
 
     @BeforeEach
     void setUp() {
         reviewCollection = new ReviewCollection();
+        review1 = new Review(book1, 5, user1);
+        review2 = new Review(book2, 4, user1);
+        review3 = new Review(book2, 1, user2);
+        reviewCollection.addReview(review1);
+        reviewCollection.addReview(review2);
+        reviewCollection.addReview(review3);
     }
 
     @Test
     void testAddReviewToCollection() {
-        Review review = new Review(book1, 5, user1);
-
-        reviewCollection.addReview(review);
-
-        assertTrue(reviewCollection.containsReview(review), "Review was not added to collection");
+        assertTrue(reviewCollection.containsReview(review1), "Review was not added to collection");
     }
 
     @Test
     void testGetReviewsByUser() {
-        Review review1 = new Review(book1, 5, user1);
-        Review review2 = new Review(book2, 4, user1);
-        Review review3 = new Review(book2, 1, user2);
-        reviewCollection.addReview(review1);
-        reviewCollection.addReview(review2);
-        reviewCollection.addReview(review3);
 
         HashSet<Review> userReviews = new HashSet<>(reviewCollection.getReviewsByUser(user1));
 
@@ -58,4 +58,16 @@ public class ReviewCollectionTest {
         assertFalse(userReviews.contains(review3), "User1's reviews should not include review3");
 
     }
+
+    @Test
+    void testGetReviewsByBook() {
+
+        HashSet<Review> bookReviews = new HashSet<>(reviewCollection.getReviewsByBook(book1));
+
+        assertTrue(bookReviews.contains(review1), "Book1's reviews should include review1");
+        assertFalse(bookReviews.contains(review2), "Book1's reviews should not include review2");
+        assertFalse(bookReviews.contains(review3), "Book1's reviews should not include review3");
+
+    }
+
 }
