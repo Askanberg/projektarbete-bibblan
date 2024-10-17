@@ -1,14 +1,14 @@
 package org.bibblan.usermanagement.service;
 
-import org.bibblan.usermanagement.security.SecurityConfig;
+import jakarta.transaction.Transactional;
+import org.bibblan.usermanagement.security.UserSecurity;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.userrepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,25 +18,32 @@ public class UserService {
     UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder = SecurityConfig.passwordEncoder();
+    private PasswordEncoder passwordEncoder = UserSecurity.passwordEncoder();
 
-    @PostMapping(path="/register")
-    public @ResponseBody User registerNewUser(@RequestParam String name, @RequestParam String userName, @RequestParam String password, @RequestParam String email){
-
-        String encodePassword = passwordEncoder.encode(password);
-
-        return User.builder()
-                .name(name)
-                .username(userName)
-                .password(encodePassword)
-                .email(email)
-                .build();
+    public List<User> getUsers(){
+        return userRepository.findAll();
     }
 
-    @GetMapping("/userDemo/getUser/{username}")
-    public @ResponseBody ResponseEntity<User> getUser(@PathVariable String username){
-        Optional<User> u = userRepository.findByUsername(username);
-        return u.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
+
+    public Optional<User> getUserById(Integer ID) {
+        return userRepository.findById(ID);
+    }
+
+    @Transactional
+    public User registerNewUser(String name, String username, String password, String email) {
+        throwExceptionIfUserExists(userRepository.findByUsername(username).isPresent());
+        User u = User.builder().name(name).username(username).password(passwordEncoder.encode(password)).email(email).build();
+        return userRepository.save(u);
+    }
+
+    public void throwExceptionIfUserExists(boolean condition) {
+        if (condition) {
+            throw new IllegalArgumentException("User already exists.");
+        }
+    }
+
 
 }
