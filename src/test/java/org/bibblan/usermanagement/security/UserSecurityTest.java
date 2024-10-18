@@ -1,4 +1,4 @@
-package org.bibblan.usermanagement;
+package org.bibblan.usermanagement.security;
 
 import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ public class UserSecurityTest {
                 .name("Test")
                 .email("something@domain.com")
                 .password("myRawPassword")
-                .ID(101)
+                .ID((long) 101)
                 .build();
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

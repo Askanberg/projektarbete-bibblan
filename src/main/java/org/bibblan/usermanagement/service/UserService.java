@@ -1,12 +1,12 @@
 package org.bibblan.usermanagement.service;
 
 import jakarta.transaction.Transactional;
-import org.bibblan.usermanagement.exception.UserNotFoundException;
-import org.bibblan.usermanagement.security.UserSecurity;
+import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
+import org.bibblan.usermanagement.mapper.UserMapper;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.userrepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,27 +17,38 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
-
+    UserMapper userMapper;
     @Autowired
-    private PasswordEncoder passwordEncoder = UserSecurity.passwordEncoder();
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public UserDTO getUserDTOByUsername(String username) {
+        Optional<User> u = userRepository.findByUsername(username);
+        return u.map(user -> userMapper.toDTO(user)).orElse(null);
     }
 
-    public Optional<User> getUserById(Integer ID) {
-        return userRepository.findById(ID);
+    public UserDTO getUserDTOById(Integer ID) {
+        Optional<User> u = userRepository.findById(ID);
+        return u.map(user -> userMapper.toDTO(user)).orElse(null);
     }
 
     @Transactional
-    public User registerNewUser(String name, String username, String password, String email) {
-        User u = User.builder().name(name).username(username).password(passwordEncoder.encode(password)).email(email).build();
+    public User registerNewUser(UserDTO userDTO) {
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
+            throw new UserAlreadyExistsException("User already exists.");
+
+        User u = User.builder()
+                .name(userDTO.getName())
+                .username(userDTO.getUsername())
+                .email(userDTO.getEmail())
+                .password((passwordEncoder.encode(userDTO.getPassword())))
+                .build();
+
         return userRepository.save(u);
     }
 

@@ -21,20 +21,19 @@ public class GlobalErrorHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleInvalidUserInputException(MethodArgumentNotValidException e){
+    @ExceptionHandler(InvalidUserInputException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidUserInputException(InvalidUserInputException e){
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach((error) -> {
             String field = ((FieldError) error).getField();
             String msg = error.getDefaultMessage();
             errors.put(field, msg);
         });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CommandAcceptanceException.class)
     public ResponseEntity<String> handleCommandAcceptanceException(CommandAcceptanceException e){
         return ResponseEntity.ok("");
-
     }
 }
