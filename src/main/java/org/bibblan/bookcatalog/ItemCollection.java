@@ -46,11 +46,11 @@ public class ItemCollection {
         String genre = values[2].trim();
         String publisher = values[3].trim();
         switch (itemType) {
-            case "Books":
+            case "books":
                 String isbn = values[4].trim();
                 String coverType = values[5].trim();
                 return new Book(title, author, genre, publisher, isbn, CoverType.valueOf(coverType.toUpperCase()));
-            case "Ebooks":
+            case "ebooks":
                 String url = values[4].trim();
                 String fileFormat = values[5].trim();
                 return new EBook(title, author, genre, publisher, url, fileFormat);
