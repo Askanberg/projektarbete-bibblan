@@ -33,7 +33,7 @@ public class ItemCollectionTests {
     void testThatReadItemsFromCsvThrowsExceptionIfFileIsEmpty() {
         ItemCollection tempCollection = new ItemCollection();
         assertThrows(IllegalArgumentException.class, () -> {
-            tempCollection.readItemsFromCsv("src/test/resources/emptyBookFile.csv");
+            tempCollection.readItemsFromCsv("src/test/resources/emptyFile.csv");
         });
     }
 
@@ -41,7 +41,7 @@ public class ItemCollectionTests {
     void testThatReadItemsFromCsvThrowsExceptionForInvalidItemType() {
         ItemCollection tempCollection = new ItemCollection();
         assertThrows(IllegalArgumentException.class, () -> {
-            tempCollection.readItemsFromCsv("src/test/resources/testInvalidItemType.csv");
+            tempCollection.readItemsFromCsv("src/test/resources/mixedItemTypes.csv");
         });
     }
 

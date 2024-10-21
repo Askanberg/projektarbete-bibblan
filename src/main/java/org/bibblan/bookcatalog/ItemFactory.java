@@ -16,8 +16,12 @@ public class ItemFactory {
         String line;
         while ((line = br.readLine()) != null) {
             String[] values = line.split(",");
-            Item item = createItem(values, itemType);
-            items.add(item);
+            try {
+                Item item = createItem(values, itemType);
+                items.add(item);
+            } catch (IllegalArgumentException e) {
+                System.err.println("Skipping invalid item: " + e.getMessage());
+            }
         }
         return items;
     }
@@ -30,13 +34,28 @@ public class ItemFactory {
         switch (itemType.toLowerCase()) {
             case "books":
                 String isbnBook = values[4].trim();
+                if (!isbnBook.matches("\\d+")) {
+                    throw new IllegalArgumentException("Invalid ISBN for book: " + isbnBook);
+                }
+                if (values.length != 6) {
+                    throw new IllegalArgumentException("Invalid number of columns for book");
+                }
                 String coverType = values[5].trim();
                 return new Book(title, author, genre, publisher, isbnBook, CoverType.valueOf(coverType.toUpperCase()));
             case "ebooks":
                 String url = values[4].trim();
+                if (!url.startsWith("http") && !url.startsWith("www")) {
+                    throw new IllegalArgumentException("Invalid URL for Ebook: " + url);
+                }
+                if (values.length != 6) {
+                    throw new IllegalArgumentException("Invalid number of columns for book");
+                }
                 String fileFormat = values[5].trim();
                 return new EBook(title, author, genre, publisher, url, fileFormat);
             case "references":
+                if (values.length != 5) {
+                    throw new IllegalArgumentException("Invalid number of columns for book");
+                }
                 String isbnReference = values[4].trim();
                 return new Reference(title, author, genre, publisher, isbnReference);
             default:
