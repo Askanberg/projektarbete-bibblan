@@ -1,55 +1,36 @@
 package org.bibblan.bookcatalog;
 
-import org.bibblan.bookcatalog.domain.Author;
-import org.bibblan.bookcatalog.domain.Book;
-import org.bibblan.bookcatalog.domain.CoverType;
-import org.bibblan.bookcatalog.domain.EBook;
+import org.bibblan.bookcatalog.domain.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ItemCollectionTests {
+    ItemCollection itemCollection;
 
-    @Test
-    void testThatReadItemsFromCsvCanReadBookCsv() throws FileNotFoundException {
-        ItemCollection tempCollection = new ItemCollection();
-        tempCollection.readItemsFromCsv("src/test/resources/testBooks.csv");
-        Book book = new Book("Educated", new Author("Tara Westover", new ArrayList<>()), "Biography", "Random House", "9780399590504", CoverType.POCKET);
-        assertEquals(book, tempCollection.getItemMap().get("9780399590504"));
+    @BeforeEach
+    public void initializeUtilities() {
+        itemCollection = new ItemCollection();
     }
 
     @Test
-    void testThatReadItemsFromCsvThrowsExceptionIfFileNotFound() {
-        ItemCollection tempCollection = new ItemCollection();
-        assertThrows(FileNotFoundException.class, () -> {
-            tempCollection.readItemsFromCsv("src/test/resources/NoSuchFile.csv");
-        });
-    }
+    void testThatAddItemsAddsCorrectlyToMap() throws IOException {
+        ItemFileReader itemFileReader = new ItemFileReader(new ItemFactory());
 
-    @Test
-    void testThatReadItemsFromCsvThrowsExceptionIfFileIsEmpty() {
-        ItemCollection tempCollection = new ItemCollection();
-        assertThrows(IllegalArgumentException.class, () -> {
-            tempCollection.readItemsFromCsv("src/test/resources/emptyFile.csv");
-        });
-    }
+        ArrayList<Item> items = (ArrayList<Item>) itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv");
 
-    @Test
-    void testThatReadItemsFromCsvThrowsExceptionForInvalidItemType() {
-        ItemCollection tempCollection = new ItemCollection();
-        assertThrows(IllegalArgumentException.class, () -> {
-            tempCollection.readItemsFromCsv("src/test/resources/mixedItemTypes.csv");
-        });
-    }
+        itemCollection.addItems(items);
 
-    @Test
-    void testThatReadItemsFromCsvCanReadDigitalBookCsv() throws FileNotFoundException {
-        ItemCollection tempCollection = new ItemCollection();
-        tempCollection.readItemsFromCsv("src/test/resources/testEBooks.csv");
-        EBook eBook = new EBook("Effective Java", new Author("Joshua Bloch", new ArrayList<>()), "Programming", "Addison-Wesley", "http://example.com/effective_java", "EPUB");
-        assertEquals(eBook, tempCollection.getItemMap().get("http://example.com/effective_java"));
+        for (Item i : items) {
+            assertTrue(itemCollection.getItemMap().containsValue(i));
+        }
     }
 }

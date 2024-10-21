@@ -6,10 +6,13 @@ import org.bibblan.bookcatalog.domain.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class ItemFactory {
+    private Map<String, Author> authorMap = new HashMap<>();
 
     public List<Item> createItemsFromCsv(BufferedReader br, String itemType) throws IOException {
         List<Item> items = new ArrayList<>();
@@ -28,7 +31,14 @@ public class ItemFactory {
 
     public Item createItem(String[] values, String itemType) {
         String title = values[0].trim();
-        Author author = new Author(values[1].trim(), new ArrayList<>());
+        Author author;
+        if (!authorMap.containsKey(values[1].trim())) {
+            author = new Author(values[1].trim(), new ArrayList<>());
+
+        } else {
+            author = authorMap.get(values[1].trim());
+        }
+
         String genre = values[2].trim();
         String publisher = values[3].trim();
         switch (itemType.toLowerCase()) {
@@ -41,7 +51,10 @@ public class ItemFactory {
                     throw new IllegalArgumentException("Invalid number of columns for book");
                 }
                 String coverType = values[5].trim();
-                return new Book(title, author, genre, publisher, isbnBook, CoverType.valueOf(coverType.toUpperCase()));
+                Book book = new Book(title, author, genre, publisher, isbnBook, CoverType.valueOf(coverType.toUpperCase()));
+                author.addItem(book);
+                authorMap.put(author.getName(), author);
+                return book;
             case "ebooks":
                 String url = values[4].trim();
                 if (!url.startsWith("http") && !url.startsWith("www")) {
@@ -51,6 +64,9 @@ public class ItemFactory {
                     throw new IllegalArgumentException("Invalid number of columns for book");
                 }
                 String fileFormat = values[5].trim();
+                EBook ebook = new EBook(title, author, genre, publisher, url, fileFormat);
+                author.addItem(ebook);
+                authorMap.put(author.getName(), author);
                 return new EBook(title, author, genre, publisher, url, fileFormat);
             case "references":
                 if (values.length != 5) {

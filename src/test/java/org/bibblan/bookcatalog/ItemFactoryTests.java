@@ -1,5 +1,6 @@
 package org.bibblan.bookcatalog;
 
+
 import org.bibblan.bookcatalog.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class ItemFactoryTests {
 
         Item item = itemFactory.createItem(bookValues, "Books");
 
-        Book expected = new Book(
+        Book expectedBook = new Book(
                 "Educated",
                 new Author("Tara Westover", new ArrayList<>()),
                 "Biography",
@@ -38,7 +39,7 @@ public class ItemFactoryTests {
                 "9780399590504",
                 CoverType.POCKET);
 
-        assertEquals(expected, item);
+        assertEquals(expectedBook, item);
     }
     @Test
     void testCreateEBookFromValues() {
@@ -46,15 +47,14 @@ public class ItemFactoryTests {
 
         Item item = itemFactory.createItem(ebookValues, "EBooks");
 
-        EBook expected = new EBook(
+        EBook expectedEbook = new EBook(
                 "Effective Java",
                 new Author("Joshua Bloch", new ArrayList<>()),
                 "Programming",
                 "Addison-Wesley",
                 "http://example.com/effective_java",
                 "EPUB");
-
-        assertEquals(expected, item);
+        assertEquals(expectedEbook, item);
     }
     @Test
     void testCreateReferenceFromValues() {
@@ -62,14 +62,46 @@ public class ItemFactoryTests {
 
         Item item = itemFactory.createItem(ebookValues, "References");
 
-        Reference expected = new Reference(
+        Reference expectedReference = new Reference(
                 "The Pragmatic Programmer",
                 new Author("Andrew Hunt", new ArrayList<>()),
                 "Programming",
                 "Addison-Wesley",
                 "9780135957059");
 
-        assertEquals(expected, item);
+        assertEquals(expectedReference, item);
+    }
+    @Test
+    void testThatBookIsAddedToAuthor() throws IOException {
+        ItemFileReader itemFileReader = new ItemFileReader(itemFactory);
+        itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv");
+        Author author = itemFactory.getAuthorMap().get("Tara Westover");
+
+        Book expectedBook = new Book(
+                "Educated",
+                new Author("Tara Westover", new ArrayList<>()),
+                "Biography",
+                "Random House",
+                "9780399590504",
+                CoverType.POCKET);
+
+        assertEquals(expectedBook, author.getItems().get(0));
+    }
+    @Test
+    void testThatEBookIsAddedToAuthor() throws IOException {
+        ItemFileReader itemFileReader = new ItemFileReader(itemFactory);
+        itemFileReader.readItemsFromCsv("src/test/resources/testEBooks.csv");
+        Author author = itemFactory.getAuthorMap().get("Joshua Bloch");
+
+        EBook expectedEBook = new EBook(
+                "Effective Java",
+                new Author("Joshua Bloch", new ArrayList<>()),
+                "Programming",
+                "Addison-Wesley",
+                "http://example.com/effective_java",
+                "EPUB");
+
+        assertEquals(expectedEBook, author.getItems().get(0));
     }
     @Test
     void testThatWrongItemTypeThrowsException() {

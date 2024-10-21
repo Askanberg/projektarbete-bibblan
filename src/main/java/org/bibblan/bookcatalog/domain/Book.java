@@ -11,7 +11,9 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Book extends Item{
 
+    @EqualsAndHashCode.Include
     private String isbn;
+    @EqualsAndHashCode.Include
     private CoverType coverType;
 
     private boolean isAvailable = true;
@@ -25,5 +27,23 @@ public class Book extends Item{
     @Override
     public String getArticleType() {
         return "Book";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Book book)) return false;
+
+        return isbn.equals(book.isbn) &&
+                coverType == book.coverType &&
+                super.getTitle().equals(book.getTitle()) &&
+                super.getAuthor().equals(book.getAuthor()) &&
+                super.getGenre().equals(book.getGenre()) &&
+                super.getPublisher().equals(book.getPublisher());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn, coverType, super.getTitle(), super.getAuthor(), super.getGenre(), super.getPublisher());
     }
 }
