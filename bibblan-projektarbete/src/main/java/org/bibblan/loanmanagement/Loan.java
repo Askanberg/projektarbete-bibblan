@@ -1,25 +1,39 @@
 package org.bibblan.loanmanagement;
 
 import java.time.LocalDate;
-import org.bibblan.bookcatalog.Author;
+
+import lombok.Data;
 import org.bibblan.bookcatalog.Book;
-import org.bibblan.bookcatalog.CoverType;
-
-private LocalDate startDate;
-private LocalDate dueDate;
-private boolean returned;
-
+import org.bibblan.bookcatalog.Item;
 
 @Data
-public class Loan {
+public class Loan{
 
-    public Loan(Item book){
+    private Book item;
+    private LocalDate startDate;
+    private LocalDate dueDate;
+    private int loanDuration;
+    private boolean returned = false;
+
+
+    public Loan(Book book) {
         this.item = book;
         this.startDate = LocalDate.now();
-        this.dueDate = startDate.plusDays(item.getLoanDuration());
+        setLoanDuration();
+        this.dueDate = startDate.plusDays(this.loanDuration);
     }
 
-    public void returnBook(){
+
+    public void setLoanDuration() {
+        if ("Classics".equalsIgnoreCase(item.getGenre())) {
+            this.loanDuration = 28;
+        } else {
+            this.loanDuration = 14;
+        }
+    }
+
+
+    public void returnBook() {
         this.returned = true;
     }
 }
