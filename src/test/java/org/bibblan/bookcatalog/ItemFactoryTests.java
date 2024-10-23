@@ -129,7 +129,6 @@ public class ItemFactoryTests {
                 CoverType.POCKET);
 
         assertEquals(expected, items.get(0));
-
     }
 
 }
