@@ -1,0 +1,13 @@
+org\bibblan\bookcatalog\domain\BookTests.class
+org\bibblan\loanmanagement\LoanTest.class
+org\bibblan\GeneralTestData.class
+org\bibblan\usermanagement\UserSecurityTest.class
+org\bibblan\usermanagement\UserIntegrationTest.class
+org\bibblan\bookcatalog\ItemCollectionTests.class
+org\bibblan\usermanagement\BCryptPasswordEncodingTest.class
+org\bibblan\usermanagement\UserControllerTest.class
+org\bibblan\usermanagement\UserRepositoryTest.class
+org\bibblan\feemanagement\FeeTest.class
+org\bibblan\usermanagement\UserServiceTest.class
+org\bibblan\usermanagement\UserTest.class
+org\bibblan\reviews\ReviewTest.class
