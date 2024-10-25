@@ -37,9 +37,32 @@ class LoanTest {
         assertFalse(loan.isReturned(), "The book should not be returned upon creation");
     }
 
-
     @Test
     void testCalculateFine_NoFineIFNotOverdue(){
+        assertEquals(0.0, loan.calculateFine(), "Fine should be 0 if loan is not overdue.");
+    }
+
+    @Test
+    void testCalculateFine_WithOverdue() {
+        loan.setDueDate(LocalDate.now().minusDays(5));
+        assertEquals(50.0, loan.calculateFine(), "Fine should be 50 if loan is overdue.");
+    }
+
+    @Test
+    void testIsOverdue_WhenLoanIsOverdue() {
+        loan.setDueDate(LocalDate.now().minusDays(7));
+        assertTrue(loan.isOverdue(), "Loan should be overdue");
+    }
+
+    @Test
+    void testIsOverdue_WhenLoanIsNotOverdue() {
+        assertFalse(loan.isOverdue(), "Loan should not be overdue");
+    }
+
+    @Test
+    void testReturnLoan(){
+        loan.returnLoan();
+        assertTrue(loan.isReturned(), "Loan should be returned");
         assertEquals(0.0, loan.calculateFine(), "Fine should be 0 if loan is not overdue.");
     }
 }
