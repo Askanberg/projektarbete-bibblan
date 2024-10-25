@@ -43,6 +43,10 @@ public class Loan {
         this.returned = true;
     }
 
+    public boolean isReturned() {
+        return returned;
+    }
+
 
     public boolean isOverdue() {
         return LocalDate.now().isAfter(dueDate) && !returned;
@@ -58,4 +62,14 @@ public class Loan {
     }
 
 
+    public void extendLoan(int extraDays) {
+        if (!isOverdue() && !returned) {
+            dueDate = dueDate.plusDays(extraDays);
+        }
+    }
+
+    public int getRemainingDays() {
+        if (returned) return 0;
+        return (int) ChronoUnit.DAYS.between(LocalDate.now(), dueDate);
+    }
 }

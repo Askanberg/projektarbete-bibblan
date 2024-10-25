@@ -71,4 +71,16 @@ class LoanTest {
         loan.extendLoan(7);
         assertEquals(21, loan.getRemainingDays(), "Remaining days should be updated");
     }
+
+    @Test
+    void testGetLoanStatus_Active() {
+        assertEquals("Active", loan.getLoanStatus(), "Loan status should be 'Active' upon creation." );
+    }
+
+    @Test
+    void testGetLoanStatus_Returned() {
+        loan.returnBook();
+        assertEquals("Returned", loan.getLoanStatus(), "Loan status should be 'Returned' upon creation");
+    }
+
 }
