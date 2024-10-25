@@ -60,9 +60,15 @@ class LoanTest {
     }
 
     @Test
-    void testReturnLoan(){
-        loan.returnLoan();
+    void testReturnBook() {
+        loan.returnBook();
         assertTrue(loan.isReturned(), "Loan should be returned");
         assertEquals(0.0, loan.calculateFine(), "Fine should be 0 if loan is not overdue.");
+    }
+
+    @Test
+    void testExtendLoan() {
+        loan.extendLoan(7);
+        assertEquals(21, loan.getRemainingDays(), "Remaining days should be updated");
     }
 }

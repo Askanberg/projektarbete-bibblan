@@ -40,7 +40,6 @@ public class Loan {
 
 
     public void returnBook() {
-
         this.returned = true;
     }
 
@@ -57,5 +56,6 @@ public class Loan {
         }
         return 0.0;
     }
+
 
 }
