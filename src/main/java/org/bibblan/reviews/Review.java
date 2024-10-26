@@ -17,7 +17,7 @@ public class Review {
     }
 
     public Review(Item item, int rating, User user, String comment) {
-        validateitem(item);
+        validateItem(item);
         validateUser(user);
         validateRating(rating);
         validateComment(comment);
@@ -46,7 +46,7 @@ public class Review {
         }
     }
 
-    private static void validateitem(Item item) {
+    private static void validateItem(Item item) {
         if (item == null) {
             throw new IllegalArgumentException("item cannot be null!");
         }
