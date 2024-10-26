@@ -19,10 +19,6 @@ public class ReviewCollection {
         reviewsByUser.get(review.getUser()).add(review);
     }
 
-    public boolean containsReview(Review review) {
-        return reviewsByItem.get(review.getItem()).contains(review);
-    }
-
     public Set<Review> getReviewsByUser(User user) {
         return reviewsByUser.getOrDefault(user, new HashSet<>());
     }

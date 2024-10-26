@@ -27,8 +27,6 @@ public class ReviewCollectionTest {
     private Item item2;
     @Mock
     private Item item3;
-    private String comment;
-    private int rating;
     private Review review1;
     private Review review2;
     private Review review3;
@@ -49,7 +47,8 @@ public class ReviewCollectionTest {
 
     @Test
     void testAddReviewToCollection() { //TF1
-        assertTrue(reviewCollection.containsReview(review1), "Review was not added to collection");
+        assertTrue(reviewCollection.getReviewsByItem(item1).contains(review1), "Review was not added to the Item collection");
+        assertTrue(reviewCollection.getReviewsByUser(user1).contains(review1),  "Review was not added to the User Collection");
     }
 
     @Test
@@ -71,7 +70,7 @@ public class ReviewCollectionTest {
     }
 
     @Test
-    void testGetReviewsByUserWithNoReviews() {
+    void testGetReviewsByUserWithNoReviews() { //TF4
 
         HashSet<Review> userReviews = new HashSet<>(reviewCollection.getReviewsByUser(user3));
 
@@ -90,7 +89,7 @@ public class ReviewCollectionTest {
     }
 
     @Test
-    void testGetReviewsByItemWithNoReviews() {
+    void testGetReviewsByItemWithNoReviews() { //TF6
 
         HashSet<Review> itemReviews = new HashSet<>(reviewCollection.getReviewsByItem(item3));
 
