@@ -96,4 +96,13 @@ public class ReviewCollectionTest {
         assertTrue(itemReviews.isEmpty(), "User3's reviews should be empty");
     }
 
+    @Test
+    void testGetAverageRatingOfItem() {
+        Review review4 = new Review(item1, 2, user1);
+        reviewCollection.addReview(review4);
+
+        assertEquals(2.5, reviewCollection.getAverageRating(item2), "Item2's average rating should be 2.5");
+        assertEquals(3.5, reviewCollection.getAverageRating(item1), "Item1's average rating should be 3.5");
+    }
+
 }

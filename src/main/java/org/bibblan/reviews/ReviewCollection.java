@@ -26,4 +26,12 @@ public class ReviewCollection {
     public Set<Review> getReviewsByItem(Item item) {
         return reviewsByItem.getOrDefault(item, new HashSet<>());
     }
+
+    public double getAverageRating(Item item) {
+        int totalRating = 0;
+        for (Review review : getReviewsByItem(item)) {
+            totalRating += review.getRating();
+        }
+        return (float) totalRating / reviewsByItem.size();
+    }
 }
