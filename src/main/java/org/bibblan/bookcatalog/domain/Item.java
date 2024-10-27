@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 @Data
 @EqualsAndHashCode
@@ -22,11 +23,6 @@ public abstract class Item {
 
     private String Publisher;
 
-
-
-    //private ArrayList<Review> reviews = new ArrayList<Review>();
-
-    public abstract String getArticleType();
 
 
 }

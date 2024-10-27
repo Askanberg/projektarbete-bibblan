@@ -113,7 +113,6 @@ public class ItemFactoryTests {
         String[] incompleteBookValues = {"Educated", "Tara Westover", "Biography", "Random House" };
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> itemFactory.createItem(incompleteBookValues, "Books"));
     }
-
     @Test
     void testThatCreateItemsFromCsvReturnsListWithItems() throws IOException {
         when(mockBufferedReader.readLine()).thenReturn("Educated,Tara Westover,Biography,Random House,9780399590504,Pocket").thenReturn(null);

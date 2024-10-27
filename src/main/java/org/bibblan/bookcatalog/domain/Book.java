@@ -6,14 +6,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class Book extends Item{
 
-    @EqualsAndHashCode.Include
     private String isbn;
-    @EqualsAndHashCode.Include
     private CoverType coverType;
 
     private boolean isAvailable = true;
@@ -24,10 +21,6 @@ public class Book extends Item{
         this.coverType = cover;
     }
 
-    @Override
-    public String getArticleType() {
-        return "Book";
-    }
 
     @Override
     public boolean equals(Object obj) {
