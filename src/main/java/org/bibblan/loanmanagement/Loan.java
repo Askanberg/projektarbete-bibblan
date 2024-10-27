@@ -4,6 +4,8 @@ package org.bibblan.loanmanagement;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 
 import lombok.Data;
@@ -20,6 +22,8 @@ public class Loan {
     private LocalDate dueDate;
     private int loanDuration;
     private boolean returned = false;
+    private List<String> loanHistory = new ArrayList<>();
+    private boolean lost = false;
 
 
     public Loan(Book book) {
@@ -82,6 +86,19 @@ public class Loan {
             return "Active";
         }
     }
+
+    public List<String> getLoanHistory() {
+        return new ArrayList<>(loanHistory);
+    }
+
+    public void markAsLost() {
+        if (!returned) {
+            this.lost = true;
+            loanHistory.add("Book marked as lost on " + LocalDate.now());
+        }
+    }
+
+
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;

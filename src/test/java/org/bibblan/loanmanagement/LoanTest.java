@@ -105,4 +105,17 @@ class LoanTest {
         assertTrue(history.contains("Book marked as lost on " + LocalDate.now()), "Loan history should include the lost status.");
     }
 
+    @Test
+    void testLoanHistory() {
+        loan.returnBook();
+        List<String> history = loan.getLoanHistory();
+        assertTrue(history.contains("Book returned on " + LocalDate.now()), "Loan history should include return date.");
+    }
+
+    @Test
+    void testCanBorrowMoreBooks() {
+        assertTrue(loan.canBorrowMoreBooks(4), "User should be able to borrow if under max loan limit.");
+        assertFalse(loan.canBorrowMoreBooks(5), "User should not be able to borrow if at max loan limit.");
+    }
+
 }
