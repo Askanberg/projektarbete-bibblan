@@ -127,6 +127,15 @@ public class Loan {
         }
     }
 
+    public void resetLoan() {
+        this.returned = false;
+        this.lost = false;
+        this.renewals = 0;
+        this.dueDate = startDate.plusDays(this.loanDuration);
+        this.status = "Active";
+        loanHistory.add("Loan reset on " + LocalDate.now());
+    }
+
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }

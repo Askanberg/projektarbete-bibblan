@@ -28,7 +28,6 @@ class LoanTest {
         loan = new Loan(book);
     }
 
-
     @Test
     void testLoanCreation() {
         assertNotNull(loan);
@@ -130,7 +129,6 @@ class LoanTest {
                 "Loan history should include auto-renewal entry.");
     }
 
-
     @Test
     void testAutoRenewLoan_MaxRenewals() {
         for (int i = 0; i < 3; i++) {
@@ -140,6 +138,26 @@ class LoanTest {
         LocalDate previousDueDate = loan.getDueDate();
         loan.autoRenewLoan();
         assertEquals(previousDueDate, loan.getDueDate(), "Loan should not auto-renew if max renewals is reached.");
+    }
+
+    @Test
+    void testResetLoan() {
+        loan.markAsLost();
+        loan.autoRenewLoan();
+
+        assertTrue(loan.isLost(), "The loan should be marked as lost.");
+        assertEquals(1, loan.getRenewals(), "The loan should have been renewed once.");
+
+        loan.resetLoan();
+
+        assertFalse(loan.isReturned(), "The loan should not be returned after reset.");
+        assertFalse(loan.isLost(), "The loan should not be marked as lost after reset.");
+        assertEquals(0, loan.getRenewals(), "The loan should have no renewals after reset.");
+        assertEquals(loan.getStartDate().plusDays(loan.getLoanDuration()), loan.getDueDate(), "The due date should be reset to its original value.");
+        assertEquals("Active", loan.getLoanStatus(), "The loan should have status 'Active' after reset.");
+
+        List<String> history = loan.getLoanHistory();
+        assertTrue(history.contains("Loan reset on " + LocalDate.now()), "The history should contain the entry for the reset.");
     }
 
 }
