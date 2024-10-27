@@ -17,6 +17,8 @@ import org.bibblan.bookcatalog.domain.Item;
 public class Loan {
 
     private static final double DAILY_FINE_RATE = 10.0;
+    public static final int MAX_RENEWALS = 3;
+    public static final int MAX_LOANS = 3;
     private Book item;
     public LocalDate startDate;
     private LocalDate dueDate;
@@ -24,9 +26,15 @@ public class Loan {
     private boolean returned = false;
     private List<String> loanHistory = new ArrayList<>();
     private boolean lost = false;
+    private String status;
+    private int renewals = 0;
+    private static int totalLoans = 0;
 
 
     public Loan(Book book) {
+        if (totalLoans >= MAX_LOANS) {
+            throw new IllegalStateException("Cannot borrow more than " + MAX_LOANS + " copies of this book.");
+        }
         this.item = book;
         this.startDate = LocalDate.now();
         setLoanDuration();
@@ -44,6 +52,7 @@ public class Loan {
 
 
     public void returnBook() {
+        loanHistory.add("Book returned on " + LocalDate.now());
         this.returned = true;
     }
 
@@ -80,6 +89,8 @@ public class Loan {
     public String getLoanStatus() {
         if (returned) {
             return "Returned";
+        } else if (lost) {
+            return "Lost";
         } else if (isOverdue()){
             return "Overdue";
         } else {
@@ -94,11 +105,27 @@ public class Loan {
     public void markAsLost() {
         if (!returned) {
             this.lost = true;
+            this.status = "Lost";
             loanHistory.add("Book marked as lost on " + LocalDate.now());
         }
     }
 
+    public boolean canBorrowMoreBooks(int currentLoans) {
+        final int MAX_LOANS = 5;
+        return currentLoans < MAX_LOANS;
+    }
 
+    public void autoRenewLoan() {
+        int renewDays = loanDuration / 2;
+        if (renewals < MAX_RENEWALS && !isOverdue() && !returned) {
+            extendLoan(renewDays);
+            renewals++;
+            loanHistory.add("Auto-renewed loan by " + renewDays + " days on " + LocalDate.now());
+            System.out.println("New due date after auto-renew: " + dueDate);
+        } else {
+            System.out.println("Cannot auto-renew loan. Maximum renewals reached or loan is overdue/returned.");
+        }
+    }
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;

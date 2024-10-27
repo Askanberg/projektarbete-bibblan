@@ -118,4 +118,28 @@ class LoanTest {
         assertFalse(loan.canBorrowMoreBooks(5), "User should not be able to borrow if at max loan limit.");
     }
 
+    @Test
+    void testAutoRenewLoan() {
+        int initialRemainingDays = loan.getRemainingDays();
+        loan.autoRenewLoan();
+
+        assertTrue(loan.getRemainingDays() > initialRemainingDays, "Loan should be auto-renewed, increasing remaining days.");
+
+        List<String> history = loan.getLoanHistory();
+        assertTrue(history.contains("Auto-renewed loan by " + (loan.getLoanDuration() / 2) + " days on " + LocalDate.now()),
+                "Loan history should include auto-renewal entry.");
+    }
+
+
+    @Test
+    void testAutoRenewLoan_MaxRenewals() {
+        for (int i = 0; i < 3; i++) {
+            loan.autoRenewLoan();
+        }
+
+        LocalDate previousDueDate = loan.getDueDate();
+        loan.autoRenewLoan();
+        assertEquals(previousDueDate, loan.getDueDate(), "Loan should not auto-renew if max renewals is reached.");
+    }
+
 }
