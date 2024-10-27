@@ -83,4 +83,26 @@ class LoanTest {
         assertEquals("Returned", loan.getLoanStatus(), "Loan status should be 'Returned' upon creation");
     }
 
+    @Test
+    void testGetRemainingDays_NotReturned() {
+        loan.setDueDate(LocalDate.now().plusDays(10));
+        assertEquals(10, loan.getRemainingDays(), "Remaining days should reflect the correct amount of time.");
+    }
+
+    @Test
+    void testGetRemainingDays_Returned() {
+        loan.returnBook();
+        assertEquals(0, loan.getRemainingDays(), "Remaining days should be 0 if the loan is returned.");
+    }
+
+    @Test
+    void testMarkAsLost() {
+        loan.markAsLost();
+        assertTrue(loan.isLost(), "Loan should be marked as lost.");
+        assertEquals("Lost", loan.getLoanStatus(), "Loan status should be 'Lost' when marked as lost.");
+
+        List<String> history = loan.getLoanHistory();
+        assertTrue(history.contains("Book marked as lost on " + LocalDate.now()), "Loan history should include the lost status.");
+    }
+
 }

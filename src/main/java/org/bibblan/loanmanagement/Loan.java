@@ -72,4 +72,18 @@ public class Loan {
         if (returned) return 0;
         return (int) ChronoUnit.DAYS.between(LocalDate.now(), dueDate);
     }
+
+    public String getLoanStatus() {
+        if (returned) {
+            return "Returned";
+        } else if (isOverdue()){
+            return "Overdue";
+        } else {
+            return "Active";
+        }
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
 }
