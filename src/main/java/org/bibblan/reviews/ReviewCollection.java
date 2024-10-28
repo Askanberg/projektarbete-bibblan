@@ -34,4 +34,8 @@ public class ReviewCollection {
         }
         return (float) totalRating / reviewsByItem.size();
     }
+
+    public List<User> getAllUsers() {
+        return new ArrayList<>(reviewsByUser.keySet());
+    }
 }

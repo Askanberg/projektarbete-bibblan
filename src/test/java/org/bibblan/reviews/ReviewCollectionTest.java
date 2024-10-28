@@ -105,4 +105,11 @@ public class ReviewCollectionTest {
         assertEquals(3.5, reviewCollection.getAverageRating(item1), "Item1's average rating should be 3.5");
     }
 
+    @Test
+    void testGetAllUsers() {
+        HashSet<User> users = new HashSet<>(reviewCollection.getAllUsers());
+        assertTrue(users.contains(user1), "Users should include user1");
+        assertTrue(users.contains(user2), "Users should include user2");
+    }
+
 }
