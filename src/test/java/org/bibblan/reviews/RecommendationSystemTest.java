@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class RecommendationSystemTest {
 
@@ -17,7 +19,7 @@ public class RecommendationSystemTest {
     @Mock
     private User user1, user2, user3, user4, user5, user6, user7;
     @Mock
-    private Item item1, item2, item3, item4, item5;
+    private Item item1, item2, item3, item4, item5, item6;
 
     @BeforeEach
     void setUp() {
@@ -57,6 +59,7 @@ public class RecommendationSystemTest {
 
         // User 6
         addReview(item5, 1, user6); // Item 5
+        addReview(item6, 5, user6); // Item 6
 
     }
 
@@ -106,6 +109,21 @@ public class RecommendationSystemTest {
     @Test
     void testUserWthNoReviews() {
         assertThrows(IllegalArgumentException.class, () -> recommendationSystem.calculateSimilarity(user1, user7));
+    }
+
+    @Test
+    void testGetRecommendationsWithHighSimilarities() {
+        RecommendationSystem spyRecoSystem = spy(recommendationSystem);
+
+        when(spyRecoSystem.calculateSimilarity(user4, user6)).thenReturn(0.9);
+        when(spyRecoSystem.calculateSimilarity(user4, user3)).thenReturn(0.5);
+        when(spyRecoSystem.calculateSimilarity(user4, user2)).thenReturn(0.3);
+
+        List<Item> recommendations = spyRecoSystem.getRecommendations(user4);
+        System.out.println(recommendations);
+        assertEquals(3, recommendations.size(), "There should be 3 items in recommendations list");
+        assertTrue(recommendations.contains(item6) && recommendations.contains(item5) && recommendations.contains(item1),"Expected item6, item5, item1 in recommendations");
+
     }
 
 }
