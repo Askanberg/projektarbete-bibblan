@@ -1,42 +1,56 @@
 package org.bibblan.usermanagement.service;
 
-import org.bibblan.usermanagement.security.SecurityConfig;
+import jakarta.transaction.Transactional;
+import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
+import org.bibblan.usermanagement.mapper.UserMapper;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.userrepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
     @Autowired
-    UserRepository userRepository;
-
+    UserMapper userMapper;
     @Autowired
-    private PasswordEncoder passwordEncoder = SecurityConfig.passwordEncoder();
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    @PostMapping(path="/register")
-    public @ResponseBody User registerNewUser(@RequestParam String name, @RequestParam String userName, @RequestParam String password, @RequestParam String email){
-
-        String encodePassword = passwordEncoder.encode(password);
-
-        return User.builder()
-                .name(name)
-                .username(userName)
-                .password(encodePassword)
-                .email(email)
-                .build();
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
-    @GetMapping("/userDemo/getUser/{username}")
-    public @ResponseBody ResponseEntity<User> getUser(@PathVariable String username){
+    public UserDTO getUserDTOByUsername(String username) {
         Optional<User> u = userRepository.findByUsername(username);
-        return u.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return u.map(user -> userMapper.toDTO(user)).orElse(null);
     }
+
+    public UserDTO getUserDTOById(Integer ID) {
+        Optional<User> u = userRepository.findById(ID);
+        return u.map(user -> userMapper.toDTO(user)).orElse(null);
+    }
+
+    @Transactional
+    public User registerNewUser(UserDTO userDTO) {
+        if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
+            throw new UserAlreadyExistsException("User already exists.");
+
+        User u = User.builder()
+                .name(userDTO.getName())
+                .username(userDTO.getUsername())
+                .email(userDTO.getEmail())
+                .password((passwordEncoder.encode(userDTO.getPassword())))
+                .build();
+
+        return userRepository.save(u);
+    }
+
 
 }

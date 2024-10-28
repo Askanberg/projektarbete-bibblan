@@ -1,6 +1,5 @@
-package org.bibblan.usermanagement;
+package org.bibblan.usermanagement.user;
 
-import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package org.bibblan.usermanagement;
+package org.bibblan.usermanagement.security;
 
 import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.DisplayName;
@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class UserSecurityTest {
 
     @Test
-    @DisplayName("Kryptering av lösenord fungerar.")
-    public void testPasswordEncoder(){
+    @DisplayName("Funktionen för kryptering av lösenord.")
+    public void passwordEncoderWithLocalUser(){
         final User user = User.builder()
                 .username("Test")
                 .name("Test")
                 .email("something@domain.com")
                 .password("myRawPassword")
-                .ID(101)
+                .ID((long) 101)
                 .build();
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -26,6 +26,6 @@ public class UserSecurityTest {
 
         assertTrue(passwordEncoder.matches(user.getPassword(), encodedPassword),
                 "Fel: Testet förväntade sig att det avkrypterade lösenordet skulle stämma överens.");
-
     }
+
 }
