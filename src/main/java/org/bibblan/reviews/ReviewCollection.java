@@ -38,4 +38,12 @@ public class ReviewCollection {
     public List<User> getAllUsers() {
         return new ArrayList<>(reviewsByUser.keySet());
     }
+
+    public List<Item> getItemsByUser(User user) {
+        List<Item> items = new ArrayList<>();
+        for (Review review : getReviewsByUser(user)) {
+            items.add(review.getItem());
+        }
+        return new ArrayList<>(items);
+    }
 }

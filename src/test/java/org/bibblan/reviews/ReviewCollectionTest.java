@@ -112,4 +112,12 @@ public class ReviewCollectionTest {
         assertTrue(users.contains(user2), "Users should include user2");
     }
 
+    @Test
+    void testGetItemsByUser() {
+        HashSet<Item> items = new HashSet<>(reviewCollection.getItemsByUser(user1));
+        assertTrue(items.contains(item1), "User1's items should include item1");
+        assertTrue(items.contains(item2), "User1's items should include item2");
+        assertEquals(2, items.size(), "There should only be 2 items inside User1's items");
+    }
+
 }
