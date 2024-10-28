@@ -1,8 +1,8 @@
 package org.bibblan;
 
-import org.bibblan.bookcatalog.Author;
-import org.bibblan.bookcatalog.Book;
-import org.bibblan.bookcatalog.CoverType;
+import org.bibblan.bookcatalog.domain.Author;
+import org.bibblan.bookcatalog.domain.Book;
+import org.bibblan.bookcatalog.domain.CoverType;
 import org.bibblan.usermanagement.user.User;
 
 public class GeneralTestData {
@@ -28,5 +28,4 @@ public class GeneralTestData {
                 .password("SzrqTlst_#")
                 .build();
     }
-
 }

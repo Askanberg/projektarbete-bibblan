@@ -41,6 +41,4 @@ public class UserTest {
         Assertions.assertEquals(user.getPassword(), "SzrqTlst_#",
                 "Fel: Testet förväntade sig att lösenordet skulle vara \"SzrqTlst_#\"");
     }
-
-
 }
