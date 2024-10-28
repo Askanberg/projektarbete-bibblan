@@ -136,7 +136,6 @@ public class Loan {
         loanHistory.add("Loan reset on " + LocalDate.now());
     }
 
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
+    public void setDueDate(LocalDate dueDate) {this.dueDate = dueDate;
     }
 }
