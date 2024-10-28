@@ -18,8 +18,4 @@ public class EBook extends Item{
         this.fileFormat = fileFormat;
     }
 
-    @Override
-    public String getArticleType() {
-        return "E-Book";
-    }
 }
