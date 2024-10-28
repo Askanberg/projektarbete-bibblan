@@ -1,28 +1,28 @@
 package org.bibblan.reviews;
 
 import lombok.Value;
-import org.bibblan.bookcatalog.domain.Book;
+import org.bibblan.bookcatalog.domain.Item;
 import org.bibblan.usermanagement.User;
 
 @Value
 public class Review {
 
-    Book book;
+    Item item;
     int rating;
     String comment;
     User user;
 
-    public Review(Book book, int rating, User user) {
-        this(book, rating, user, "");
+    public Review(Item item, int rating, User user) {
+        this(item, rating, user, "");
     }
 
-    public Review(Book book, int rating, User user, String comment) {
-        validateBook(book);
+    public Review(Item item, int rating, User user, String comment) {
+        validateItem(item);
         validateUser(user);
         validateRating(rating);
         validateComment(comment);
 
-        this.book = book;
+        this.item = item;
         this.rating = rating;
         this.comment = comment;
         this.user = user;
@@ -46,9 +46,9 @@ public class Review {
         }
     }
 
-    private static void validateBook(Book book) {
-        if (book == null) {
-            throw new IllegalArgumentException("Book cannot be null!");
+    private static void validateItem(Item item) {
+        if (item == null) {
+            throw new IllegalArgumentException("item cannot be null!");
         }
     }
 }
