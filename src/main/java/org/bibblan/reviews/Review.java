@@ -7,6 +7,9 @@ import org.bibblan.usermanagement.User;
 @Value
 public class Review {
 
+    private static int idCounter = 0;
+
+    int id;
     Item item;
     int rating;
     String comment;
@@ -17,6 +20,7 @@ public class Review {
     }
 
     public Review(Item item, int rating, User user, String comment) {
+        this.id = generateId();
         validateItem(item);
         validateUser(user);
         validateRating(rating);
@@ -26,6 +30,16 @@ public class Review {
         this.rating = rating;
         this.comment = comment;
         this.user = user;
+    }
+
+    private static int generateId() {
+        idCounter++;
+        return idCounter;
+    }
+
+    // Metod för att kunna ställa om countern för testning
+    public static void resetIdCounter() {
+        idCounter = 0; // Reset the counter to 0
     }
 
     private static void validateComment(String comment) {

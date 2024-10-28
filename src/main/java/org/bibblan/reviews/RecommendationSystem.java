@@ -92,7 +92,9 @@ public class RecommendationSystem {
         Set<Item> recommendations = new HashSet<>();
         for(User other : sortedUsers) {
             Set<Review> reviews = reviewCollection.getReviewsByUser(other);
-            for(Review review : reviews) {
+            List<Review> reviewList = new ArrayList<>(reviews);
+            reviewList.sort(Comparator.comparingInt(Review::getId));
+            for(Review review : reviewList) {
                 if(!reviewCollection.getItemsByUser(user).contains(review.getItem()) && review.getRating() >= 3) {
                     recommendations.add(review.getItem());
 

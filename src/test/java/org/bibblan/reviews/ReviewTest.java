@@ -15,7 +15,7 @@ public class ReviewTest {
     @Mock
     private User user;
     @Mock
-    private Item item;
+    private Item item, item2;
     private String comment;
     private int rating;
 
@@ -84,5 +84,14 @@ public class ReviewTest {
 
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new Review(item, rating, user, comment));
         assertEquals("User cannot be null!", thrown.getMessage());
+    }
+
+    @Test
+    void testReviewIdCreation() {
+        Review.resetIdCounter();
+        Review review = new Review(item, 5, user);
+        Review review2 = new Review(item2, 2, user);
+        assertEquals(1, review.getId());
+        assertEquals(2, review2.getId());
     }
 }
