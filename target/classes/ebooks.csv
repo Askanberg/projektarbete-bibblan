@@ -1,22 +1,22 @@
+Ebooks
 Title,Author,Genre,Publisher,URL,FileFormat
-"Java: The Complete Reference", "Herbert Schildt", "Programming", "McGraw-Hill", "http://example.com/java_reference", "PDF"
-"Effective Java", "Joshua Bloch", "Programming", "Addison-Wesley", "http://example.com/effective_java", "EPUB"
-"Design Patterns: Elements of Reusable Object-Oriented Software", "Erich Gamma", "Computer Science", "Addison-Wesley", "http://example.com/design_patterns", "PDF"
-"The Pragmatic Programmer", "Andrew Hunt", "Programming", "Addison-Wesley", "http://example.com/pragmatic_programmer", "MOBI"
-"Introduction to Algorithms", "Thomas H. Cormen", "Computer Science", "MIT Press", "http://example.com/algorithms", "PDF"
-"Clean Code: A Handbook of Agile Software Craftsmanship", "Robert C. Martin", "Programming", "Prentice Hall", "http://example.com/clean_code", "EPUB"
-"Refactoring: Improving the Design of Existing Code", "Martin Fowler", "Programming", "Addison-Wesley", "http://example.com/refactoring", "PDF"
-"Java Concurrency in Practice", "Brian Goetz", "Programming", "Addison-Wesley", "http://example.com/java_concurrency", "MOBI"
-"Artificial Intelligence: A Modern Approach", "Stuart Russell", "AI", "Pearson", "http://example.com/ai_modern_approach", "PDF"
-"Code Complete: A Practical Handbook of Software Construction", "Steve McConnell", "Programming", "Microsoft Press", "http://example.com/code_complete", "EPUB"
-"Domain-Driven Design: Tackling Complexity in the Heart of Software", "Eric Evans", "Programming", "Addison-Wesley", "http://example.com/domain_driven_design", "PDF"
-"Computer Networking: A Top-Down Approach", "James Kurose", "Networking", "Pearson", "http://example.com/computer_networking", "EPUB"
-"Database System Concepts", "Abraham Silberschatz", "Database", "McGraw-Hill", "http://example.com/database_system_concepts", "MOBI"
-"Operating System Concepts", "Abraham Silberschatz", "Operating Systems", "Wiley", "http://example.com/os_concepts", "PDF"
-"Introduction to the Theory of Computation", "Michael Sipser", "Theoretical Computer Science", "Cengage Learning", "http://example.com/theory_of_computation", "EPUB"
-"Artificial Intelligence: Foundations of Computational Agents", "David L. Poole", "AI", "Cambridge University Press", "http://example.com/ai_foundations", "PDF"
-"Computer Architecture: A Quantitative Approach", "John L. Hennessy", "Computer Science", "Morgan Kaufmann", "http://example.com/computer_architecture", "MOBI"
-"Compilers: Principles, Techniques, and Tools", "Alfred V. Aho", "Computer Science", "Addison-Wesley", "http://example.com/compilers", "EPUB"
-"Introduction to Machine Learning", "Ethem Alpaydin", "Machine Learning", "MIT Press", "http://example.com/machine_learning", "PDF"
-"Deep Learning", "Ian Goodfellow", "Machine Learning", "MIT Press", "http://example.com/deep_learning", "MOBI"
-"Python Crash Course", "Eric Matthes", "Programming", "No Starch Press", "http://example.com/python_crash_course", "PDF"
+Java: The Complete Reference, Herbert Schildt, Programming, McGraw-Hill, http://example.com/java_reference, PDF
+Effective Java, Joshua Bloch, Programming, Addison-Wesley, http://example.com/effective_java, EPUB
+Design Patterns: Elements of Reusable Object-Oriented Software, Erich Gamma, Computer Science, Addison-Wesley, http://example.com/design_patterns, PDF
+The Pragmatic Programmer, Andrew Hunt, Programming, Addison-Wesley, http://example.com/pragmatic_programmer, MOBI
+Introduction to Algorithms, Thomas H. Cormen, Computer Science, MIT Press, http://example.com/algorithms, PDF
+Clean Code: A Handbook of Agile Software Craftsmanship, Robert C. Martin, Programming, Prentice Hall, http://example.com/clean_code, EPUB
+Refactoring: Improving the Design of Existing Code, Martin Fowler, Programming, Addison-Wesley, http://example.com/refactoring, PDF
+Java Concurrency in Practice, Brian Goetz, Programming, Addison-Wesley, http://example.com/java_concurrency, MOBI
+Artificial Intelligence: A Modern Approach, Stuart Russell, AI, Pearson, http://example.com/ai_modern_approach, PDF
+Code Complete: A Practical Handbook of Software Construction, Steve McConnell, Programming, Microsoft Press, http://example.com/code_complete, EPUB
+Domain-Driven Design: Tackling Complexity in the Heart of Software, Eric Evans, Programming, Addison-Wesley, http://example.com/domain_driven_design, PDF
+Computer Networking: A Top-Down Approach, James Kurose, Networking, Pearson, http://example.com/computer_networking, EPUB
+Database System Concepts, Abraham Silberschatz, Database, McGraw-Hill, http://example.com/database_system_concepts, MOBI
+Operating System Concepts, Abraham Silberschatz, Operating Systems, Wiley, http://example.com/os_concepts, PDF
+Introduction to the Theory of Computation, Michael Sipser, Theoretical Computer Science, Cengage Learning, http://example.com/theory_of_computation, EPUB
+Artificial Intelligence: Foundations of Computational Agents, David L. Poole, AI, Cambridge University Press, http://example.com/ai_foundations, PDF
+Computer Architecture: A Quantitative Approach, John L. Hennessy, Computer Science, Morgan Kaufmann, http://example.com/computer_architecture, MOBI
+Introduction to Machine Learning, Ethem Alpaydin, Machine Learning, MIT Press, http://example.com/machine_learning, PDF
+Deep Learning, Ian Goodfellow, Machine Learning, MIT Press, http://example.com/deep_learning, MOBI
+Python Crash Course, Eric Matthes, Programming, No Starch Press, http://example.com/python_crash_course, PDF
