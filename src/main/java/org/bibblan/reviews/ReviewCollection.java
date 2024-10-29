@@ -32,7 +32,7 @@ public class ReviewCollection {
         for (Review review : getReviewsByItem(item)) {
             totalRating += review.getRating();
         }
-        return (float) totalRating / reviewsByItem.size();
+        return (float) totalRating / getReviewsByItem(item).size();
     }
 
     public List<User> getAllUsers() {
