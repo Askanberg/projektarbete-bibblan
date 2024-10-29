@@ -14,13 +14,9 @@ public class Reference extends Item{
 
     private final boolean isAvailable = false;
 
-    public Reference(String title, Author author, String genre, String isbn, String publisher) {
+    public Reference(String title, Author author, String genre, String publisher, String isbn) {
         super(title, genre, author, publisher);
         this.isbn = isbn;
     }
 
-    @Override
-    public String getArticleType() {
-        return "Reference";
-    }
 }

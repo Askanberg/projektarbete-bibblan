@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EBook extends Item{
 
-    private String fileFormat;
     private String url;
+    private String fileFormat;
 
     public EBook(String title, Author author, String genre, String publisher, String url, String fileFormat) {
         super(title, genre, author, publisher);
@@ -18,8 +18,4 @@ public class EBook extends Item{
         this.fileFormat = fileFormat;
     }
 
-    @Override
-    public String getArticleType() {
-        return "E-Book";
-    }
 }
