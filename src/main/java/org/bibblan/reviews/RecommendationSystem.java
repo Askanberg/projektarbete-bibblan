@@ -16,44 +16,57 @@ public class RecommendationSystem {
 
     //Räknar ut similarity mellan två users reviews om de har minst 2 gemensamma items de skapat en review för.
     public double calculateSimilarity(User user1, User user2) {
-        Set<Review> user1Reviews = reviewCollection.getReviewsByUser(user1);
-        Set<Review> user2Reviews = reviewCollection.getReviewsByUser(user2);
-        if (user1Reviews.isEmpty()) {
-            throw new IllegalArgumentException("No reviews found by user:" + user1);
-        }
-        if (user2Reviews.isEmpty()) {
-            throw new IllegalArgumentException("No reviews found by user:" + user2);
-        }
+        // Plockar fram användarnas reviews, kastar exception om inga finns
+        Set<Review> user1Reviews = getReviewsOrThrow(user1);
 
-        Set<Item> itemsInCommon = user1Reviews.stream()
-                .map(Review::getItem)
-                .distinct()
-                .filter(item -> user2Reviews.stream().anyMatch(review -> review.getItem().equals(item)))
-                .collect(Collectors.toSet());
+        Set<Review> user2Reviews = getReviewsOrThrow(user2);
+
+        // Skapar det set som innehåller de items som både user1 och user2 har en review på.
+        Set<Item> itemsInCommon = getItemsInCommon(user1Reviews, user2Reviews);
 
         if (itemsInCommon.isEmpty()) {
             return 0;
         }
 
-        List<Double> user1Ratings = new ArrayList<>();
-        List<Double> user2Ratings = new ArrayList<>();
+        // Hämtar betygen som båda users gett till gemensamma reviews
+        List<Double> user1Ratings = getUserRatings(itemsInCommon, user1Reviews);
+        List<Double> user2Ratings = getUserRatings(itemsInCommon, user2Reviews);
 
-        for (Item item : itemsInCommon) {
-            double rating1 = user1Reviews.stream()
-                    .filter(review -> review.getItem().equals(item))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Review not found for user1 and item: " + item))
-                    .getRating();
-            double rating2 = user2Reviews.stream()
-                    .filter(review -> review.getItem().equals(item))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Review not found for user2 and item: " + item))
-                    .getRating();
-            user1Ratings.add(rating1);
-            user2Ratings.add(rating2);
+        // Returnerar Pearsons korrelations-koefficient mellan user 1 och user 2.
+        return calculatePearsonCorrelation(user1Ratings, user2Ratings);
+    }
+
+    private Set<Review> getReviewsOrThrow(User user) {
+        Set<Review> reviews = reviewCollection.getReviewsByUser(user);
+        if (reviews.isEmpty()) {
+            throw new IllegalArgumentException("No reviews found by user: " + user);
         }
+        return reviews;
+    }
 
-        //GPT-kod för uträkning av Pearsons korrelationskoefficient
+    private Set<Item> getItemsInCommon(Set<Review> user1Reviews, Set<Review> user2Reviews) {
+        return user1Reviews.stream()
+                .map(Review::getItem)
+                .distinct()
+                .filter(item -> user2Reviews.stream().anyMatch(review -> review.getItem().equals(item)))
+                .collect(Collectors.toSet());
+    }
+
+    private List<Double> getUserRatings(Set<Item> itemsInCommon, Set<Review> userReviews) {
+        List<Double> ratings = new ArrayList<>();
+        for (Item item : itemsInCommon) {
+            double rating = userReviews.stream()
+                    .filter(review -> review.getItem().equals(item))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Review not found for user and item: " + item))
+                    .getRating();
+            ratings.add(rating);
+        }
+        return ratings;
+    }
+
+    // GPT-genererad kod för uträkning av Pearsons korrelations-koefficient
+    private double calculatePearsonCorrelation(List<Double> user1Ratings, List<Double> user2Ratings) {
         double mean1 = user1Ratings.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
         double mean2 = user2Ratings.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
 
@@ -72,7 +85,6 @@ public class RecommendationSystem {
 
         double denominator = Math.sqrt(denominator1) * Math.sqrt(denominator2);
         return (denominator == 0) ? 0 : numerator / denominator;
-
     }
 
     public List<Item> getRecommendations(User user) {
