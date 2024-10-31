@@ -28,8 +28,14 @@ public class ReviewCollection {
     }
 
     public double getAverageRating(Item item) {
+        Set<Review> reviews = getReviewsByItem(item);
+
+        if (reviews.isEmpty()) {
+            throw new IllegalArgumentException("No reviews available for this item.");
+        }
+
         int totalRating = 0;
-        for (Review review : getReviewsByItem(item)) {
+        for (Review review : reviews) {
             totalRating += review.getRating();
         }
         return (float) totalRating / getReviewsByItem(item).size();

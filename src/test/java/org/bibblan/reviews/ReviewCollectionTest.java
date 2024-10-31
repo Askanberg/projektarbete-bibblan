@@ -106,6 +106,15 @@ public class ReviewCollectionTest {
     }
 
     @Test
+    void testGetAverageRatingWithNoReviews() {
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
+                () -> reviewCollection.getAverageRating(item3),
+                "Expected getAverageRating to throw an exception if no reviews are available");
+
+        assertEquals("No reviews available for this item.", thrown.getMessage());
+    }
+
+    @Test
     void testGetAllUsers() {
         HashSet<User> users = new HashSet<>(reviewCollection.getAllUsers());
         assertTrue(users.contains(user1), "Users should include user1");
