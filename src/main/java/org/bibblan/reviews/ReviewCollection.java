@@ -11,6 +11,9 @@ public class ReviewCollection {
     private final Map<User, Set<Review>> reviewsByUser = new HashMap<>();
 
     public void addReview(Review review) {
+        if (review == null) {
+            throw new IllegalArgumentException("Review cannot be null!");
+        }
         // Adds to map of Item
         reviewsByItem.putIfAbsent(review.getItem(), new HashSet<>());
         reviewsByItem.get(review.getItem()).add(review);
