@@ -114,6 +114,21 @@ public class ItemFactoryTests {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> itemFactory.createItem(incompleteBookValues, "Books"));
     }
     @Test
+    void testThatInvalidUrlThrowsException() {
+        String[] ebookValues = {"Effective Java", "Joshua Bloch", "Programming", "Addison-Wesley", "example.com/effective_java", "EPUB" };
+        assertThrows(IllegalArgumentException.class, () -> itemFactory.createItem(ebookValues, "Ebooks"));
+    }
+    @Test
+    void testThatInvalidNumberOfValuesForEbookThrowsException() {
+        String[] ebookValues = {"Effective Java", "Joshua Bloch", "Programming", "Addison-Wesley", "http://example.com/effective_java"};
+        assertThrows(IllegalArgumentException.class, () -> itemFactory.createItem(ebookValues, "Ebooks"));
+    }
+    @Test
+    void testThatInvalidNumberOfValuesForReferenceThrowsException() {
+        String[] referenceValues = {"Effective Java", "Joshua Bloch", "Programming", "Addison-Wesley"};
+        assertThrows(IllegalArgumentException.class, () -> itemFactory.createItem(referenceValues, "References"));
+    }
+    @Test
     void testThatCreateItemsFromCsvReturnsListWithItems() throws IOException {
         when(mockBufferedReader.readLine()).thenReturn("Educated,Tara Westover,Biography,Random House,9780399590504,Pocket").thenReturn(null);
 
@@ -129,5 +144,6 @@ public class ItemFactoryTests {
 
         assertEquals(expected, items.get(0));
     }
+
 
 }
