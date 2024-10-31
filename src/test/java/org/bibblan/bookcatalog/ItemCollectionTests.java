@@ -20,7 +20,7 @@ public class ItemCollectionTests {
 
 
     @BeforeEach
-    public void initializeGeneralTestUtilities() {
+    public void setup() {
         itemCollection = new ItemCollection();
     }
     @Test

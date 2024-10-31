@@ -20,7 +20,7 @@ public class ItemFactoryTests {
     private BufferedReader mockBufferedReader;
 
     @BeforeEach
-    public void initializeUtilities() {
+    public void setup() {
         itemFactory = new ItemFactory();
         mockBufferedReader = mock(BufferedReader.class);
     }
