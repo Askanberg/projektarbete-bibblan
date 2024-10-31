@@ -48,7 +48,7 @@ public class ReviewCollectionTest {
     @Test
     void testAddReviewToCollection() { //TF1
         assertTrue(reviewCollection.getReviewsByItem(item1).contains(review1), "Review was not added to the Item collection");
-        assertTrue(reviewCollection.getReviewsByUser(user1).contains(review1),  "Review was not added to the User Collection");
+        assertTrue(reviewCollection.getReviewsByUser(user1).contains(review1), "Review was not added to the User Collection");
     }
 
     @Test
@@ -56,6 +56,15 @@ public class ReviewCollectionTest {
         reviewCollection.addReview(review1);
 
         assertEquals(1, reviewCollection.getReviewsByItem(item1).size(), "Duplicate review should not be added");
+    }
+
+    @Test
+    void testAddNullReviewToCollection() {
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
+                () -> reviewCollection.addReview(null),
+                "Expected addReview to throw an exception when given a null review");
+
+        assertEquals("Review cannot be null!", thrown.getMessage());
     }
 
     @Test
@@ -103,6 +112,15 @@ public class ReviewCollectionTest {
 
         assertEquals(2.5, reviewCollection.getAverageRating(item2), "Item2's average rating should be 2.5");
         assertEquals(3.5, reviewCollection.getAverageRating(item1), "Item1's average rating should be 3.5");
+    }
+
+    @Test
+    void testGetAverageRatingWithNoReviews() {
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class,
+                () -> reviewCollection.getAverageRating(item3),
+                "Expected getAverageRating to throw an exception if no reviews are available");
+
+        assertEquals("No reviews available for this item.", thrown.getMessage());
     }
 
     @Test

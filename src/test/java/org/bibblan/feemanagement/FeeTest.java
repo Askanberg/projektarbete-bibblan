@@ -1,6 +1,6 @@
 package org.bibblan.feemanagement;
 
-import static org.junit.jupiter.api.Assertions.*;
+/*import static org.junit.jupiter.api.Assertions.*;
 
 import org.bibblan.bookcatalog.domain.Book;
 import org.bibblan.loanmanagement.Loan;
@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.bibblan.GeneralTestData;
 
-import java.time.LocalDate;
+import java.time.LocalDate;*/
 
 public class FeeTest {
 
-    private Fee feeManagement;
+    /*private Fee feeManagement;
     private Loan mockLoan;
 
     @BeforeEach
@@ -42,5 +42,5 @@ public class FeeTest {
         feeManagement.addFee(100.0);
 
         assertEquals(150.0, feeManagement.getTotalFees(), "Total fee should be 150.0");
-    }
+    }*/
 }

@@ -11,6 +11,9 @@ public class ReviewCollection {
     private final Map<User, Set<Review>> reviewsByUser = new HashMap<>();
 
     public void addReview(Review review) {
+        if (review == null) {
+            throw new IllegalArgumentException("Review cannot be null!");
+        }
         // Adds to map of Item
         reviewsByItem.putIfAbsent(review.getItem(), new HashSet<>());
         reviewsByItem.get(review.getItem()).add(review);
@@ -28,11 +31,17 @@ public class ReviewCollection {
     }
 
     public double getAverageRating(Item item) {
+        Set<Review> reviews = getReviewsByItem(item);
+
+        if (reviews.isEmpty()) {
+            throw new IllegalArgumentException("No reviews available for this item.");
+        }
+
         int totalRating = 0;
-        for (Review review : getReviewsByItem(item)) {
+        for (Review review : reviews) {
             totalRating += review.getRating();
         }
-        return (float) totalRating / reviewsByItem.size();
+        return (float) totalRating / getReviewsByItem(item).size();
     }
 
     public List<User> getAllUsers() {

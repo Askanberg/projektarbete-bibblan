@@ -69,6 +69,17 @@ public class ReviewTest {
     }
 
     @Test
+    void testReviewCreationWithMaximumCommentLength() {
+        comment = "x".repeat(500);
+        rating = 3;
+        Review review = new Review(item, rating, user, comment);
+
+        assertNotNull(review, "Review is null");
+        assertEquals(500, review.getComment().length(), "Comment length does not match boundary");
+        assertEquals(comment, review.getComment(), "Comment content does not match input");
+    }
+
+    @Test
     void testReviewCreationWithNullitem() { //TF6
         item = null;
         rating = 3;
