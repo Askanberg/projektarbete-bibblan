@@ -19,9 +19,8 @@ public class IntegrationTests {
         itemCollection = new ItemCollection();
         itemFileReader = new ItemFileReader(new ItemFactory());
         itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv");
-
-
     }
+
 
 
 
