@@ -23,7 +23,8 @@ public class IntegrationTests {
     void setup() throws IOException {
         itemCollection = new ItemCollection();
         itemFileReader = new ItemFileReader(new ItemFactory());
-        itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv");
+        itemCollection.addItems(itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv"));
+        itemCollection.addItems(itemFileReader.readItemsFromCsv("src/test/resources/testEBooks.csv"));
 
         userOne = User.builder().name("Henke").username("Benke").email("some@email.com").password("someRawPassword").build();
         userTwo = User.builder().name("Andreas").username("Senapsberg").email("skanberg@su.se").password("someRawPassword123").build();
@@ -35,7 +36,6 @@ public class IntegrationTests {
 
     @Test
     void test() {
-
     }
 
 
