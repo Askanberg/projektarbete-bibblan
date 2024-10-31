@@ -89,8 +89,8 @@ public class RecommendationSystem {
 
     public List<Item> getRecommendations(User user) {
         Map<User, Double> userSimilarities = new HashMap<>();
-        for(User other : reviewCollection.getAllUsers()) {
-            if(!other.equals(user)) {
+        for (User other : reviewCollection.getAllUsers()) {
+            if (!other.equals(user)) {
                 double similarity = calculateSimilarity(user, other);
                 userSimilarities.put(other, similarity);
             }
@@ -102,15 +102,15 @@ public class RecommendationSystem {
                 .toList();
 
         Set<Item> recommendations = new HashSet<>();
-        for(User other : sortedUsers) {
+        for (User other : sortedUsers) {
             Set<Review> reviews = reviewCollection.getReviewsByUser(other);
             List<Review> reviewList = new ArrayList<>(reviews);
             reviewList.sort(Comparator.comparingInt(Review::getId));
-            for(Review review : reviewList) {
-                if(!reviewCollection.getItemsByUser(user).contains(review.getItem()) && review.getRating() >= 3) {
+            for (Review review : reviewList) {
+                if (!reviewCollection.getItemsByUser(user).contains(review.getItem()) && review.getRating() >= 3) {
                     recommendations.add(review.getItem());
 
-                    if(recommendations.size() >= 3) {
+                    if (recommendations.size() >= 3) {
                         return new ArrayList<>(recommendations);
                     }
                 }
