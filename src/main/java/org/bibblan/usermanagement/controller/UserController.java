@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.*;
 @Data
 @Controller
 @RequestMapping(path="/userDemo")
-public class UserController {
+public class    UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
+    final
     UserMapper userMapper;
+
+    public UserController(UserService userService, UserMapper userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
 
     @GetMapping(path="/allUsers")
     public @ResponseBody Iterable<User> getUsers(){
@@ -31,7 +35,6 @@ public class UserController {
     @PostMapping(path="/register")
     public @ResponseBody ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO){
         UserDTO temp = userService.getUserDTOByUsername(userDTO.getUsername());
-
         if(temp != null){
             return ResponseEntity.badRequest().build();
         }
@@ -43,7 +46,7 @@ public class UserController {
     public @ResponseBody ResponseEntity<User> getUserByUsername(@PathVariable @Valid String username){
         UserDTO u = userService.getUserDTOByUsername(username);
         if(u == null){
-            throw new UserNotFoundException("User ");
+            throw new UserNotFoundException("No registered user with that username.");
         }
         return ResponseEntity.ok().build();
     }

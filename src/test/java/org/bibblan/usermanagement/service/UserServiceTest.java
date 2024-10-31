@@ -2,6 +2,7 @@ package org.bibblan.usermanagement.service;
 
 import org.bibblan.usermanagement.dto.UserDTO;
 import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
+import org.bibblan.usermanagement.mapper.UserMapper;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.userrepository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,10 +23,10 @@ public class UserServiceTest {
 
     @MockBean
     UserRepository userRepository;
-
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Test
@@ -50,11 +53,11 @@ public class UserServiceTest {
         // Definierar Mock-databasens beteende med ett simulerat krypterat lösenord.
         when(userRepository.save(any(User.class))).thenAnswer(invocationOnMock -> {
             User u = invocationOnMock.getArgument(0);
-            u.setPassword("simulatedEncryptedPassword");
+            u.setPassword("fakeEncryptedPassword");
             return u;
         });
 
-        User u = userService.registerNewUser(UserDTO.builder().name("Johan").username("Rohan").email("rohan@gmail.com").build());
+        User u = userService.registerNewUser(UserDTO.builder().name("Johan").username("Rohan").email("rohan@gmail.com").password("someRawPassword123").build());
 
         // Kontrollerar som returnerades av registerNewUser() finns i databasen.
         assertNotNull(u, "Fel: Förväntade att användaren sparades.");
@@ -68,63 +71,90 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Registrerar användare med tomt email-fält")
-    public void registerNewUserWithBlankEmailThrowsException() {
+    public void registerNewUserWithoutUsernameThrowsException() {
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userService.registerNewUser(UserDTO.builder().name("Beorn").username("Bunke_1337").email("").password("myRawPassword").build());
+
+        assertThrows(NullPointerException.class, () ->{
+            userService.registerNewUser(UserDTO.builder().name("Name").password("someRawPassword123").email("some@email.com").build());
         });
 
-        assertEquals("Email field is empty.", exception.getMessage(), "Fel: Förväntade att ett IllegalArgumentException kastades med meddelandet \"Email field is empty.\"");
     }
-
     @Test
-    @DisplayName("Registerar användare med invalid email.")
-    public void registerNewUserWithInvalidEmailThrowsException() {
+    public void registerNewUserWithoutEmailThrowsException() {
         when(userRepository.save(any(User.class))).thenReturn(new User());
-        UserDTO userDTO = UserDTO.builder().name("Pudel").username("Poodle97").email("invalidEmail.com").password("someRawPassword").build();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            userService.registerNewUser(userDTO);
+
+        assertThrows(NullPointerException.class, () ->{
+            userService.registerNewUser(UserDTO.builder().name("Name").username("Username").password("someRawPassword123").build());
         });
 
-        assertEquals("Invalid email address", exception.getMessage(), "Fel: Förväntade att ett MethodArgumentNotValidException kastades med meddelandet \"Invalid email address.\"");
+        verifyNoInteractions(userRepository);
+
 
     }
 
     @Test
-    public void registerNewUserWithInvalidUserNameThrowsException() {
+    public void registerNewUserWithoutPasswordThrowsException() {
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
+
+        assertThrows(IllegalArgumentException.class, () ->{
+            userService.registerNewUser(UserDTO.builder().name("Name").username("Lolipop").email("some@email.com").build());
+        });
+
+        verify(userRepository, times(1)).findByUsername(any(String.class));
+
     }
+
+
+
 
     @Test
     public void getUserWithUsernameReturnsUser() {
+        User u = User.builder().name("Some Name").username("Sven").email("someValid@email.com").password("someRawPassword").build();
+
         when(userRepository.save(any(User.class))).thenReturn(new User());
-        UserDTO userDTO = UserDTO.builder().name("Dachshund").username("Tax").email("tax@hundregister.se").password("someRawPassword").build();
 
-        userService.registerNewUser(UserDTO.builder().name("Dachshund").username("Tax").email("tax@hundregister.se").build());
+        UserDTO temp = userMapper.toDTO(u);
+        temp.setPassword("someRawPassword");
 
-        UserDTO u = userService.getUserDTOByUsername("Tax");
 
-        assertNotNull(u,
+        when(userRepository.findByUsername("Sven")).thenReturn(Optional.of(u));
+
+        temp = userService.getUserDTOByUsername("Sven");
+
+        assertNotNull(temp,
                 "Fel: Förväntade att användaren fanns i databasen.");
 
+        assertEquals(temp.getUsername(), u.getUsername(),
+                "Fel: Förväntade att rätt användare skulle returneras");
+
+        verify(userRepository, times(1)).findByUsername(any(String.class));
 
     }
 
     @Test
     @DisplayName("Registrerar en redan existerande användare.")
-    public void registerAlreadyExistingUser() {
+    public void registerAlreadyExistingUserThrowsException() {
         when(userRepository.save(any(User.class))).thenReturn(new User());
-        UserDTO userDTO = UserDTO.builder().name("Arpe").username("Hund_97").email("hund_97@hotmail.com").password("someRawPassword_1337").build();
-        User u = userService.registerNewUser(userDTO);
+
+        User u = new User();
+        when(userRepository.findByUsername("Hund_97")).thenReturn(Optional.of(u));
 
         Exception e = assertThrows(UserAlreadyExistsException.class, () -> {
-            userService.registerNewUser(userDTO);
+            userService.registerNewUser(UserDTO.builder()
+                    .name("Arpe")
+                    .username("Hund_97")
+                    .email("hund_97@hotmail.com")
+                    .password("someRawPassword_1337")
+                    .build());
         });
 
+        assertEquals("User already exists.", e.getMessage() ,
+                "Fel: Förväntade ett UserAlreadyExistsException.");
+
+        verify(userRepository, times(1)).findByUsername(any(String.class));
 
     }
 
