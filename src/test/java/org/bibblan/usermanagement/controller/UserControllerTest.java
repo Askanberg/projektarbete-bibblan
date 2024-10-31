@@ -1,30 +1,34 @@
 package org.bibblan.usermanagement.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.usermanagement.mapper.UserMapper;
+import org.bibblan.usermanagement.service.UserService;
 import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest
-@SpringBootTest
+@WebMvcTest(UserController.class)
 @DisplayName("User Controller Test")
 public class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private UserMapper userMapper;
 
     @Test
     public void handlesInvalidUsernameCorrectly() {
@@ -35,7 +39,6 @@ public class UserControllerTest {
                 .email("lol@gmail.com")
                 .build();
 
-//        mockMvc.perform(get("/userDemo/register"))
 
     }
 
@@ -55,40 +58,17 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Registerar användare med invalid email.")
-    public void registerNewUserWithInvalidEmailThrowsException() {
-//
-//        when(userRepository.save(any(User.class))).thenReturn(new User());
-//
-//        User user = User.builder()
-//                .name("Pudel")
-//                .username("Poodle97")
-//                .email("invalidEmail")
-//                .password("someRawPassword")
-//                .build();
-//
-////        when(userRepository.save(user)).thenAnswer(i -> i.getArgument(0));
-//        UserDTO dto = userMapper.toDTO(user);
-//        dto.setUsername("");
-//        dto.setPassword("someRawPassword1337");
-//
-//        userService.registerNewUser(dto);
-//
-//        verify(userRepository, times(1)).save(any(User.class));
-//
-//
-//        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-//            userService.registerNewUser(UserDTO.builder()
-//                    .name("Arpe")
-//                    .username("")
-//                    .email("invalid@gmail.com")
-//                    .password("someRawPassword_1337")
-//                    .build());
-//        });
+    @DisplayName("Registrerar användare med tom email ska returnera Bad Request.")
+    public void registerUserWithBlankEmailShouldReturnBadRequest() throws Exception {
+        String userJson = "{ \"name\": \"Beorn\", \"username\": \"Hejsan\", \"email\": \"\", \"password\": \"myRawPassword\" }";
 
-//        assertEquals("Invalid email address.", exception.getMessage(), "Fel: Förväntade att ett IllegalArgumentException kastades med meddelandet \"Invalid email address.\"");
-
+        mockMvc.perform(post("/userDemo/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.email").value("Email field is empty."));
     }
+
 
     @Test
     public void returnAllUsers() throws Exception{

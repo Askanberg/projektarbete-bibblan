@@ -1,6 +1,7 @@
 package org.bibblan.usermanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,27 +16,23 @@ import lombok.*;
 @ToString
 public class UserDTO {
 
-    @Email
-    @NonNull
     @NotBlank(message = "Email field is empty.")
-    @Size(min=5, max=254)
-    @Pattern(regexp = "^([a-zA-Z0-9._-]+@[a-zA-Z]+[.][a-zA-Z]{2,3})$")
-    @Column(unique = true)
+    @Email(message = "Invalid email format.")
+    @Size(min=5, max=254, message = ("Email must be between 5 and 254 characters."))
     private String email;
 
     @NonNull
     @NotBlank(message = "Username field is empty")
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters.")
-    @Column(unique = true)
     private String username;
 
     @NonNull
-    @NotBlank
+    @NotBlank(message = "Name field is empty.")
     private String name;
 
     @NotBlank(message = "Password field is empty.")
     @Size(min = 8, max = 40, message = ("Password must be between 8 and 40 characters."))
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
 }

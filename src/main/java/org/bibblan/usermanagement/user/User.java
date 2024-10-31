@@ -1,6 +1,7 @@
 package org.bibblan.usermanagement.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,10 +20,9 @@ import lombok.*;
 public class User {
 
     @Email
-    @NonNull
     @NotBlank(message = "Email field is empty.")
     @Size(min=5, max=254)
-    @Pattern(regexp = "^([a-zA-Z0-9._-]+@[a-zA-Z]+[.][a-zA-Z]{2,3})$")
+//    @Pattern(regexp = "^([a-zA-Z0-9._-]+@[a-zA-Z]+[.][a-zA-Z]{2,3})$")
     @Column(unique = true)
     private String email;
 
@@ -38,7 +38,7 @@ public class User {
 
     @NotBlank(message = "Password field is empty.")
     @Size(min = 8, max = 40, message = ("Password must be between 8 and 40 characters."))
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Id

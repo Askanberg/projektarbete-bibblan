@@ -13,15 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Data
-@Controller
+@RestController
 @RequestMapping(path="/userDemo")
-public class    UserController {
+public class UserController {
 
     private final UserService userService;
 
-    final
-    UserMapper userMapper;
+    private final UserMapper userMapper;
 
+    @Autowired
     public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
