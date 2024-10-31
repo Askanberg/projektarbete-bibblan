@@ -82,37 +82,43 @@ public class RecommendationSystemTest {
     @Test
     void testReviewsWithSameRatings() {
         double similarity = recommendationSystem.calculateSimilarity(user1, user5);
-        assertEquals(1, similarity, 0.0001, "Similarity should be 1 when the reviews have the same rating");
+        assertEquals(1, similarity, 0.0001,
+                "Similarity should be 1 when the reviews have the same rating");
     }
 
     @Test
     void testReviewsWithOppositeRatings() {
         double similarity = recommendationSystem.calculateSimilarity(user3, user4);
-        assertEquals(-1, similarity, "Similarity should be -1 when the reviews are opposite ratings");
+        assertEquals(-1, similarity,
+                "Similarity should be -1 when the reviews are opposite ratings");
     }
 
     @Test
     void testSimilarityWithSelf() {
         double similarity = recommendationSystem.calculateSimilarity(user1, user1);
-        assertEquals(1, similarity, 0.0001, "Similarity with self should be 1");
+        assertEquals(1, similarity, 0.0001,
+                "Similarity with self should be 1");
     }
 
     @Test
     void testSimilarRatings() {
         double similarity = recommendationSystem.calculateSimilarity(user1, user2);
-        assertEquals(0.7559, similarity, 0.0001, "Similarity should be 0.7559 for user1 and user2");
+        assertEquals(0.7559, similarity, 0.0001,
+                "Similarity should be 0.7559 for user1 and user2");
     }
 
     @Test
     void testSingleCommonItem() {
         double similarity = recommendationSystem.calculateSimilarity(user2, user6);
-        assertEquals(0, similarity, "Similarity should be 0 when there is only 1 common item");
+        assertEquals(0, similarity,
+                "Similarity should be 0 when there is only 1 common item");
 
     }
 
     @Test
     void testUserWthNoReviews() {
-        assertThrows(IllegalArgumentException.class, () -> recommendationSystem.calculateSimilarity(user1, user7));
+        assertThrows(IllegalArgumentException.class,
+                () -> recommendationSystem.calculateSimilarity(user1, user7));
     }
 
     @Test
@@ -126,7 +132,8 @@ public class RecommendationSystemTest {
         List<Item> recommendations = spyRecoSystem.getRecommendations(user4);
 
         assertEquals(3, recommendations.size(), "There should be 3 items in recommendations list");
-        assertTrue(recommendations.contains(item6) && recommendations.contains(item5) && recommendations.contains(item1),"Expected item6, item5, item1 in recommendations");
+        assertTrue(recommendations.contains(item6) && recommendations.contains(item5) && recommendations.contains(item1),
+                "Expected item6, item5, item1 in recommendations");
 
     }
 
@@ -142,7 +149,8 @@ public class RecommendationSystemTest {
 
         System.out.println(recommendations);
         assertEquals(3, recommendations.size(), "There should be 3 items in recommendations list");
-        assertTrue(recommendations.contains(item1) && recommendations.contains(item3) && recommendations.contains(item2), "Expected item1, item3, item2 in recommendations");
+        assertTrue(recommendations.contains(item1) && recommendations.contains(item3) && recommendations.contains(item2),
+                "Expected item1, item3, item2 in recommendations");
     }
 
     @Test
@@ -157,15 +165,32 @@ public class RecommendationSystemTest {
 
         assertEquals(3, recommendations.size(), "There should be 3 items in recommendations list");
         System.out.println(recommendations);
-        assertTrue(recommendations.contains(item3) && recommendations.contains(item6) && recommendations.contains(item2), "Expected item3, item6, item2 in recommendations");
+        assertTrue(recommendations.contains(item3) && recommendations.contains(item6) && recommendations.contains(item2),
+                "Expected item3, item6, item2 in recommendations");
+    }
+
+    @Test
+    void testMultipleUsersWithSameSimilarity() {
+        when(spyRecoSystem.calculateSimilarity(user4, user6)).thenReturn(0.9);
+        when(spyRecoSystem.calculateSimilarity(user4, user3)).thenReturn(0.9);
+        when(spyRecoSystem.calculateSimilarity(user4, user2)).thenReturn(0.3);
+
+        List<Item> recommendations = spyRecoSystem.getRecommendations(user4);
+
+        System.err.println(recommendations);
+        assertEquals(3, recommendations.size(), "There should be 3 items in recommendations list");
+    assertTrue(recommendations.contains(item6) && recommendations.contains(item5) && recommendations.contains(item1),
+            "Expected item6, item5, and item1 in recommendations based on high similarity scores");
     }
 
     @Test
     void testGetRecommendationsWithOneItemAvailable() {
 
         List<Item> recommendations = recommendationSystem.getRecommendations(user1);
-        assertEquals(1, recommendations.size(), "There should be 1 item in recommendations list");
-        assertTrue(recommendations.contains(item6), "Expected item6 in recommendations");
+        assertEquals(1, recommendations.size(),
+                "There should be 1 item in recommendations list");
+        assertTrue(recommendations.contains(item6),
+                "Expected item6 in recommendations");
 
     }
 
@@ -182,9 +207,8 @@ public class RecommendationSystemTest {
 
         User newUser = mock(User.class);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            recommendationSystem.getRecommendations(newUser);
-        }, "Expected an IllegalArgumentException for a user without reviews");
+        assertThrows(IllegalArgumentException.class, () -> recommendationSystem.getRecommendations(newUser),
+                "Expected an IllegalArgumentException for a user without reviews");
     }
 
 }
