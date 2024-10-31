@@ -18,7 +18,7 @@ public class IntegrationTests {
     void setup() throws IOException {
         itemCollection = new ItemCollection();
         itemFileReader = new ItemFileReader(new ItemFactory());
-        itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv");
+        itemCollection.addItems(itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv"));
     }
 
 
