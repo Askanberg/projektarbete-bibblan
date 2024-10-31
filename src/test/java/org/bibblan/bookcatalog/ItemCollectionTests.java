@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -97,6 +98,10 @@ public class ItemCollectionTests {
         assertTrue(itemCollection.getItemMap().containsKey(ebook.getTitle()), "Ebook");
         assertTrue(itemCollection.getItemMap().containsKey(book.getTitle()), "Book");
 
+    }
+    @Test
+    void testThatGetItemCopiesThrowsExceptionIfKeyNotInCollection() {
+        assertThrows(NoSuchElementException.class, () -> itemCollection.getItemCopies("test"));
     }
 
     //******************************************
