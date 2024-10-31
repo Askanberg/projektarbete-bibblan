@@ -1,7 +1,7 @@
 package org.bibblan.reviews;
 
 import org.bibblan.bookcatalog.domain.Item;
-import org.bibblan.usermanagement.User;
+import org.bibblan.usermanagement.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

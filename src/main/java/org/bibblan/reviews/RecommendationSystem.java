@@ -1,7 +1,7 @@
 package org.bibblan.reviews;
 
 import org.bibblan.bookcatalog.domain.Item;
-import org.bibblan.usermanagement.User;
+import org.bibblan.usermanagement.user.User;
 
 import java.util.*;
 import java.util.stream.Collectors;

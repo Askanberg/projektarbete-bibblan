@@ -5,6 +5,7 @@ import org.bibblan.bookcatalog.ItemFactory;
 import org.bibblan.bookcatalog.ItemFileReader;
 import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -25,6 +26,11 @@ public class IntegrationTests {
         User userFour = User.builder().name("Fina Jose").username("Ferber").email("Ferber@domain.se").password("someRawPassword_1337").build();
         User userFive = User.builder().name("Bunke").username("Fil_Bunke").email("testUser@hotmail.com").password("aRawPassword1337").build();
         User userSix = User.builder().name("Bibblan").username("Projektarbete").email("projektarbete@bibblan.se").password("someRawPassword1337").build();
+    }
+
+    @Test
+    void test() {
+
     }
 
 

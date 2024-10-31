@@ -2,7 +2,7 @@ package org.bibblan.reviews;
 
 import lombok.Value;
 import org.bibblan.bookcatalog.domain.Item;
-import org.bibblan.usermanagement.User;
+import org.bibblan.usermanagement.user.*;
 
 @Value
 public class Review {
