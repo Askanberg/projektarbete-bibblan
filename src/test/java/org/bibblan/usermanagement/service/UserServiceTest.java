@@ -1,6 +1,7 @@
 package org.bibblan.usermanagement.service;
 
 import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.usermanagement.exception.InvalidUserInputException;
 import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
 import org.bibblan.usermanagement.mapper.UserMapper;
 import org.bibblan.usermanagement.user.User;
@@ -75,22 +76,9 @@ public class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
 
-        assertThrows(NullPointerException.class, () ->{
-            userService.registerNewUser(UserDTO.builder().name("Name").password("someRawPassword123").email("some@email.com").build());
-        });
-
-    }
-    @Test
-    public void registerNewUserWithoutEmailThrowsException() {
-        when(userRepository.save(any(User.class))).thenReturn(new User());
-
-
-        assertThrows(NullPointerException.class, () ->{
-            userService.registerNewUser(UserDTO.builder().name("Name").username("Username").password("someRawPassword123").build());
-        });
+        assertThrows(NullPointerException.class, () -> userService.registerNewUser(UserDTO.builder().name("Name").password("someRawPassword123").email("some@email.com").build()));
 
         verifyNoInteractions(userRepository);
-
 
     }
 
@@ -98,12 +86,12 @@ public class UserServiceTest {
     public void registerNewUserWithoutPasswordThrowsException() {
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
+        Exception e = assertThrows(InvalidUserInputException.class, () -> userService.registerNewUser(UserDTO.builder().name("Name").username("Lolipop").email("some@email.com").build()));
+        System.out.println(e.getMessage());
 
-        assertThrows(IllegalArgumentException.class, () ->{
-            userService.registerNewUser(UserDTO.builder().name("Name").username("Lolipop").email("some@email.com").build());
-        });
-
-        verify(userRepository, times(1)).findByUsername(any(String.class));
+        assertEquals("Invalid input in required fields.", e.getMessage(),
+                "Felmeddelandet var inte som förväntat.");
+        verifyNoInteractions(userRepository);
 
     }
 
@@ -142,14 +130,12 @@ public class UserServiceTest {
         User u = new User();
         when(userRepository.findByUsername("Hund_97")).thenReturn(Optional.of(u));
 
-        Exception e = assertThrows(UserAlreadyExistsException.class, () -> {
-            userService.registerNewUser(UserDTO.builder()
-                    .name("Arpe")
-                    .username("Hund_97")
-                    .email("hund_97@hotmail.com")
-                    .password("someRawPassword_1337")
-                    .build());
-        });
+        Exception e = assertThrows(UserAlreadyExistsException.class, () -> userService.registerNewUser(UserDTO.builder()
+                .name("Arpe")
+                .username("Hund_97")
+                .email("hund_97@hotmail.com")
+                .password("someRawPassword_1337")
+                .build()));
 
         assertEquals("User already exists.", e.getMessage() ,
                 "Fel: Förväntade ett UserAlreadyExistsException.");

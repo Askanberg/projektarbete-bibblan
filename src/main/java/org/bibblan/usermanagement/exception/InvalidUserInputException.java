@@ -1,12 +1,13 @@
 package org.bibblan.usermanagement.exception;
 
-import org.springframework.core.MethodParameter;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
-public class InvalidUserInputException extends MethodArgumentNotValidException {
+import java.util.Set;
 
-    public InvalidUserInputException(MethodParameter parameter, BindingResult bindingResult) {
-        super(parameter, bindingResult);
+public class InvalidUserInputException extends ConstraintViolationException {
+
+    public InvalidUserInputException(String msg, Set<? extends ConstraintViolation<?>> bindingResult) {
+        super(msg, bindingResult);
     }
 }

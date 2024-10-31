@@ -49,6 +49,9 @@ class UserMapperTest {
     @Test
     void toEntityLeavesOutPassword(){
         UserDTO userDTO = UserDTO.builder()
+                .username("Username")
+                .name("Name")
+                .email("Email@gmail.com")
                 .password("leaveOutPassword")
                 .build();
 
@@ -67,6 +70,9 @@ class UserMapperTest {
     @DisplayName("Lösenordet sparas inte när User mappas till DTO")
     void toDTOLeavesOutPassword(){
         User u = User.builder()
+                .username("Username")
+                .name("Name")
+                .email("some@gmail.com")
                 .password("leaveOutPassword")
                 .build();
 
