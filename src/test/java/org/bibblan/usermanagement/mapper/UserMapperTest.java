@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserMapperTest {
 
+    private final UserMapper userMapper = new UserMapper();
+
     @Test
     @DisplayName("Omvandlar ett DTO-objekt till Entitet.")
     void toDTOConvertsFromEntityToDTO() {
@@ -19,7 +21,6 @@ class UserMapperTest {
                 .password(null)
                 .build();
 
-        UserMapper userMapper = new UserMapper();
         UserDTO userDTO = userMapper.toDTO(user);
 
         // Kontrollerar att UserDTO har initialiserats.
@@ -32,7 +33,6 @@ class UserMapperTest {
 
     @Test
     void toEntityConvertsFromEntityToDTO() {
-        UserMapper userMapper = new UserMapper();
         UserDTO userDTO = UserDTO.builder()
                 .name("DTO")
                 .username("UserDTOname")
@@ -76,7 +76,6 @@ class UserMapperTest {
                 .password("leaveOutPassword")
                 .build();
 
-        UserMapper userMapper = new UserMapper();
 
         UserDTO userDTO = userMapper.toDTO(u);
 
@@ -85,5 +84,26 @@ class UserMapperTest {
 
         assertNotEquals(u.getPassword(), userDTO.getPassword(),
                 "Fel: Lösenordet förväntades vara null efter mappningen.");
+    }
+    @Test
+    @DisplayName("Konvertering till Entity som är null ger en tom DTO.")
+    public void nullToEntityReturnsEmptyDTO(){
+        User u = userMapper.toEntity(null);
+
+        assertNotNull(u);
+
+        assertEquals(u, new User());
+
+    }
+
+    @Test
+    @DisplayName("Konvertering till DTO som är null ger en tom Entity.")
+    public void nullToDTOReturnsEmptyEntity(){
+        UserDTO u = userMapper.toDTO(null);
+
+        assertNotNull(u);
+
+        assertEquals(u, new UserDTO());
+
     }
 }

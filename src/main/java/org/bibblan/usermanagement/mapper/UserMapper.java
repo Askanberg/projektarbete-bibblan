@@ -9,7 +9,7 @@ public class UserMapper {
 
     public UserDTO toDTO(User user){
         if(user == null){
-            return null;
+            return new UserDTO();
         }
         return UserDTO.builder()
                 .name(user.getName())
@@ -21,7 +21,7 @@ public class UserMapper {
 
     public User toEntity(UserDTO userDTO){
         if(userDTO == null){
-            return null;
+            return new User();
         }
         return User.builder()
                 .name(userDTO.getName())
