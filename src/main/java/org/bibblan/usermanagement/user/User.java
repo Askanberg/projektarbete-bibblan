@@ -14,6 +14,8 @@ import lombok.*;
 @ToString
 public class User {
 
+
+
     @NonNull
     @Column(unique = true)
     private String email;

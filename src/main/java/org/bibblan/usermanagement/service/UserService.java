@@ -37,6 +37,10 @@ public class UserService {
     }
 
     public List<User> getUsers() {
+        List<User> users = userRepository.findAll();
+        if(users.isEmpty()){
+            throw new UserNotFoundException("No registered users yet.");
+        }
         return userRepository.findAll();
     }
 
@@ -57,7 +61,9 @@ public class UserService {
     public User registerNewUser(UserDTO userDTO) {
         Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
         if(!violations.isEmpty()){
-            throw new InvalidUserInputException("Invalid input in required fields.", violations);
+            String[] errorMessage = new String[1];
+            violations.forEach(constraintViolation -> errorMessage[0] = constraintViolation.getMessage());
+            throw new InvalidUserInputException(errorMessage[0], violations);
         }
         if(userRepository.findByUsername(userDTO.getUsername()).isPresent()){
             throw new UserAlreadyExistsException("User already exists.");

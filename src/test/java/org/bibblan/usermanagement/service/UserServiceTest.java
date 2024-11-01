@@ -3,6 +3,7 @@ package org.bibblan.usermanagement.service;
 import org.bibblan.usermanagement.dto.UserDTO;
 import org.bibblan.usermanagement.exception.InvalidUserInputException;
 import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
+import org.bibblan.usermanagement.exception.UserNotFoundException;
 import org.bibblan.usermanagement.mapper.UserMapper;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.userrepository.UserRepository;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,6 +30,64 @@ public class UserServiceTest {
     @Autowired
     private UserMapper userMapper;
 
+
+    @Test
+    @DisplayName("Metoden getUsers() ger felmeddelande när inga användare är registrerade.")
+    public void getUsersWithoutUsersThrowsException(){
+        when(userRepository.findAll()).thenReturn(Collections.emptyList());
+
+        Exception e = assertThrows(UserNotFoundException.class, userService::getUsers
+        , "Förväntade att getUsers() skulle kasta ett undantag.");
+
+        assertTrue(e.getMessage().contains("No registered users yet."));
+
+    }
+
+    @Test
+    @DisplayName("getUsers() returnerar en lista med alla registrerade användare.")
+    public void getUsersReturnsRegisteredUsers(){
+        when(userRepository.save(any(User.class))).thenReturn(new User());
+
+        UserDTO firstDTO = UserDTO.builder()
+                .name("First Name")
+                .username("Second Username")
+                .email("first@email.com")
+                .password("someRawPassword123")
+                .build();
+
+        UserDTO secondDTO = UserDTO.builder()
+                .name("Second Name")
+                .username("Second Username")
+                .email("second@email.com")
+                .password("secondRawPassword123").build();
+
+        UserDTO thirdDTO = UserDTO.builder()
+                        .name("Third Name")
+                        .username("Third Username")
+                        .email("third@email.com")
+                        .password("thirdRawPassword123")
+                        .build();
+
+        userService.registerNewUser(firstDTO);
+        userService.registerNewUser(secondDTO);
+        userService.registerNewUser(thirdDTO);
+
+        verify(userRepository, times(3)).save(any(User.class));
+
+        List<User> users = List.of(userMapper.toEntity(firstDTO), userMapper.toEntity(secondDTO), userMapper.toEntity(thirdDTO));
+
+        when(userRepository.findAll()).thenReturn(users);
+
+        users = userRepository.findAll();
+
+        assertNotNull(users,
+                "Listan med användare förväntades inte vara null.");
+
+        assertEquals(3, users.size(),
+                "Förväntade att listan skulle innehålla tre användare.");
+
+        assertTrue(users.containsAll(Arrays.asList(userMapper.toEntity(firstDTO), userMapper.toEntity(secondDTO), userMapper.toEntity(thirdDTO))));
+    }
 
     @Test
     @DisplayName("Registerar användare med valid data.")
