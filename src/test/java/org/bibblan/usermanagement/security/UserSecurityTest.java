@@ -18,7 +18,7 @@ public class UserSecurityTest {
                 .name("Test")
                 .email("something@domain.com")
                 .password("myRawPassword")
-                .ID((long) 101)
+                .ID(101)
                 .build();
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

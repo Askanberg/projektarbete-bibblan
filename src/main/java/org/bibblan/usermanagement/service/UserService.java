@@ -41,7 +41,7 @@ public class UserService {
         if(users.isEmpty()){
             throw new UserNotFoundException("No registered users yet.");
         }
-        return userRepository.findAll();
+        return users;
     }
 
     public UserDTO getUserDTOByUsername(String username) {
@@ -49,8 +49,9 @@ public class UserService {
                 .map(userMapper::toDTO)
                 .orElseThrow(() -> new UserNotFoundException("No registered user with that username."));
     }
-    public UserDTO getUserDTOById(Integer ID) {
-        return userRepository.findById(ID)
+
+    public UserDTO getUserDTOById(Integer id) {
+        return userRepository.findById(id)
                 .map(userMapper::toDTO)
                 .orElseThrow(() -> new UserNotFoundException("No registered user with that ID."));
     }
@@ -68,9 +69,11 @@ public class UserService {
         if(userRepository.findByUsername(userDTO.getUsername()).isPresent()){
             throw new UserAlreadyExistsException("User already exists.");
         }
-
         User u = User.builder().name(userDTO.getName()).username(userDTO.getUsername()).email(userDTO.getEmail()).password((passwordEncoder.encode(userDTO.getPassword()))).build();
-        return userRepository.save(u);
+        System.out.println(u);
+        u = userRepository.save(u);
+        System.out.println(u);
+        return u;
     }
 
 

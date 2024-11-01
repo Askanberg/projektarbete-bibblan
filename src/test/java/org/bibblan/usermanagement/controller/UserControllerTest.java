@@ -1,5 +1,6 @@
 package org.bibblan.usermanagement.controller;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -32,6 +33,24 @@ public class UserControllerTest {
     @MockBean
     private UserMapper userMapper;
 
+    void saveUser(UserDTO userDTO) throws Exception {
+
+        String userJson = "{ \"name\": \""+userDTO.getName() +"\", \"username\": \""+ userDTO.getUsername()+"\", \"email\": \""+userDTO.getEmail()+"\", \"password\": \""+userDTO.getPassword()+"\" }";
+
+        mockMvc.perform(post("/userDemo/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("User successfully registered."));
+
+    }
+
+    private final UserDTO FIRST_DTO = UserDTO.builder()
+            .name("Name")
+            .username("Username")
+            .email("test@email.com")
+            .password("someRawPassword123123")
+            .build();
 
     @Test
     public void handlesInvalidUsernameCorrectly() {
@@ -56,7 +75,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson)) // Send JSON content
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.username").value("Invalid username.")); // Validate error message
+                .andExpect(jsonPath("$.username").value("Username must be between 3 and 20 characters.")); // Validate error message
     }
 
     @Test
@@ -93,5 +112,63 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    @DisplayName("getUserByUsername() returnerar rätt registrerade användare.")
+    public void getUserByUsernameReturnsRegisteredUser() throws Exception {
+        saveUser(FIRST_DTO);
+
+        when(userService.getUserDTOByUsername("Username"))
+                .thenReturn(FIRST_DTO);
+
+        mockMvc.perform(get("/userDemo/getUser/username/{username}", "Username")
+                        .characterEncoding("UTF-8"))
+                .andExpect(status().isOk());
+
+        verify(userService, times(1)).getUserDTOByUsername(any(String.class));
+
+    }
+
+    @Test
+    @DisplayName("getUserByUsername() kastar UserNotFoundException när användaren inte finns.")
+    public void getUserByUsernameThrowsException() throws Exception {
+
+        mockMvc.perform(get("/userDemo/getUser/username/{username}", "Unavailable Username")
+                        .characterEncoding("UTF-8"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No registered user with that username."));
+
+    }
+
+    @Test
+    @DisplayName("getUserById() returnerar rätt registrerade användare.")
+    public void getUserByIdReturnsExistingUser() throws Exception {
+        UserDTO userDTO = UserDTO.builder()
+                        .name("Name DTO")
+                        .username("Username DTO")
+                        .email("dto@email.com")
+                        .password("someRawPassword1337")
+                        .build();
+
+        saveUser(userDTO);
+
+        when(userService.getUserDTOById(1))
+                .thenReturn(FIRST_DTO);
+
+        mockMvc.perform(get("/userDemo/getUser/id/{id}", 1)
+                        .characterEncoding("UTF-8"))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    @DisplayName("getUserById() kastar UserNotFoundException när användaren inte finns.")
+    public void getUserByIdThrowsException() throws Exception {
+
+        mockMvc.perform(get("/userDemo/getUser/id/{id}", 1)
+                        .characterEncoding("UTF-8"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No registered user with that id."));
+
+    }
 }
 

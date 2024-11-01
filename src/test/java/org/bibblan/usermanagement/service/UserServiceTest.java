@@ -1,5 +1,6 @@
 package org.bibblan.usermanagement.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bibblan.usermanagement.dto.UserDTO;
 import org.bibblan.usermanagement.exception.InvalidUserInputException;
 import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
@@ -30,9 +31,18 @@ public class UserServiceTest {
     @Autowired
     private UserMapper userMapper;
 
+    private final UserDTO FIRST_DTO = UserDTO.builder()
+            .name("Name")
+                .username("Username")
+                .email("test@email.com")
+                .password("someRawPassword123123")
+                .build();
+    @Autowired
+    private ObjectMapper jacksonObjectMapper;
+
 
     @Test
-    @DisplayName("Metoden getUsers() ger felmeddelande när inga användare är registrerade.")
+    @DisplayName("getUsers() kastar ett UserNotFoundException när inga användare är registrerade.")
     public void getUsersWithoutUsersThrowsException(){
         when(userRepository.findAll()).thenReturn(Collections.emptyList());
 
@@ -40,6 +50,80 @@ public class UserServiceTest {
         , "Förväntade att getUsers() skulle kasta ett undantag.");
 
         assertTrue(e.getMessage().contains("No registered users yet."));
+
+    }
+
+    @Test
+    @DisplayName("getUserById() returnerar den korrekta registrerade användaren.")
+    public void getUserByIdReturnsCorrectUser(){
+        when(userRepository.save(any(User.class))).thenAnswer(i -> {
+            User mockUser = i.getArgument(0);
+            mockUser.setID(1);
+            mockUser.setName(FIRST_DTO.getName());
+            mockUser.setUsername(FIRST_DTO.getUsername());
+            mockUser.setPassword(FIRST_DTO.getPassword());
+            mockUser.setEmail(FIRST_DTO.getEmail());
+            return mockUser;
+        });
+
+        User u = userService.registerNewUser(FIRST_DTO);
+
+        verify(userRepository, times(1)).save(any(User.class));
+
+        assertEquals(1, u.getID(),
+                "Förväntade att den enda registerarde användaren hade rätt id.");
+
+        when(userRepository.findById(any(Integer.class))).thenReturn(Optional.of(u));
+
+        UserDTO dto = userService.getUserDTOById(1);
+
+        System.out.println("UserServiceTest DTO = "+ dto);
+
+        assertEquals(u,userMapper.toEntity(dto),
+                "Förväntade att rätt användare skulle returneras.");
+
+    }
+
+
+    @Test
+    @DisplayName("getUserById() kastar ett UserNotFoundException när användaren inte finns.")
+    public void getUserByIdThrowsException() {
+        UserDTO firstDTO = UserDTO.builder()
+                .name("Name")
+                .username("Username")
+                .email("test@email.com")
+                .password("someRawPassword123123")
+                .build();
+
+        when(userRepository.save(any(User.class))).thenAnswer(i -> {
+            User u = i.getArgument(0);
+            u.setName("Name");
+            u.setEmail("test@email.com");
+            u.setUsername("Username");
+            u.setPassword("someRawPassword123123");
+            u.setID(1);
+            return u;
+        });
+
+
+        User u = userService.registerNewUser(firstDTO);
+
+        verify(userRepository, times(1)).save(any(User.class));
+
+        System.out.println("UserServiceTest = " + u);
+
+        assertNotNull(u,
+                "Förväntade att användaren skulle finnas i databasen.");
+
+
+        assertEquals(1, u.getID()
+        ,"Förväntade att användaren ID skulle vara 1.");
+
+
+        Exception e = assertThrows(UserNotFoundException.class, () -> userService.getUserDTOById( 100),
+                "Förväntade att ett UserNotFoundException skulle kastas.");
+
+        assertEquals("No registered user with that ID.", e.getMessage());
 
     }
 
@@ -78,7 +162,9 @@ public class UserServiceTest {
 
         when(userRepository.findAll()).thenReturn(users);
 
-        users = userRepository.findAll();
+        users = userService.getUsers();
+
+        verify(userRepository, times(1)).findAll();
 
         assertNotNull(users,
                 "Listan med användare förväntades inte vara null.");
@@ -148,7 +234,7 @@ public class UserServiceTest {
         Exception e = assertThrows(InvalidUserInputException.class, () -> userService.registerNewUser(UserDTO.builder().name("Name").username("Lolipop").email("some@email.com").build()));
         System.out.println(e.getMessage());
 
-        assertEquals("Invalid input in required fields.", e.getMessage(),
+        assertEquals("Password field is required.", e.getMessage(),
                 "Felmeddelandet var inte som förväntat.");
         verifyNoInteractions(userRepository);
 

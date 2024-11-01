@@ -40,7 +40,7 @@ public class UserController {
         return ResponseEntity.ok("User successfully registered.");
     }
 
-    @GetMapping("/getUser/{username}")
+    @GetMapping("/getUser/username/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable @Valid String username){
         UserDTO u = userService.getUserDTOByUsername(username);
         if(u == null){
@@ -49,9 +49,12 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(path = "/getUser/{id}")
+    @GetMapping(path = "/getUser/id/{id}")
     public ResponseEntity<User> getUserById(@PathVariable @Valid Integer id){
         UserDTO u = userService.getUserDTOById(id);
+        if(u == null) {
+            throw new UserNotFoundException("No registered user with that id.");
+        }
         return ResponseEntity.ok().build();
     }
 
