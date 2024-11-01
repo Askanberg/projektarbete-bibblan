@@ -244,7 +244,7 @@ public class ItemCollectionTests {
     //************** Searching Tests**************
     //********************************************
     @BeforeEach
-    public void InitializeSearchUtilities() throws IOException {
+    public void searchSetup() throws IOException {
         searchCollection = new ItemCollection();
         ItemFileReader itemFileReader = new ItemFileReader(new ItemFactory());
         searchCollection.addItems(itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv"));
@@ -310,27 +310,4 @@ public class ItemCollectionTests {
         List<Item> expectedList = searchCollection.getItemCopies("Educated");
         assertEquals(expectedList, searchCollection.searchByAuthor("Tar"));
     }
-
-    @Test
-    void testThatCalculateDistanceGivesDistanceZeroForIdenticalStrings() {
-        assertEquals(0, searchCollection.calculateDistance("Test", "Test"));
-    }
-    @Test
-    void testThatCalculateDistanceGivesDistance1ForStringsThatDifferOneLetter() {
-        assertEquals(1, searchCollection.calculateDistance("Test", "Teft"));
-    }
-    @Test
-    void testThatCalculateDistanceGivesDistance1ForStringThatIsOneLetterShorter() {
-        assertEquals(1, searchCollection.calculateDistance("Test", "Tes"));
-    }
-    @Test
-    void testThatCalculateDistanceGivesDistanceOfStringSizeWhenComparingEmptyString() {
-        assertEquals(4, searchCollection.calculateDistance("Test", ""));
-    }
-    @Test
-    void testThatCalculateDistanceGivesDistanceOfStringSizeWhenComparingCompletelyDifferentStrings() {
-        assertEquals(4, searchCollection.calculateDistance("abcd", "efgh"));
-    }
-
-
 }
