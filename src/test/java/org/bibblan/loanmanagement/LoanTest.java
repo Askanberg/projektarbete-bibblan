@@ -160,4 +160,18 @@ class LoanTest {
         assertTrue(history.contains("Loan reset on " + LocalDate.now()), "The history should contain the entry for the reset.");
     }
 
+    @Test
+    void testGetReplacementCostWhenBookIsLost() {
+        loan.markAsLost();
+        double expectedReplacementCost = 500.0;
+        assertEquals(expectedReplacementCost, loan.getReplacementCost(),
+                "Replacement cost should be 500.0 when the book is marked as lost");
+    }
+
+    @Test
+    void testGetReplacementCostWhenBookIsNotLost() {
+        assertEquals(0.0, loan.getReplacementCost(),
+                "Replacement cost should be 0.0 when the book is not marked as lost");
+    }
+
 }

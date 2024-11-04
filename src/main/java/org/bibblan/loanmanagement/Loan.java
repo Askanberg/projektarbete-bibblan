@@ -41,7 +41,6 @@ public class Loan {
         this.dueDate = startDate.plusDays(this.loanDuration);
     }
 
-
     public void setLoanDuration() {
         if ("Classics".equalsIgnoreCase(item.getGenre())) {
             this.loanDuration = 28;
@@ -50,21 +49,16 @@ public class Loan {
         }
     }
 
-
     public void returnBook() {
         loanHistory.add("Book returned on " + LocalDate.now());
         this.returned = true;
     }
 
-    public boolean isReturned() {
-        return returned;
-    }
-
+    //public boolean isReturned() {return returned;}
 
     public boolean isOverdue() {
         return LocalDate.now().isAfter(dueDate) && !returned;
     }
-
 
     public double calculateFine() {
         if (!returned && isOverdue()) {
@@ -74,7 +68,7 @@ public class Loan {
         return 0.0;
     }
 
-
+    // Extend loan manually
     public void extendLoan(int extraDays) {
         if (!isOverdue() && !returned) {
             dueDate = dueDate.plusDays(extraDays);
@@ -111,10 +105,10 @@ public class Loan {
     }
 
     public boolean canBorrowMoreBooks(int currentLoans) {
-        final int MAX_LOANS = 5;
         return currentLoans < MAX_LOANS;
     }
 
+    // Extends loan automatically
     public void autoRenewLoan() {
         int renewDays = loanDuration / 2;
         if (renewals < MAX_RENEWALS && !isOverdue() && !returned) {
@@ -136,6 +130,5 @@ public class Loan {
         loanHistory.add("Loan reset on " + LocalDate.now());
     }
 
-    public void setDueDate(LocalDate dueDate) {this.dueDate = dueDate;
-    }
+    //public void setDueDate(LocalDate dueDate) {this.dueDate = dueDate;}
 }
