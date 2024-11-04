@@ -15,7 +15,6 @@ import org.bibblan.bookcatalog.domain.Item;
 
 @Data
 public class Loan {
-
     private static final double DAILY_FINE_RATE = 10.0;
     public static final int MAX_RENEWALS = 3;
     public static final int MAX_LOANS = 3;

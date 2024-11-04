@@ -3,7 +3,10 @@ package org.bibblan;
 import org.bibblan.bookcatalog.ItemCollection;
 import org.bibblan.bookcatalog.ItemFactory;
 import org.bibblan.bookcatalog.ItemFileReader;
+import org.bibblan.bookcatalog.domain.Book;
 import org.bibblan.bookcatalog.domain.Item;
+import org.bibblan.loanmanagement.Loan;
+import org.bibblan.loanmanagement.LoanCollections;
 import org.bibblan.reviews.RecommendationSystem;
 import org.bibblan.reviews.Review;
 import org.bibblan.reviews.ReviewCollection;
@@ -13,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class IntegrationTests {
     private ItemCollection itemCollection;
@@ -81,6 +85,13 @@ public class IntegrationTests {
 
     @Test
     void test() {
+        LoanCollections loanCollections = new LoanCollections();
+        loanCollections.addLoan((Book) itemCollection.getItemMap().get("Becoming").get(0));
+        System.out.println(loanCollections.getAllActiveLoans());
+
+        loanCollections.returnLoan("Becoming");
+        System.out.println(loanCollections.getAllActiveLoans());
+
     }
 
 }
