@@ -28,7 +28,7 @@ public class Loan {
     private boolean lost = false;
     private String status;
     private int renewals = 0;
-    private static int totalLoans = 0;
+    public static int totalLoans = 0;
 
 
     public Loan(Book book) {
@@ -40,6 +40,7 @@ public class Loan {
         setLoanDuration();
         this.dueDate = startDate.plusDays(this.loanDuration);
     }
+
 
     public void setLoanDuration() {
         if ("Classics".equalsIgnoreCase(item.getGenre())) {

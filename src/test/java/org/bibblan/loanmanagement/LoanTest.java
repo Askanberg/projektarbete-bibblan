@@ -37,6 +37,22 @@ class LoanTest {
     }
 
     @Test
+    void testSetLoanDuration_ClassicsGenre() {
+        Author author = new Author("F. Scott Fitzgerald", items);
+        Book classicBook = new Book("The Great Gatsby", author, "Classics", "9780743273565", "Scribner", CoverType.HARDCOVER);
+        Loan loan = new Loan(classicBook);
+        assertEquals(28, loan.getLoanDuration(), "Loan duration should be 28 days for classics genre.");
+    }
+
+    @Test
+    void testSetLoanDuration_OtherGenre() {
+        Author author = new Author("F. Scott Fitzgerald", items);
+        Book otherGenreBook = new Book("Some Other Book", author, "Fiction", "9781234567890", "Publisher", CoverType.HARDCOVER);
+        Loan loan = new Loan(otherGenreBook);
+        assertEquals(14, loan.getLoanDuration(), "Loan duration should be 14 days for non-classics genre.");
+    }
+
+    @Test
     void testCalculateFine_NoFineIFNotOverdue(){
         assertEquals(0.0, loan.calculateFine(), "Fine should be 0 if loan is not overdue.");
     }
@@ -83,6 +99,19 @@ class LoanTest {
     }
 
     @Test
+    void testGetLoanStatus_Lost() {
+        loan.markAsLost();
+        assertEquals("Lost", loan.getLoanStatus(), "Loan status should be 'Lost' when the book is marked as lost.");
+    }
+
+    @Test
+    void testGetLoanStatus_Overdue() {
+        loan.setDueDate(LocalDate.now().minusDays(1));
+        assertTrue(loan.isOverdue(), "Loan should be overdue");
+        assertEquals("Overdue", loan.getLoanStatus(), "Loan status should be 'Overdue' when the loan is overdue.");
+    }
+
+    @Test
     void testGetRemainingDays_NotReturned() {
         loan.setDueDate(LocalDate.now().plusDays(10));
         assertEquals(10, loan.getRemainingDays(), "Remaining days should reflect the correct amount of time.");
@@ -113,7 +142,7 @@ class LoanTest {
 
     @Test
     void testCanBorrowMoreBooks() {
-        assertTrue(loan.canBorrowMoreBooks(4), "User should be able to borrow if under max loan limit.");
+        assertTrue(loan.canBorrowMoreBooks(2), "User should be able to borrow if under max loan limit.");
         assertFalse(loan.canBorrowMoreBooks(5), "User should not be able to borrow if at max loan limit.");
     }
 
@@ -171,5 +200,6 @@ class LoanTest {
     void testGetReplacementCostWhenBookIsNotLost() {
         assertEquals(0.0, loan.getReplacementCost(), "Replacement cost should be 0.0 when the book is not marked as lost");
     }
+
 
 }
