@@ -201,5 +201,4 @@ class LoanTest {
         assertEquals(0.0, loan.getReplacementCost(), "Replacement cost should be 0.0 when the book is not marked as lost");
     }
 
-
 }
