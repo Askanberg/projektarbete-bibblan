@@ -1,42 +1,80 @@
 package org.bibblan.usermanagement.service;
 
-import org.bibblan.usermanagement.security.SecurityConfig;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.usermanagement.exception.InvalidUserInputException;
+import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
+import org.bibblan.usermanagement.exception.UserNotFoundException;
+import org.bibblan.usermanagement.mapper.UserMapper;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.userrepository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final Validator validator;
+
+    private final UserMapper userMapper;
+
+    private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder = SecurityConfig.passwordEncoder();
-
-    @PostMapping(path="/register")
-    public @ResponseBody User registerNewUser(@RequestParam String name, @RequestParam String userName, @RequestParam String password, @RequestParam String email){
-
-        String encodePassword = passwordEncoder.encode(password);
-
-        return User.builder()
-                .name(name)
-                .username(userName)
-                .password(encodePassword)
-                .email(email)
-                .build();
+    public UserService(UserMapper userMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,  Validator validator) {
+        this.validator = validator;
+        this.userMapper = userMapper;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/userDemo/getUser/{username}")
-    public @ResponseBody ResponseEntity<User> getUser(@PathVariable String username){
-        Optional<User> u = userRepository.findByUsername(username);
-        return u.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public List<User> getUsers() {
+        List<User> users = userRepository.findAll();
+        if(users.isEmpty()){
+            throw new UserNotFoundException("No registered users yet.");
+        }
+        return users;
     }
+
+    public UserDTO getUserDTOByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(userMapper::toDTO)
+                .orElseThrow(() -> new UserNotFoundException("No registered user with that username."));
+    }
+
+    public UserDTO getUserDTOById(Integer id) {
+        return userRepository.findById(id)
+                .map(userMapper::toDTO)
+                .orElseThrow(() -> new UserNotFoundException("No registered user with that ID."));
+    }
+
+
+
+    @Transactional
+    public User registerNewUser(UserDTO userDTO) {
+        Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
+        if(!violations.isEmpty()){
+            String[] errorMessage = new String[1];
+            violations.forEach(constraintViolation -> errorMessage[0] = constraintViolation.getMessage());
+            throw new InvalidUserInputException(errorMessage[0], violations);
+        }
+        if(userRepository.findByUsername(userDTO.getUsername()).isPresent()){
+            throw new UserAlreadyExistsException("User already exists.");
+        }
+        User u = User.builder().name(userDTO.getName()).username(userDTO.getUsername()).email(userDTO.getEmail()).password((passwordEncoder.encode(userDTO.getPassword()))).build();
+        System.out.println(u);
+        u = userRepository.save(u);
+        System.out.println(u);
+        return u;
+    }
+
 
 }

@@ -19,8 +19,4 @@ public class Reference extends Item{
         this.isbn = isbn;
     }
 
-    @Override
-    public String getArticleType() {
-        return "Reference";
-    }
 }

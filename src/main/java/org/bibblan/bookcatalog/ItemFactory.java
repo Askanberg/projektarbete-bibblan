@@ -62,7 +62,7 @@ public class ItemFactory {
             throw new IllegalArgumentException("Invalid ISBN for book: " + isbnBook);
         }
         if (values.length != 6) {
-            throw new IllegalArgumentException("Invalid number of columns for book");
+            throw new IllegalArgumentException("Invalid number of columns for Book");
         }
         String coverType = values[5].trim();
         Book book = new Book(title, author, genre, publisher, isbnBook, CoverType.valueOf(coverType.toUpperCase()));
@@ -76,7 +76,7 @@ public class ItemFactory {
             throw new IllegalArgumentException("Invalid URL for Ebook: " + url);
         }
         if (values.length != 6) {
-            throw new IllegalArgumentException("Invalid number of columns for book");
+            throw new IllegalArgumentException("Invalid number of columns for Ebook");
         }
         String fileFormat = values[5].trim();
         EBook ebook = new EBook(title, author, genre, publisher, url, fileFormat);
@@ -86,7 +86,7 @@ public class ItemFactory {
     }
     private Reference createReference(String[] values, String title, Author author, String genre, String publisher) {
         if (values.length != 5) {
-            throw new IllegalArgumentException("Invalid number of columns for book");
+            throw new IllegalArgumentException("Invalid number of columns for Reference");
         }
         String isbnReference = values[4].trim();
         return new Reference(title, author, genre, publisher, isbnReference);

@@ -15,7 +15,7 @@ public class ItemFileReaderTests {
     private ItemFileReader itemFileReader;
 
     @BeforeEach
-    public void initializeUtilities() {
+    public void setup() {
         ItemFactory itemFactory = new ItemFactory();
         itemFileReader = new ItemFileReader(itemFactory);
     }
