@@ -30,6 +30,7 @@ public class Loan {
     private int renewals = 0;
     public static int totalLoans = 0;
 
+    private static List<Loan> activeLoans = new ArrayList<>();
 
     public Loan(Book book) {
         if (totalLoans >= MAX_LOANS) {
