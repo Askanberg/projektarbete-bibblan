@@ -131,4 +131,11 @@ public class Loan {
     }
 
     //public void setDueDate(LocalDate dueDate) {this.dueDate = dueDate;}
+
+    public double getReplacementCost() {
+        if (lost) {
+            return 500.0;
+        }
+        return 0.0;
+    }
 }
