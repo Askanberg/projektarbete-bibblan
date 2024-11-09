@@ -5,8 +5,7 @@ import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class LoanCollectionsTest {
@@ -36,5 +35,18 @@ public class LoanCollectionsTest {
     public void testIsBookLoanedWhenBookIsLoaned() {
         loanCollections.addLoan(user, book);
         assertTrue(loanCollections.isBookLoaned(book));
+    }
+
+   /* @Test
+    public void testAddLoanSuccessfully() {
+        loanCollections.addLoan(user, book);
+        assertEquals(1, loanCollections.getUserLoans(user).size());
+        assertTrue(loanCollections.isBookLoaned(book));
+    }
+    */
+    @Test
+    public void testAddLoanThrowsExceptionWhenBookIsAlreadyLoaned() {
+        loanCollections.addLoan(user, book);
+        assertThrows(IllegalStateException.class, () -> loanCollections.addLoan(user, book), "This book is already loaned out.");
     }
 }

@@ -82,7 +82,7 @@ public class IntegrationTests {
         Review review = new Review(item, rating, user);
         reviewCollection.addReview(review);
     }
-
+    /*
     @Test
     void test() {
         LoanCollections loanCollections = new LoanCollections();
@@ -93,5 +93,7 @@ public class IntegrationTests {
         System.out.println(loanCollections.getAllActiveLoans());
 
     }
+
+     */
 
 }

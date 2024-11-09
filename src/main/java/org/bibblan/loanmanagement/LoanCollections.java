@@ -1,15 +1,15 @@
 package org.bibblan.loanmanagement;
 
-import java.util.*;
 import org.bibblan.bookcatalog.domain.Book;
 import org.bibblan.usermanagement.user.User;
+import org.springframework.stereotype.Service;
 
+import java.util.*;
+
+@Service
 public class LoanCollections {
-    private Map<User, List<Loan>> activeLoans;
 
-    public LoanCollections() {
-        this.activeLoans = new LinkedHashMap<>();
-    }
+    private final Map<User, List<Loan>> activeLoans = new LinkedHashMap<>();
 
 
     public boolean isBookLoaned(Book book) {
@@ -27,14 +27,15 @@ public class LoanCollections {
         if (isBookLoaned(book)) {
             throw new IllegalStateException("This book is already loaned out.");
         }
-        Loan newLoan = new Loan(book);
-        if (activeLoans.containsKey(user)) {
-            activeLoans.get(user).add(newLoan);
-        } else {
-            List<Loan> loans = new ArrayList<>();
-            loans.add(newLoan);
-            activeLoans.put(user, loans);
+
+        List<Loan> userLoans = activeLoans.getOrDefault(user, new ArrayList<>());
+        if (userLoans.size() >= Loan.MAX_LOANS) {
+            throw new IllegalStateException("User has reached the maximum loan limit.");
         }
+
+        Loan newLoan = new Loan(book);
+        userLoans.add(newLoan);
+        activeLoans.put(user, userLoans);
     }
 
     public void returnLoan(User user, Loan loan) {
