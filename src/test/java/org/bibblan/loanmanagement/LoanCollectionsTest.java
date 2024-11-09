@@ -37,16 +37,31 @@ public class LoanCollectionsTest {
         assertTrue(loanCollections.isBookLoaned(book));
     }
 
-   /* @Test
+    @Test
     public void testAddLoanSuccessfully() {
         loanCollections.addLoan(user, book);
-        assertEquals(1, loanCollections.getUserLoans(user).size());
+
+        assertTrue(loanCollections.getAllActiveLoans().containsKey(user));
+        assertEquals(1, loanCollections.getAllActiveLoans().get(user).size());
+
         assertTrue(loanCollections.isBookLoaned(book));
     }
-    */
     @Test
     public void testAddLoanThrowsExceptionWhenBookIsAlreadyLoaned() {
         loanCollections.addLoan(user, book);
         assertThrows(IllegalStateException.class, () -> loanCollections.addLoan(user, book), "This book is already loaned out.");
+    }
+
+    @Test
+    public void testAddLoanThrowsExceptionWhenUserMaxLoansExceeded() {
+        loanCollections.addLoan(user, book);
+        Book book2 = mock(Book.class);
+        Book book3 = mock(Book.class);
+        Book book4 = mock(Book.class);
+
+        loanCollections.addLoan(user, book2);
+        loanCollections.addLoan(user, book3);
+
+        assertThrows(IllegalStateException.class, () -> loanCollections.addLoan(user, book4), "User has reached the maximum loan limit.");
     }
 }
