@@ -41,7 +41,6 @@ public class Loan {
         this.dueDate = startDate.plusDays(this.loanDuration);
     }
 
-
     public void setLoanDuration() {
         if ("Classics".equalsIgnoreCase(item.getGenre())) {
             this.loanDuration = 28;
@@ -111,14 +110,12 @@ public class Loan {
 
     // Extends loan automatically
     public void autoRenewLoan() {
-        int renewDays = loanDuration / 2;
         if (renewals < MAX_RENEWALS && !isOverdue() && !returned) {
-            extendLoan(renewDays);
             renewals++;
-            loanHistory.add("Auto-renewed loan by " + renewDays + " days on " + LocalDate.now());
-            System.out.println("New due date after auto-renew: " + dueDate);
+            loanHistory.add("Auto-renewed loan by " + (loanDuration / 2) + " days on " + LocalDate.now());
+            dueDate = dueDate.plusDays(loanDuration / 2); // Lägg till extra dagar
         } else {
-            System.out.println("Cannot auto-renew loan. Maximum renewals reached or loan is overdue/returned.");
+            throw new IllegalStateException("Cannot auto-renew loan. Maximum renewals reached or loan is overdue/returned.");
         }
     }
 

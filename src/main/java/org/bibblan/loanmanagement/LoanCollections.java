@@ -39,23 +39,42 @@ public class LoanCollections {
     }
 
     public void returnLoan(User user, Loan loan) {
-        if (activeLoans.containsKey(user)) {
-            if (activeLoans.get(user).contains(loan)) {
-                loan.returnBook();
-                activeLoans.get(user).remove(loan);
-            } else {
-                throw new NoSuchElementException("User has no loan of that book.");
-            }
-        } else{
-            throw new NoSuchElementException("No such user has a loan.");
+        List<Loan> userLoans = activeLoans.get(user);
+        if (userLoans != null && userLoans.contains(loan)) {
+            loan.returnBook();
+            userLoans.remove(loan);
+        } else {
+            throw new NoSuchElementException("No loan found for this book by the user.");
         }
+    }
+
+    public void markLoanAsLost(User user, Loan loan) {
+        List<Loan> userLoans = activeLoans.get(user);
+        if (userLoans != null && userLoans.contains(loan) && !loan.isReturned()) {
+            loan.markAsLost();
+        } else {
+            throw new NoSuchElementException("No active loan found for this book by the user.");
+        }
+    }
+
+    public void autoRenewLoan(User user, Loan loan) {
+        List<Loan> userLoans = activeLoans.get(user);
+        if (userLoans != null && userLoans.contains(loan)) {
+            if (loan.getRenewals() < Loan.MAX_RENEWALS && !loan.isReturned() && !loan.isOverdue()) {
+                loan.autoRenewLoan();
+            } else {
+                throw new IllegalStateException("Cannot auto-renew loan. Maximum renewals reached or loan is overdue/returned.");
+            }
+        } else {
+            throw new NoSuchElementException("No active loan found for this book by the user.");
+        }
+    }
+
+    public List<Loan> getUserLoans(User user) {
+        return activeLoans.getOrDefault(user, new ArrayList<>());
     }
 
     public Map<User, List<Loan>> getAllActiveLoans() {
         return activeLoans;
-    }
-
-    public void clearLoans() {
-        activeLoans.clear();
     }
 }
