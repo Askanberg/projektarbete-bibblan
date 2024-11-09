@@ -1,7 +1,6 @@
 package org.bibblan.loanmanagement;
 
 import java.util.*;
-
 import org.bibblan.bookcatalog.domain.Book;
 import org.bibblan.usermanagement.user.User;
 
@@ -12,10 +11,13 @@ public class LoanCollections {
         this.activeLoans = new LinkedHashMap<>();
     }
 
+
     public boolean isBookLoaned(Book book) {
-        for (List<Loan> l : activeLoans.values()) {
-            if (l.contains(book)) {
-                return true;
+        for (List<Loan> loans : activeLoans.values()) {
+            for (Loan loan : loans) {
+                if (loan.getItem().equals(book) && loan.getLoanStatus().equals("Active")) {
+                    return true;
+                }
             }
         }
         return false;
