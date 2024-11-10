@@ -43,27 +43,28 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/terms-and-conditions/**", "/home", "/login", "/register",
-                                "/oauth2/**", "/css/**", "/api/users/**", "/api/users/profile", "/api/users/**").permitAll()
-                        .requestMatchers("/profile").authenticated()
-                        .anyRequest().authenticated()
-                )
-                .authorizeHttpRequests(adminAuth -> adminAuth
-                        .requestMatchers("/admin/delete/**").hasRole("ROLE_ADMIN")
+                        .requestMatchers("/terms-and-conditions/**").permitAll()
+                        .requestMatchers("/", "/home").permitAll()
+                        .requestMatchers("/login", "/oauth2/**", "/code/**" ,"/**").permitAll()
+                        .requestMatchers("/login","/register").permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/users/profile", "/css/**").permitAll()
+                        .requestMatchers("/profile").permitAll()
+                        .requestMatchers("/", "/terms-and-conditions").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/profile", true).permitAll()
+                        .loginPage("/login.html").permitAll()
+                        .defaultSuccessUrl("/profile.html", true).permitAll()
 
                         .userInfoEndpoint(userInfo-> userInfo
                                 .oidcUserService(customOidcUserService)))
                 .formLogin(form -> form
                         .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/profile", true)
+                        .defaultSuccessUrl("/profile.html", true)
                 )
                 .logout(logoutAction -> logoutAction
-                        .logoutSuccessUrl("/home")
+                        .logoutSuccessUrl("/home.html")
                         .permitAll());
 
         return http.build();
