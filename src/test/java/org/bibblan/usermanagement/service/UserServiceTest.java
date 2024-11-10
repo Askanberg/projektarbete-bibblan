@@ -1,18 +1,24 @@
 package org.bibblan.usermanagement.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.Main;
+import org.bibblan.usermanagement.config.DisableSecurityConfig;
+import org.bibblan.usermanagement.dto.UserDto;
 import org.bibblan.usermanagement.exception.InvalidUserInputException;
 import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
 import org.bibblan.usermanagement.exception.UserNotFoundException;
 import org.bibblan.usermanagement.mapper.UserMapper;
+import org.bibblan.usermanagement.role.Role;
+import org.bibblan.usermanagement.repository.RoleRepository;
+import org.bibblan.usermanagement.testinitializer.TestContextInitializer;
 import org.bibblan.usermanagement.user.User;
-import org.bibblan.usermanagement.userrepository.UserRepository;
+import org.bibblan.usermanagement.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.*;
 
@@ -20,18 +26,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@SpringBootTest(classes = {Main.class, DisableSecurityConfig.class, TestContextInitializer.TestConfig.class})
 @DisplayName("User Service Test")
+@TestPropertySource(locations = "classpath:usermanagement/application-test.properties")
 public class UserServiceTest {
 
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @MockBean
+    private RoleRepository roleRepository;
+
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserMapper userMapper;
 
-    private final UserDTO FIRST_DTO = UserDTO.builder()
+    private final UserDto FIRST_DTO = UserDto.builder()
             .name("Name")
                 .username("Username")
                 .email("test@email.com")
@@ -75,11 +84,11 @@ public class UserServiceTest {
 
         when(userRepository.findById(any(Integer.class))).thenReturn(Optional.of(u));
 
-        UserDTO dto = userService.getUserDTOById(1);
+        UserDto dto = userService.getUserDTOById(1);
 
         System.out.println("UserServiceTest DTO = "+ dto);
 
-        assertEquals(u,userMapper.toEntity(dto),
+        assertEquals(u, UserMapper.toEntity(dto),
                 "Förväntade att rätt användare skulle returneras.");
 
     }
@@ -88,7 +97,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("getUserById() kastar ett UserNotFoundException när användaren inte finns.")
     public void getUserByIdThrowsException() {
-        UserDTO firstDTO = UserDTO.builder()
+        UserDto firstDTO = UserDto.builder()
                 .name("Name")
                 .username("Username")
                 .email("test@email.com")
@@ -132,20 +141,20 @@ public class UserServiceTest {
     public void getUsersReturnsRegisteredUsers(){
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
-        UserDTO firstDTO = UserDTO.builder()
+        UserDto firstDTO = UserDto.builder()
                 .name("First Name")
                 .username("Second Username")
                 .email("first@email.com")
                 .password("someRawPassword123")
                 .build();
 
-        UserDTO secondDTO = UserDTO.builder()
+        UserDto secondDTO = UserDto.builder()
                 .name("Second Name")
                 .username("Second Username")
                 .email("second@email.com")
                 .password("secondRawPassword123").build();
 
-        UserDTO thirdDTO = UserDTO.builder()
+        UserDto thirdDTO = UserDto.builder()
                         .name("Third Name")
                         .username("Third Username")
                         .email("third@email.com")
@@ -158,7 +167,7 @@ public class UserServiceTest {
 
         verify(userRepository, times(3)).save(any(User.class));
 
-        List<User> users = List.of(userMapper.toEntity(firstDTO), userMapper.toEntity(secondDTO), userMapper.toEntity(thirdDTO));
+        List<User> users = List.of(UserMapper.toEntity(firstDTO), UserMapper.toEntity(secondDTO), UserMapper.toEntity(thirdDTO));
 
         when(userRepository.findAll()).thenReturn(users);
 
@@ -172,7 +181,7 @@ public class UserServiceTest {
         assertEquals(3, users.size(),
                 "Förväntade att listan skulle innehålla tre användare.");
 
-        assertTrue(users.containsAll(Arrays.asList(userMapper.toEntity(firstDTO), userMapper.toEntity(secondDTO), userMapper.toEntity(thirdDTO))));
+        assertTrue(users.containsAll(Arrays.asList(UserMapper.toEntity(firstDTO), UserMapper.toEntity(secondDTO), UserMapper.toEntity(thirdDTO))));
     }
 
     @Test
@@ -181,10 +190,17 @@ public class UserServiceTest {
 
 
         // Definierar mock-objektets beteende när UserService::registerNewUser anropas som i sin tur anropar UserRepository::save
-        when(userRepository.save(any(User.class))).thenReturn(new User());
+        when(userRepository.save(any(User.class))).thenReturn(new User()).then(a -> {
+            User u = a.getArgument(0);
+            roleRepository.save(new Role("ROLE_MEMBER"));
+            u.getRoles().add(new Role("ROLE_MEMBER"));
+            return u;
+        });
 
         // Registrerar användaren genom Service-lagret som förväntas sparas sedan i databasen.
-        User u = userService.registerNewUser(UserDTO.builder().name("Bunke").username("BunkeLunke").email("inte@su.se").password("someRawPassword").build());
+        UserDto userDto = new UserDto("inte@su.se", "Bunke", "BunkeLunke", "someRawPassword");
+        userDto.getRoles().add(new Role("ROLE_MEMBER"));
+        User u = userService.registerNewUser(userDto);
 
         assertNotNull(u);
 
@@ -203,7 +219,7 @@ public class UserServiceTest {
             return u;
         });
 
-        User u = userService.registerNewUser(UserDTO.builder().name("Johan").username("Rohan").email("rohan@gmail.com").password("someRawPassword123").build());
+        User u = userService.registerNewUser(UserDto.builder().name("Johan").username("Rohan").email("rohan@gmail.com").password("someRawPassword123").build());
 
         // Kontrollerar som returnerades av registerNewUser() finns i databasen.
         assertNotNull(u, "Fel: Förväntade att användaren sparades.");
@@ -221,7 +237,7 @@ public class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
 
-        assertThrows(NullPointerException.class, () -> userService.registerNewUser(UserDTO.builder().name("Name").password("someRawPassword123").email("some@email.com").build()));
+        assertThrows(NullPointerException.class, () -> userService.registerNewUser(UserDto.builder().name("Name").password("someRawPassword123").email("some@email.com").build()));
 
         verifyNoInteractions(userRepository);
 
@@ -231,7 +247,7 @@ public class UserServiceTest {
     public void registerNewUserWithoutPasswordThrowsException() {
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
-        Exception e = assertThrows(InvalidUserInputException.class, () -> userService.registerNewUser(UserDTO.builder().name("Name").username("Lolipop").email("some@email.com").build()));
+        Exception e = assertThrows(InvalidUserInputException.class, () -> userService.registerNewUser(UserDto.builder().name("Name").username("Lolipop").email("some@email.com").build()));
         System.out.println(e.getMessage());
 
         assertEquals("Password field is required.", e.getMessage(),
@@ -249,7 +265,7 @@ public class UserServiceTest {
 
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
-        UserDTO temp = userMapper.toDTO(u);
+        UserDto temp = UserMapper.toDTO(u);
         temp.setPassword("someRawPassword");
 
 
@@ -275,14 +291,14 @@ public class UserServiceTest {
         User u = new User();
         when(userRepository.findByUsername("Hund_97")).thenReturn(Optional.of(u));
 
-        Exception e = assertThrows(UserAlreadyExistsException.class, () -> userService.registerNewUser(UserDTO.builder()
+        Exception e = assertThrows(UserAlreadyExistsException.class, () -> userService.registerNewUser(UserDto.builder()
                 .name("Arpe")
                 .username("Hund_97")
                 .email("hund_97@hotmail.com")
                 .password("someRawPassword_1337")
                 .build()));
 
-        assertEquals("User already exists.", e.getMessage() ,
+        assertEquals("A user is already registered with that username.", e.getMessage() ,
                 "Fel: Förväntade ett UserAlreadyExistsException.");
 
         verify(userRepository, times(1)).findByUsername(any(String.class));

@@ -2,38 +2,66 @@ package org.bibblan.usermanagement.service;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
-import org.bibblan.usermanagement.dto.UserDTO;
+import lombok.RequiredArgsConstructor;
+import org.bibblan.usermanagement.dto.UserDto;
 import org.bibblan.usermanagement.exception.InvalidUserInputException;
 import org.bibblan.usermanagement.exception.UserAlreadyExistsException;
 import org.bibblan.usermanagement.exception.UserNotFoundException;
 import org.bibblan.usermanagement.mapper.UserMapper;
+import org.bibblan.usermanagement.role.Role;
+import org.bibblan.usermanagement.repository.RoleRepository;
 import org.bibblan.usermanagement.user.User;
-import org.bibblan.usermanagement.userrepository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.bibblan.usermanagement.repository.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import java.nio.file.AccessDeniedException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+@RequiredArgsConstructor
+public class UserService extends DefaultOAuth2UserService {
 
+    private final RoleRepository roleRepository;
     private final Validator validator;
-
-    private final UserMapper userMapper;
-
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserMapper userMapper, UserRepository userRepository, PasswordEncoder passwordEncoder,  Validator validator) {
-        this.validator = validator;
-        this.userMapper = userMapper;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    @Transactional
+    public User registerNewUser(@Valid UserDto userDTO) {
+        validateUserDTO(userDTO);
+        checkUsernameAvailability(userDTO);
+
+        User u = new User(userDTO.getEmail(),userDTO.getName(), userDTO.getUsername(), passwordEncoder.encode(userDTO.getPassword()));
+        return userRepository.save(addDefaultRoleToUser(u));
+    }
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) {
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+        String email = oAuth2User.getAttribute("email");
+
+        if (email != null && userRepository.findByEmail(email).isEmpty()) {
+            User newUser = new User(email, oAuth2User.getName(), oAuth2User.getName(), passwordEncoder.encode(UUID.randomUUID().toString()));
+            newUser.getRoles().add(getOrCreateDefaultRole());
+            userRepository.save(newUser);
+        }
+        return oAuth2User;
+    }
+
+    public void deleteUser(String email) throws AccessDeniedException {
+        if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            throw new AccessDeniedException("Only admins can delete users.");
+        }
+        userRepository.deleteByEmail(email);
     }
 
     public List<User> getUsers() {
@@ -44,37 +72,47 @@ public class UserService {
         return users;
     }
 
-    public UserDTO getUserDTOByUsername(String username) {
+    public UserDto getUserDTOByUsername(String username) {
         return userRepository.findByUsername(username)
-                .map(userMapper::toDTO)
+                .map(UserMapper::toDTO)
                 .orElseThrow(() -> new UserNotFoundException("No registered user with that username."));
     }
 
-    public UserDTO getUserDTOById(Integer id) {
+    public UserDto getUserDTOById(Integer id) {
         return userRepository.findById(id)
-                .map(userMapper::toDTO)
+                .map(UserMapper::toDTO)
                 .orElseThrow(() -> new UserNotFoundException("No registered user with that ID."));
     }
 
+    public UserDto getUserDTOByEmail(String email){
+        return userRepository.findByEmail(email)
+                .map(UserMapper::toDTO)
+                .orElseThrow(() -> new UserNotFoundException("No registered user with that ID."));
+    }
 
-
-    @Transactional
-    public User registerNewUser(UserDTO userDTO) {
-        Set<ConstraintViolation<UserDTO>> violations = validator.validate(userDTO);
-        if(!violations.isEmpty()){
-            String[] errorMessage = new String[1];
-            violations.forEach(constraintViolation -> errorMessage[0] = constraintViolation.getMessage());
-            throw new InvalidUserInputException(errorMessage[0], violations);
+    private void validateUserDTO(UserDto userDTO){
+        Set<ConstraintViolation<UserDto>> violations = validator.validate(userDTO);
+        if (!violations.isEmpty()) {
+            String errorMessage = violations.stream()
+                    .map(ConstraintViolation::getMessage)
+                    .collect(Collectors.joining(", "));
+            throw new InvalidUserInputException(errorMessage, violations);
         }
+    }
+
+    private void checkUsernameAvailability(UserDto userDTO) {
         if(userRepository.findByUsername(userDTO.getUsername()).isPresent()){
-            throw new UserAlreadyExistsException("User already exists.");
+            throw new UserAlreadyExistsException("A user is already registered with that username.");
         }
-        User u = User.builder().name(userDTO.getName()).username(userDTO.getUsername()).email(userDTO.getEmail()).password((passwordEncoder.encode(userDTO.getPassword()))).build();
-        System.out.println(u);
-        u = userRepository.save(u);
-        System.out.println(u);
+    }
+
+    private User addDefaultRoleToUser(User u) {
+        u.getRoles().add(getOrCreateDefaultRole());
         return u;
     }
 
-
+    private Role getOrCreateDefaultRole() {
+        return roleRepository.findByName("ROLE_MEMBER")
+                .orElseGet(() -> roleRepository.save(new Role("ROLE_MEMBER")));
+    }
 }

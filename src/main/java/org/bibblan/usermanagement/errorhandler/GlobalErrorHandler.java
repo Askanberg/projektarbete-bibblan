@@ -17,6 +17,7 @@ import java.util.Map;
 public class GlobalErrorHandler {
 
     @ExceptionHandler(InvalidUserInputException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Map<String, String>> handleInvalidUserInputException(InvalidUserInputException e) {
         Map<String, String> errors = new HashMap<>();
         e.getConstraintViolations().forEach((violation) -> {
@@ -27,14 +28,16 @@ public class GlobalErrorHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ExceptionHandler(CommandAcceptanceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleCommandAcceptanceException(CommandAcceptanceException e){
-        return ResponseEntity.ok("");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -45,4 +48,6 @@ public class GlobalErrorHandler {
                 errors.put(error.getField(), error.getDefaultMessage()));
         return errors;
     }
+
+
 }
