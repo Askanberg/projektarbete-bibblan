@@ -23,10 +23,7 @@ public class ItemCollection {
 
     public void addItems(Collection<Item> item) {
         for (Item i : item) {
-            if (!itemMap.containsKey(i.getTitle())) {
-                itemMap.put(i.getTitle(), new ArrayList<>());
-            }
-            itemMap.get(i.getTitle()).add(i);
+            addItem(i);
         }
     }
 
