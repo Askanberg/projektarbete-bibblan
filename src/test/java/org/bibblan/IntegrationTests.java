@@ -13,11 +13,9 @@ import org.bibblan.reviews.ReviewCollection;
 import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-
 public class IntegrationTests {
     private ItemCollection itemCollection;
     private ItemFileReader itemFileReader;
@@ -29,14 +27,14 @@ public class IntegrationTests {
     private User userSix;
     private RecommendationSystem recommendationSystem;
     private ReviewCollection reviewCollection;
-
+    private LoanCollections loanCollection;
+    private List<Item> itemsByTitle;
     @BeforeEach
     void setup() throws IOException {
         itemCollection = new ItemCollection();
         itemFileReader = new ItemFileReader(new ItemFactory());
         itemCollection.addItems(itemFileReader.readItemsFromCsv("src/test/resources/testBooks.csv"));
         itemCollection.addItems(itemFileReader.readItemsFromCsv("src/test/resources/testEBooks.csv"));
-
         userOne = User.builder().name("Henke").username("Benke").email("some@email.com").password("someRawPassword").build();
         userTwo = User.builder().name("Andreas").username("Senapsberg").email("skanberg@su.se").password("someRawPassword123").build();
         userThree = User.builder().name("Sick Sten").username("Six_Ten^").email("six_ten@gmail.com").password("someRawPassword1337").build();
@@ -47,7 +45,9 @@ public class IntegrationTests {
         reviewCollection = new ReviewCollection();
         recommendationSystem = new RecommendationSystem(reviewCollection);
 
-        List<Item> itemsByTitle = itemCollection.sortItems();
+        loanCollection = new LoanCollections();
+        itemsByTitle = itemCollection.sortItems("title");
+
         // User One
         addReview(itemsByTitle.get(0), 3, userOne); // Item 1
         addReview(itemsByTitle.get(1), 1, userOne); // Item 2
@@ -72,15 +72,40 @@ public class IntegrationTests {
         // User Five
         addReview(itemsByTitle.get(0), 3, userFive); // Item 1
         addReview(itemsByTitle.get(4), 5, userFive); // Item 5
-        // User Six
-        addReview(itemsByTitle.get(4), 1, userSix); // Item 5
-        addReview(itemsByTitle.get(5), 5, userSix); // Item 6
 
     }
 
     private void addReview(Item item, int rating, User user) {
         Review review = new Review(item, rating, user);
         reviewCollection.addReview(review);
+    }
+
+
+    @Test
+    void testThatLoanCollectionsContainsUserAndLoan() {
+        Book book = (Book) itemCollection.getItemMap().get("Becoming").get(0);
+        loanCollection.addLoan(userSix, book);
+
+        Loan loan = loanCollection.getUserLoans(userSix).get(0);
+
+        assertNotNull(loan);
+        assertEquals(book, (Book) loan.getItem());
+
+        Review review = new Review(book, 5, userSix, "Test");
+        reviewCollection.addReview(review);
+
+        assertEquals(loan.getItem(), review.getItem());
+
+        assertTrue(reviewCollection.getReviewsByUser(userSix).contains(review));
+    }
+
+    @Test
+    void testThatRecommendationsWorksCorrectlyWithRealUsers() {
+        List<Item> recommendations = recommendationSystem.getRecommendations(userThree);
+        assertEquals(1, recommendations.size(),
+                "There should be 1 item in recommendations list");
+        assertTrue(recommendations.contains(itemsByTitle.get(3)),
+                "Expected item6 in recommendations");
     }
 
 }

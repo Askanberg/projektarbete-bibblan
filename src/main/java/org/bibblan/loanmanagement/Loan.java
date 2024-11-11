@@ -18,7 +18,7 @@ public class Loan {
     private static final double DAILY_FINE_RATE = 10.0;
     public static final int MAX_RENEWALS = 3;
     public static final int MAX_LOANS = 3;
-    private Book item;
+    private Item item;
     public LocalDate startDate;
     private LocalDate dueDate;
     private int loanDuration;
@@ -27,14 +27,10 @@ public class Loan {
     private boolean lost = false;
     private String status;
     private int renewals = 0;
-    public static int totalLoans = 0;
 
     private static List<Loan> activeLoans = new ArrayList<>();
 
     public Loan(Book book) {
-        if (totalLoans >= MAX_LOANS) {
-            throw new IllegalStateException("Cannot borrow more than " + MAX_LOANS + " copies of this book.");
-        }
         this.item = book;
         this.startDate = LocalDate.now();
         setLoanDuration();
