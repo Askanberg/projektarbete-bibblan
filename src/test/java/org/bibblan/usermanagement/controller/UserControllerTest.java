@@ -6,10 +6,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.Main;
+import org.bibblan.usermanagement.config.DisableSecurityConfig;
+import org.bibblan.usermanagement.dto.UserDto;
 import org.bibblan.usermanagement.mapper.UserMapper;
+import org.bibblan.usermanagement.repository.RoleRepository;
 import org.bibblan.usermanagement.service.UserService;
+import org.bibblan.usermanagement.testinitializer.TestContextInitializer;
 import org.bibblan.usermanagement.user.User;
+import org.bibblan.usermanagement.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +22,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(UserController.class)
 @DisplayName("User Controller Test")
+@TestPropertySource(locations = "classpath:usermanagement/application-test.properties")
+@ContextConfiguration(classes = {Main.class, DisableSecurityConfig.class, TestContextInitializer.TestConfig.class})
 public class UserControllerTest {
 
     @Autowired
@@ -31,21 +41,26 @@ public class UserControllerTest {
     @MockBean
     private UserService userService;
     @MockBean
-    private UserMapper userMapper;
+    RoleRepository roleRepository;
+    @MockBean
+    UserRepository userRepository;
+    @MockBean
+    PasswordEncoder passwordEncoder;
 
-    void saveUser(UserDTO userDTO) throws Exception {
+
+    void saveUser(UserDto userDTO) throws Exception {
 
         String userJson = "{ \"name\": \""+userDTO.getName() +"\", \"username\": \""+ userDTO.getUsername()+"\", \"email\": \""+userDTO.getEmail()+"\", \"password\": \""+userDTO.getPassword()+"\" }";
 
-        mockMvc.perform(post("/userDemo/register")
+        mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().string("User successfully registered."));
 
     }
 
-    private final UserDTO FIRST_DTO = UserDTO.builder()
+    private final UserDto FIRST_DTO = UserDto.builder()
             .name("Name")
             .username("Username")
             .email("test@email.com")
@@ -68,10 +83,10 @@ public class UserControllerTest {
     @DisplayName("Registrerar användare med tomt username-fält")
     public void registerNewUserWithBlankUsernameThrowsException() throws Exception {
 
-        UserDTO userDTO = UserDTO.builder().name("Beorn").username("").email("").password("myRawPassword").build();
+        UserDto userDTO = UserDto.builder().name("Beorn").username("").email("").password("myRawPassword").build();
         String userJson = jacksonObjectMapper.writeValueAsString(userDTO);
 
-        mockMvc.perform(post("/userDemo/register")
+        mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson)) // Send JSON content
                 .andExpect(status().isBadRequest())
@@ -83,7 +98,7 @@ public class UserControllerTest {
     public void registerUserWithBlankEmailShouldReturnBadRequest() throws Exception {
         String userJson = "{ \"name\": \"Beorn\", \"username\": \"Hejsan\", \"email\": \"\", \"password\": \"myRawPassword\" }";
 
-        mockMvc.perform(post("/userDemo/register")
+        mockMvc.perform(post("/api/users/register")
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
@@ -94,9 +109,9 @@ public class UserControllerTest {
 
     @Test
     public void returnAllUsers() throws Exception{
-        mockMvc.perform(get("/userDemo/allUsers"))
+        mockMvc.perform(get("/api/users/allUsers"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray());
 
     }
@@ -104,10 +119,10 @@ public class UserControllerTest {
     @Test
     public void registerNewUser() throws Exception {
         String userJson = "{ \"name\": \"Beorn\", \"username\": \"Hejsan\", \"email\": \"bunke_lunke@domain.com\", \"password\": \"myRawPassword\" }";
-        mockMvc.perform(post("/userDemo/register")
+        mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().string("User successfully registered."));
 
     }
@@ -120,7 +135,7 @@ public class UserControllerTest {
         when(userService.getUserDTOByUsername("Username"))
                 .thenReturn(FIRST_DTO);
 
-        mockMvc.perform(get("/userDemo/getUser/username/{username}", "Username")
+        mockMvc.perform(get("/api/users/getUser/username/{username}", "Username")
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isOk());
 
@@ -132,7 +147,7 @@ public class UserControllerTest {
     @DisplayName("getUserByUsername() kastar UserNotFoundException när användaren inte finns.")
     public void getUserByUsernameThrowsException() throws Exception {
 
-        mockMvc.perform(get("/userDemo/getUser/username/{username}", "Unavailable Username")
+        mockMvc.perform(get("/api/users/getUser/username/{username}", "Unavailable Username")
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("No registered user with that username."));
@@ -142,7 +157,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("getUserById() returnerar rätt registrerade användare.")
     public void getUserByIdReturnsExistingUser() throws Exception {
-        UserDTO userDTO = UserDTO.builder()
+        UserDto userDTO = UserDto.builder()
                         .name("Name DTO")
                         .username("Username DTO")
                         .email("dto@email.com")
@@ -154,7 +169,7 @@ public class UserControllerTest {
         when(userService.getUserDTOById(1))
                 .thenReturn(FIRST_DTO);
 
-        mockMvc.perform(get("/userDemo/getUser/id/{id}", 1)
+        mockMvc.perform(get("/api/users/getUser/id/{id}", 1)
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isOk());
 
@@ -164,7 +179,7 @@ public class UserControllerTest {
     @DisplayName("getUserById() kastar UserNotFoundException när användaren inte finns.")
     public void getUserByIdThrowsException() throws Exception {
 
-        mockMvc.perform(get("/userDemo/getUser/id/{id}", 1)
+        mockMvc.perform(get("/api/users/getUser/id/{id}", 1)
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("No registered user with that id."));

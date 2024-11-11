@@ -3,8 +3,11 @@ package org.bibblan.usermanagement.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+import org.bibblan.usermanagement.role.Role;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,6 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @ToString
+@Table(name = "library_users")
 public class User {
 
     @NonNull
@@ -26,13 +30,30 @@ public class User {
     @NonNull
     private String name;
 
+
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) // Added cascade option to manage save operations
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Integer ID;
+
+    public User(@NonNull String email, @NonNull String username, @NonNull String name, String password) {
+        this.email = email;
+        this.username = username;
+        this.name = name;
+        this.password = password;
+    }
 
     @Override
     public boolean equals(Object o) {

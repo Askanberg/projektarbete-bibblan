@@ -1,6 +1,6 @@
 package org.bibblan.usermanagement.mapper;
 
-import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.usermanagement.dto.UserDto;
 import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserMapperTest {
-
-    private final UserMapper userMapper = new UserMapper();
 
     @Test
     @DisplayName("Omvandlar ett DTO-objekt till Entitet.")
@@ -21,7 +19,7 @@ class UserMapperTest {
                 .password(null)
                 .build();
 
-        UserDTO userDTO = userMapper.toDTO(user);
+        UserDto userDTO = UserMapper.toDTO(user);
 
         // Kontrollerar att UserDTO har initialiserats.
         assertNotNull(userDTO);
@@ -33,13 +31,13 @@ class UserMapperTest {
 
     @Test
     void toEntityConvertsFromEntityToDTO() {
-        UserDTO userDTO = UserDTO.builder()
+        UserDto userDTO = UserDto.builder()
                 .name("DTO")
                 .username("UserDTOname")
                 .email("UserDTO@gmail.com")
                 .password(null)
                 .build();
-        User user = userMapper.toEntity(userDTO);
+        User user = UserMapper.toEntity(userDTO);
 
         assertEquals(userDTO.getName(), user.getName());
         assertEquals(userDTO.getUsername(), user.getUsername());
@@ -48,16 +46,14 @@ class UserMapperTest {
 
     @Test
     void toEntityLeavesOutPassword(){
-        UserDTO userDTO = UserDTO.builder()
+        UserDto userDTO = UserDto.builder()
                 .username("Username")
                 .name("Name")
                 .email("Email@gmail.com")
                 .password("leaveOutPassword")
                 .build();
 
-        UserMapper userMapper = new UserMapper();
-
-        User user = userMapper.toEntity(userDTO);
+        User user = UserMapper.toEntity(userDTO);
 
         assertNotNull(user
                 , "Fel: Användaren har inte initialiserats.");
@@ -77,7 +73,7 @@ class UserMapperTest {
                 .build();
 
 
-        UserDTO userDTO = userMapper.toDTO(u);
+        UserDto userDTO = UserMapper.toDTO(u);
 
         assertNotNull(userDTO
         , "Fel: Förväntade att DTO-objektet fanns.");
@@ -88,7 +84,7 @@ class UserMapperTest {
     @Test
     @DisplayName("Konvertering till Entity som är null ger en tom DTO.")
     public void nullToEntityReturnsEmptyDTO(){
-        User u = userMapper.toEntity(null);
+        User u = UserMapper.toEntity(null);
 
         assertNotNull(u);
 
@@ -99,11 +95,11 @@ class UserMapperTest {
     @Test
     @DisplayName("Konvertering till DTO som är null ger en tom Entity.")
     public void nullToDTOReturnsEmptyEntity(){
-        UserDTO u = userMapper.toDTO(null);
+        UserDto u = UserMapper.toDTO(null);
 
         assertNotNull(u);
 
-        assertEquals(u, new UserDTO());
+        assertEquals(u, new UserDto());
 
     }
 }

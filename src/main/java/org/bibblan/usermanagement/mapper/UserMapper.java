@@ -1,25 +1,26 @@
 package org.bibblan.usermanagement.mapper;
 
-import org.bibblan.usermanagement.dto.UserDTO;
+import org.bibblan.usermanagement.dto.UserDto;
 import org.bibblan.usermanagement.user.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
 
-    public UserDTO toDTO(User user){
+    public static UserDto toDTO(User user){
         if(user == null){
-            return new UserDTO();
+            return new UserDto();
         }
-        return UserDTO.builder()
+        return UserDto.builder()
                 .name(user.getName())
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .roles(user.getRoles())
                 .password(null)
                 .build();
     }
 
-    public User toEntity(UserDTO userDTO){
+    public static User toEntity(UserDto userDTO){
         if(userDTO == null){
             return new User();
         }
@@ -27,6 +28,7 @@ public class UserMapper {
                 .name(userDTO.getName())
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
+                .roles(userDTO.getRoles())
                 .password(null)
                 .build();
     }

@@ -87,20 +87,21 @@ public class RecommendationSystem {
         return (denominator == 0) ? 0 : numerator / denominator;
     }
 
+    // Metod som ger upp till 3 rekommendationer till en användare beroende på dess recensioner
     public List<Item> getRecommendations(User user) {
-        Map<User, Double> userSimilarities = new HashMap<>();
-        for (User other : reviewCollection.getAllUsers()) {
-            if (!other.equals(user)) {
-                double similarity = calculateSimilarity(user, other);
-                userSimilarities.put(other, similarity);
-            }
-        }
+        // Mappar ihop resterande användare med deras likhet till original-användaren.
+        Map<User, Double> userSimilarities = getUserSimilarities(user);
 
+        // Sorterar listan från högst till lägst beroende på liket.
         List<User> sortedUsers = userSimilarities.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .map(Map.Entry::getKey)
                 .toList();
 
+        return findTopRecommendations(user, sortedUsers);
+    }
+
+    private ArrayList<Item> findTopRecommendations(User user, List<User> sortedUsers) {
         Set<Item> recommendations = new HashSet<>();
         for (User other : sortedUsers) {
             Set<Review> reviews = reviewCollection.getReviewsByUser(other);
@@ -117,5 +118,15 @@ public class RecommendationSystem {
             }
         }
         return new ArrayList<>(recommendations);
+    }
+
+    private Map<User, Double> getUserSimilarities(User user) {
+        Map<User, Double> userSimilarities = new HashMap<>();
+        for (User other : reviewCollection.getAllUsers()) {
+            if (!other.equals(user)) {
+                userSimilarities.put(other, calculateSimilarity(user, other));
+            }
+        }
+        return userSimilarities;
     }
 }
