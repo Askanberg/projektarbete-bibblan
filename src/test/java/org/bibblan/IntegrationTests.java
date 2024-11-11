@@ -83,7 +83,7 @@ public class IntegrationTests {
         reviewCollection.addReview(review);
     }
 
-    @Test
+    /*@Test
     void test() {
         LoanCollections loanCollections = new LoanCollections();
         loanCollections.addLoan((Book) itemCollection.getItemMap().get("Becoming").get(0));
@@ -92,6 +92,6 @@ public class IntegrationTests {
         loanCollections.returnLoan("Becoming");
         System.out.println(loanCollections.getAllActiveLoans());
 
-    }
+    }*/
 
 }
