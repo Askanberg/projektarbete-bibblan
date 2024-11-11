@@ -83,28 +83,6 @@ public class IntegrationTests {
         reviewCollection.addReview(review);
     }
 
-<<<<<<< HEAD
-//    @Test
-//    void test() {
-//        LoanCollections loanCollections = new LoanCollections();
-//        loanCollections.addLoan((Book) itemCollection.getItemMap().get("Becoming").get(0));
-//        System.out.println(loanCollections.getAllActiveLoans());
-//
-//        loanCollections.returnLoan("Becoming");
-//        System.out.println(loanCollections.getAllActiveLoans());
-//
-//    }
-=======
-    /*@Test
-    void test() {
-        LoanCollections loanCollections = new LoanCollections();
-        loanCollections.addLoan((Book) itemCollection.getItemMap().get("Becoming").get(0));
-        System.out.println(loanCollections.getAllActiveLoans());
 
-        loanCollections.returnLoan("Becoming");
-        System.out.println(loanCollections.getAllActiveLoans());
-
-    }*/
->>>>>>> fc65c81258271c9ffdaa89b72f1f23fd9957ae3f
 
 }
