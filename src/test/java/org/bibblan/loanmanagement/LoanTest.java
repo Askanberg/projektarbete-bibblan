@@ -6,11 +6,13 @@ import org.bibblan.bookcatalog.domain.Book;
 import org.bibblan.bookcatalog.domain.CoverType;
 
 import org.bibblan.bookcatalog.domain.Item;
+import org.bibblan.usermanagement.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,6 +37,24 @@ class LoanTest {
         assertEquals(LocalDate.now().plusDays(loan.getLoanDuration()), loan.getDueDate(), "Due date should be correct");
         assertFalse(loan.isReturned(), "The book should not be returned upon creation");
     }
+
+    /*
+    @Test
+    public void testLoanThrowsExceptionWhenMaxLoansReached() {
+        Book book = new Book();
+        book.setGenre("Fiction");
+
+        User user = new User();
+        LoanCollections loanCollections = new LoanCollections();
+
+        for (int i = 0; i < Loan.MAX_LOANS; i++) {
+            loanCollections.addLoan(user, book);
+        }
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> loanCollections.addLoan(user, book));
+        assertEquals("Cannot borrow more than " + Loan.MAX_LOANS + " copies of this book.", exception.getMessage());
+    }
+     */
 
     @Test
     void testSetLoanDuration_ClassicsGenre() {
@@ -160,13 +180,17 @@ class LoanTest {
 
     @Test
     void testAutoRenewLoan_MaxRenewals() {
-        for (int i = 0; i < 3; i++) {
+
+        for (int i = 0; i < Loan.MAX_RENEWALS; i++) {
             loan.autoRenewLoan();
         }
 
         LocalDate previousDueDate = loan.getDueDate();
-        loan.autoRenewLoan();
-        assertEquals(previousDueDate, loan.getDueDate(), "Loan should not auto-renew if max renewals is reached.");
+
+        assertThrows(IllegalStateException.class, () -> loan.autoRenewLoan(),
+                "Loan should not auto-renew if max renewals is reached.");
+
+        assertEquals(previousDueDate, loan.getDueDate(), "Loan due date should not change after max renewals.");
     }
 
     @Test
