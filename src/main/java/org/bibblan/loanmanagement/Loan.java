@@ -18,7 +18,7 @@ public class Loan {
     private static final double DAILY_FINE_RATE = 10.0;
     public static final int MAX_RENEWALS = 3;
     public static final int MAX_LOANS = 3;
-    private Book item;
+    private Item item;
     public LocalDate startDate;
     private LocalDate dueDate;
     private int loanDuration;
@@ -27,20 +27,15 @@ public class Loan {
     private boolean lost = false;
     private String status;
     private int renewals = 0;
-    public static int totalLoans = 0;
 
     private static List<Loan> activeLoans = new ArrayList<>();
 
     public Loan(Book book) {
-        if (totalLoans >= MAX_LOANS) {
-            throw new IllegalStateException("Cannot borrow more than " + MAX_LOANS + " copies of this book.");
-        }
         this.item = book;
         this.startDate = LocalDate.now();
         setLoanDuration();
         this.dueDate = startDate.plusDays(this.loanDuration);
     }
-
 
     public void setLoanDuration() {
         if ("Classics".equalsIgnoreCase(item.getGenre())) {
@@ -111,14 +106,12 @@ public class Loan {
 
     // Extends loan automatically
     public void autoRenewLoan() {
-        int renewDays = loanDuration / 2;
         if (renewals < MAX_RENEWALS && !isOverdue() && !returned) {
-            extendLoan(renewDays);
             renewals++;
-            loanHistory.add("Auto-renewed loan by " + renewDays + " days on " + LocalDate.now());
-            System.out.println("New due date after auto-renew: " + dueDate);
+            loanHistory.add("Auto-renewed loan by " + (loanDuration / 2) + " days on " + LocalDate.now());
+            dueDate = dueDate.plusDays(loanDuration / 2); // Lägg till extra dagar
         } else {
-            System.out.println("Cannot auto-renew loan. Maximum renewals reached or loan is overdue/returned.");
+            throw new IllegalStateException("Cannot auto-renew loan. Maximum renewals reached or loan is overdue/returned.");
         }
     }
 
