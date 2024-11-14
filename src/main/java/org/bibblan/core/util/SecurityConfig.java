@@ -44,9 +44,10 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/terms-and-conditions/**").permitAll()
-                        .requestMatchers("/", "/home").permitAll()
+                        .requestMatchers("/", "/home.html").permitAll()
                         .requestMatchers("/login", "/oauth2/**", "/code/**" ,"/**").permitAll()
                         .requestMatchers("/login","/register").permitAll()
+                        .requestMatchers("/api/users/local/profile").permitAll()
                         .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/api/users/profile", "/css/**").permitAll()
                         .requestMatchers("/profile").permitAll()
@@ -54,19 +55,18 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/login.html").permitAll()
-                        .defaultSuccessUrl("/profile.html", true).permitAll()
-
-                        .userInfoEndpoint(userInfo-> userInfo
-                                .oidcUserService(customOidcUserService)))
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/profile", true)
+                        .failureUrl("/login?error=true")
+                        .userInfoEndpoint(userInfo -> userInfo.oidcUserService(customOidcUserService)))
                 .formLogin(form -> form
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/profile.html", true)
-                )
-                .logout(logoutAction -> logoutAction
-                        .logoutSuccessUrl("/home.html")
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/profile", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
                         .permitAll());
-
         return http.build();
     }
 

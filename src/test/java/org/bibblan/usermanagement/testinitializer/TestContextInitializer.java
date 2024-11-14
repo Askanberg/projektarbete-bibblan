@@ -27,7 +27,7 @@ public class TestContextInitializer implements ApplicationContextInitializer<Con
     }
 
     @TestConfiguration
-    @Import(DisableSecurityConfig.class) // Disables main security for testing
+    @Import(DisableSecurityConfig.class)
     public static class TestConfig {
 
         @Bean
@@ -35,6 +35,5 @@ public class TestContextInitializer implements ApplicationContextInitializer<Con
             return new BCryptPasswordEncoder(10);
         }
 
-        // Additional beans or mocks can be defined here
     }
 }

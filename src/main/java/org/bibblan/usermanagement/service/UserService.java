@@ -14,12 +14,15 @@ import org.bibblan.usermanagement.role.Role;
 import org.bibblan.usermanagement.repository.RoleRepository;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.repository.UserRepository;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -36,11 +39,18 @@ public class UserService extends DefaultOAuth2UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User registerNewUser(@Valid UserDto userDTO) {
-        validateUserDTO(userDTO);
-        checkUsernameAvailability(userDTO);
+    public User registerNewUser(@Valid UserDto userDto) {
+        validateUserDTO(userDto);
+        checkUsernameAvailability(userDto);
 
-        User u = new User(userDTO.getEmail(),userDTO.getName(), userDTO.getUsername(), passwordEncoder.encode(userDTO.getPassword()));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDto.getEmail(),
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        User u = new User(userDto.getEmail(),userDto.getName(), userDto.getUsername(), passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(addDefaultRoleToUser(u));
     }
 
@@ -55,13 +65,6 @@ public class UserService extends DefaultOAuth2UserService {
             userRepository.save(newUser);
         }
         return oAuth2User;
-    }
-
-    public void deleteUser(String email) throws AccessDeniedException {
-        if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-            throw new AccessDeniedException("Only admins can delete users.");
-        }
-        userRepository.deleteByEmail(email);
     }
 
     public List<User> getUsers() {
@@ -85,9 +88,26 @@ public class UserService extends DefaultOAuth2UserService {
     }
 
     public UserDto getUserDTOByEmail(String email){
-        return userRepository.findByEmail(email)
-                .map(UserMapper::toDTO)
-                .orElseThrow(() -> new UserNotFoundException("No registered user with that ID."));
+        Optional<User> u = userRepository.findByEmail(email);
+        if(u.isPresent()){
+            return UserMapper.toDTO(u.get());
+        }
+        throw new UserNotFoundException("No registered user with that email.");
+    }
+
+    public boolean authenticateUser(String email, String password){
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if(optionalUser.filter(value -> passwordEncoder.matches(password, value.getPassword())).isPresent()){
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    optionalUser.get().getEmail(),
+                    null,
+                    List.of(new SimpleGrantedAuthority("ROLE_USER"))
+            );
+            return true;
+        }
+        return false;
+
     }
 
     private void validateUserDTO(UserDto userDTO){

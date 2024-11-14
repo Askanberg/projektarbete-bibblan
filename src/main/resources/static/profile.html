@@ -51,32 +51,42 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        fetch('/api/users/profile')
-            .then(response => {
-                if (response.ok) return response.json();
-                throw new Error('Failed to fetch profile data');
+        // Try fetching OAuth2 profile data first
+        fetchProfileData('/api/users/profile')
+            .catch(() => {
+                // Fallback to local user profile if OAuth2 profile fetch fails
+                return fetchProfileData('/api/users/local/profile');
             })
-            .then(data => {
-                // Populate the user details
-                document.getElementById('name').innerText = data.name;
-                document.getElementById('email').innerText = data.email;
-                document.getElementById('totalFees').innerText = `$${data.totalFees}`;
+            .catch(error => console.error("Error fetching local profile from:", error));
 
-                // Populate the loaned books table
-                const loanedBooksTable = document.getElementById('loanedBooks');
-                data.loanedBooks.forEach(book => {
-                    const row = document.createElement('tr');
+        // Function to fetch and populate profile data
+        function fetchProfileData(url) {
+            return fetch(url)
+                .then(response => {
+                    if (response.ok) return response.json();
+                    throw new Error(`Failed to fetch from ${url}`);
+                })
+                .then(data => {
+                    // Populate the user details
+                    document.getElementById('name').innerText = data.name;
+                    document.getElementById('email').innerText = data.email;
+                    document.getElementById('totalFees').innerText = `$${data.totalFees}`;
 
-                    row.innerHTML = `
-                        <td>${book.title}</td>
-                        <td>${book.loanDate}</td>
-                        <td>${book.dueDate}</td>
-                        <td style="${book.overdue ? 'color: red;' : ''}">${book.status}</td>
-                    `;
-                    loanedBooksTable.appendChild(row);
+                    // Populate the loaned books table
+                    const loanedBooksTable = document.getElementById('loanedBooks');
+                    loanedBooksTable.innerHTML = ""; // Clear previous entries
+                    data.loanedBooks.forEach(book => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${book.title}</td>
+                            <td>${book.loanDate}</td>
+                            <td>${book.dueDate}</td>
+                            <td style="${book.overdue ? 'color: red;' : ''}">${book.status}</td>
+                        `;
+                        loanedBooksTable.appendChild(row);
+                    });
                 });
-            })
-            .catch(error => console.error(error));
+        }
     });
 </script>
 </body>

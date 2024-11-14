@@ -11,14 +11,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class DisableSecurityConfig {
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authz) -> authz.anyRequest().permitAll()) // Allow all requests
+                .authorizeHttpRequests((authz) -> authz.anyRequest().permitAll())
                 .httpBasic(withDefaults())
-                .csrf(AbstractHttpConfigurer::disable); // Disable CSRF for testing purposes
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 

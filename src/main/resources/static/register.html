@@ -48,7 +48,6 @@
             return;
         }
 
-        // Send data as JSON
         const userDto = { name, username, email, password };
 
         try {
@@ -61,10 +60,9 @@
             });
 
             if (response.ok) {
-                // Redirect or handle success response
                 window.location.href = "/profile";
+
             } else {
-                // Handle error response
                 const errorData = await response.json();
                 alert(`Error: ${errorData.message}`);
             }

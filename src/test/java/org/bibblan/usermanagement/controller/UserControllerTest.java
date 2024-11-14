@@ -11,10 +11,12 @@ import org.bibblan.usermanagement.config.DisableSecurityConfig;
 import org.bibblan.usermanagement.dto.UserDto;
 import org.bibblan.usermanagement.mapper.UserMapper;
 import org.bibblan.usermanagement.repository.RoleRepository;
+import org.bibblan.usermanagement.role.Role;
 import org.bibblan.usermanagement.service.UserService;
 import org.bibblan.usermanagement.testinitializer.TestContextInitializer;
 import org.bibblan.usermanagement.user.User;
 import org.bibblan.usermanagement.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +57,8 @@ public class UserControllerTest {
         mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().string("User successfully registered."));
-
     }
 
     private final UserDto FIRST_DTO = UserDto.builder()
@@ -83,8 +84,8 @@ public class UserControllerTest {
     @DisplayName("Registrerar användare med tomt username-fält")
     public void registerNewUserWithBlankUsernameThrowsException() throws Exception {
 
-        UserDto userDTO = UserDto.builder().name("Beorn").username("").email("").password("myRawPassword").build();
-        String userJson = jacksonObjectMapper.writeValueAsString(userDTO);
+        UserDto userDto = UserDto.builder().name("Beorn").username("").email("").password("myRawPassword").build();
+        String userJson = jacksonObjectMapper.writeValueAsString(userDto);
 
         mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -122,7 +123,7 @@ public class UserControllerTest {
         mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userJson))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().string("User successfully registered."));
 
     }
@@ -157,14 +158,14 @@ public class UserControllerTest {
     @Test
     @DisplayName("getUserById() returnerar rätt registrerade användare.")
     public void getUserByIdReturnsExistingUser() throws Exception {
-        UserDto userDTO = UserDto.builder()
+        UserDto userDto = UserDto.builder()
                         .name("Name DTO")
                         .username("Username DTO")
                         .email("dto@email.com")
                         .password("someRawPassword1337")
                         .build();
 
-        saveUser(userDTO);
+        saveUser(userDto);
 
         when(userService.getUserDTOById(1))
                 .thenReturn(FIRST_DTO);
@@ -184,6 +185,19 @@ public class UserControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("No registered user with that id."));
 
+    }
+
+    @Test
+    @DisplayName("Logging out redirects to the homepage.")
+    public void redirectsToTermsAndConditions() throws Exception {
+        UserDto userDto = FIRST_DTO;
+        String userDetails = "{ \"name\": \"" + userDto.getName() + "\", \"username\": \"" + userDto.getUsername() + "\", \"email\": \"" + userDto.getEmail() + "\", \"password\": \"" + userDto.getPassword() + "\" }";
+
+        mockMvc.perform(post("/api/users/logout")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                        .content(userDetails))
+                .andExpect(redirectedUrl("/home"));
     }
 }
 

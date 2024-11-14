@@ -40,15 +40,15 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
-    private final UserDto FIRST_DTO = UserDto.builder()
-            .name("Name")
-                .username("Username")
-                .email("test@email.com")
-                .password("someRawPassword123123")
-                .build();
     @Autowired
     private ObjectMapper jacksonObjectMapper;
 
+    private final UserDto FIRST_DTO = UserDto.builder()
+            .name("Name")
+            .username("Username")
+            .email("test@email.com")
+            .password("someRawPassword123123")
+            .build();
 
     @Test
     @DisplayName("getUsers() kastar ett UserNotFoundException när inga användare är registrerade.")
@@ -85,6 +85,37 @@ public class UserServiceTest {
         when(userRepository.findById(any(Integer.class))).thenReturn(Optional.of(u));
 
         UserDto dto = userService.getUserDTOById(1);
+
+        System.out.println("UserServiceTest DTO = "+ dto);
+
+        assertEquals(u, UserMapper.toEntity(dto),
+                "Förväntade att rätt användare skulle returneras.");
+
+    }
+
+    @Test
+    @DisplayName("getUserById() returnerar den korrekta registrerade användaren.")
+    public void getUserByEmailReturnsCorrectUser(){
+        when(userRepository.save(any(User.class))).thenAnswer(i -> {
+            User mockUser = i.getArgument(0);
+            mockUser.setID(1);
+            mockUser.setName(FIRST_DTO.getName());
+            mockUser.setUsername(FIRST_DTO.getUsername());
+            mockUser.setPassword(FIRST_DTO.getPassword());
+            mockUser.setEmail(FIRST_DTO.getEmail());
+            return mockUser;
+        });
+
+        User u = userService.registerNewUser(FIRST_DTO);
+
+        verify(userRepository, times(1)).save(any(User.class));
+
+        assertEquals(FIRST_DTO.getEmail(), u.getEmail(),
+                "Förväntade att den enda registerarde användaren hade rätt email.");
+
+        when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(u));
+
+        UserDto dto = userService.getUserDTOByEmail(FIRST_DTO.getEmail());
 
         System.out.println("UserServiceTest DTO = "+ dto);
 
@@ -286,23 +317,41 @@ public class UserServiceTest {
     @Test
     @DisplayName("Registrerar en redan existerande användare.")
     public void registerAlreadyExistingUserThrowsException() {
-        when(userRepository.save(any(User.class))).thenReturn(new User());
 
-        User u = new User();
+        when(userRepository.save(any(User.class))).thenAnswer(a -> {
+            User user = a.getArgument(0);
+            user.setName("Dachshund");
+            user.setUsername("Hund_97");
+            user.setEmail("hund_97@hotmail.com");
+            user.setPassword("somePassword_1337");
+            return user;
+        });
+
+        User u = new User("hund_97@hotmail.com", "Hund_97", "Dachshund", "someRawPassword_1337");
+        UserDto userDto = UserMapper.toDTO(u);
+        userDto.setPassword("somePassword1337");
+
+        userService.registerNewUser(userDto);
+
+        verify(userRepository, times(1)).save(any(User.class));
+
         when(userRepository.findByUsername("Hund_97")).thenReturn(Optional.of(u));
 
-        Exception e = assertThrows(UserAlreadyExistsException.class, () -> userService.registerNewUser(UserDto.builder()
-                .name("Arpe")
-                .username("Hund_97")
-                .email("hund_97@hotmail.com")
-                .password("someRawPassword_1337")
-                .build()));
+        Exception e = assertThrows(UserAlreadyExistsException.class, () -> {
+
+            userService.registerNewUser(UserDto.builder()
+                    .name("Arpe")
+                    .username("Hund_97")
+                    .email("hund_97@hotmail.com")
+                    .password("someRawPassword_1337")
+                    .build());
+
+        });
 
         assertEquals("A user is already registered with that username.", e.getMessage() ,
                 "Fel: Förväntade ett UserAlreadyExistsException.");
 
-        verify(userRepository, times(1)).findByUsername(any(String.class));
-
+        verify(userRepository, times(2)).findByUsername(any(String.class));
     }
 
 }

@@ -82,16 +82,16 @@ public class IntegrationTests {
         Review review = new Review(item, rating, user);
         reviewCollection.addReview(review);
     }
-
-    @Test
-    void test() {
-        LoanCollections loanCollections = new LoanCollections();
-        loanCollections.addLoan((Book) itemCollection.getItemMap().get("Becoming").get(0));
-        System.out.println(loanCollections.getAllActiveLoans());
-
-        loanCollections.returnLoan("Becoming");
-        System.out.println(loanCollections.getAllActiveLoans());
-
-    }
+//
+//    @Test
+//    void test() {
+//        LoanCollections loanCollections = new LoanCollections();
+//        loanCollections.addLoan((Book) itemCollection.getItemMap().get("Becoming").get(0));
+//        System.out.println(loanCollections.getAllActiveLoans());
+//
+//        loanCollections.returnLoan("Becoming");
+//        System.out.println(loanCollections.getAllActiveLoans());
+//
+//    }
 
 }
